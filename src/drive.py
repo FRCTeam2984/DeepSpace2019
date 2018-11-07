@@ -5,7 +5,8 @@ import wpilib
 from wpilib.command import Subsystem
 import constants
 import ctre
-
+import oi
+import tankdrive
 
 class Drive(Subsystem):
     '''The DriveTrain subsystem incorporates the sensors and actuators attached to
@@ -24,15 +25,17 @@ class Drive(Subsystem):
         self.leftMotorMaster = leftMotorMaster
         self.rightMotorSlave = rightMotorSlave
         self.rightMotorMaster = rightMotorMaster
-
+        
         self.rightMotorSlave.set(
             ctre.ControlMode.Follower, constants.RIGHT_MOTOR_MASTER_ID)
         self.leftMotorSlave.set(ctre.ControlMode.Follower,
                                 constants.LEFT_MOTOR_MASTER_ID)
-    # def initDefaultCommand(self):
-    #     '''When no other command is running let the operator drive around
-    #        using the PS3 joystick'''
-    #     self.setDefaultCommand(TankDriveWithJoystick(self.robot))
+
+
+    def initDefaultCommand(self):
+        '''When no other command is running let the operator drive around
+           using the PS3 joystick'''
+        self.setDefaultCommand(tankdrive.TankDrive(self.robot))
 
     def log(self):
         '''The log method puts interesting information to the SmartDashboard.'''
