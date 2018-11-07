@@ -10,17 +10,17 @@ class Robot(wpilib.IterativeRobot):
 
     # called when robot turns on
     def robotInit(self):
-        self.rightMotorMaster = ctre.WPI_TalonSRX(
+        self.right_motor_master = ctre.WPI_TalonSRX(
             constants.RIGHT_MOTOR_MASTER_ID)
-        self.rightMotorSlave = ctre.WPI_TalonSRX(
+        self.right_motor_slave = ctre.WPI_TalonSRX(
             constants.RIGHT_MOTOR_SLAVE_ID)
-        self.leftMotorMaster = ctre.WPI_TalonSRX(
+        self.left_motor_master = ctre.WPI_TalonSRX(
             constants.LEFT_MOTOR_MASTER_ID)
-        self.leftMotorSlave = ctre.WPI_TalonSRX(constants.LEFT_MOTOR_SLAVE_ID)
+        self.left_motor_slave = ctre.WPI_TalonSRX(constants.LEFT_MOTOR_SLAVE_ID)
         self.drive = drive.Drive(
-            self, self.leftMotorSlave, self.leftMotorMaster, self.rightMotorSlave, self.rightMotorMaster)
+            self, self.left_motor_slave, self.left_motor_master, self.right_motor_slave, self.right_motor_master)
         self.oi = oi.OI(self)
-        self.robotState = robotstate.RobotState(self)
+        self.robot_state = robotstate.RobotState(self)
         self.timer = wpilib.Timer()
 
     # periodic is called whenever packet received, ~50 hertz
@@ -39,11 +39,11 @@ class Robot(wpilib.IterativeRobot):
 
     def teleopInit(self):
         print('test')
-        self.robotState.updateState(self.timer.getFPGATimestamp())
+        self.robot_state.updateState(self.timer.getFPGATimestamp())
 
     def teleopPeriodic(self):
-        self.robotState.updateState(self.timer.getFPGATimestamp())
-        print(self.robotState.getState())
+        self.robot_state.updateState(self.timer.getFPGATimestamp())
+        print(self.robot_state.getState())
 
 
 # defining main function
