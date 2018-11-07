@@ -4,14 +4,12 @@ import wpilib.drive
 import robotstate
 import constants
 import drive
-
+import oi
 
 class Robot(wpilib.IterativeRobot):
 
     # called when robot turns on
     def robotInit(self):
-        self.stick = wpilib.Joystick(0)
-
         self.rightMotorMaster = ctre.WPI_TalonSRX(
             constants.RIGHT_MOTOR_MASTER_ID)
         self.rightMotorSlave = ctre.WPI_TalonSRX(
@@ -21,6 +19,7 @@ class Robot(wpilib.IterativeRobot):
         self.leftMotorSlave = ctre.WPI_TalonSRX(constants.LEFT_MOTOR_SLAVE_ID)
         self.drive = drive.Drive(
             self, self.leftMotorSlave, self.leftMotorMaster, self.rightMotorSlave, self.rightMotorMaster)
+        self.oi = oi.OI(self)
         self.robotState = robotstate.RobotState(self)
         self.timer = wpilib.Timer()
 
@@ -44,7 +43,6 @@ class Robot(wpilib.IterativeRobot):
 
     def teleopPeriodic(self):
         self.robotState.updateState(self.timer.getFPGATimestamp())
-        self.robotDrive.arcadeDrive(self.stick.getX(), -self.stick.getY())
         print(self.robotState.getState())
 
 
