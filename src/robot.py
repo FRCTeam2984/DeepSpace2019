@@ -1,6 +1,9 @@
+import ctre
 import wpilib
 import wpilib.drive
-import ctre
+import robotstate
+import constants
+import drive
 
 
 class Robot(wpilib.IterativeRobot):
@@ -9,15 +12,17 @@ class Robot(wpilib.IterativeRobot):
     def robotInit(self):
         self.stick = wpilib.Joystick(0)
 
-        self.rightMotorUp = ctre.WPI_TalonSRX(22)
-        self.rightMotorDown = ctre.WPI_TalonSRX(12)
-        self.rightMotors = wpilib.SpeedControllerGroup(self.rightMotorUp, self.rightMotorDown)
-
-        self.leftMotorUp = ctre.WPI_TalonSRX(28)
-        self.leftMotorDown = ctre.WPI_TalonSRX(23)
-        self.leftMotors = wpilib.SpeedControllerGroup(self.leftMotorUp, self.leftMotorDown)
-
-        self.robotDrive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
+        self.rightMotorMaster = ctre.WPI_TalonSRX(
+            constants.RIGHT_MOTOR_MASTER_ID)
+        self.rightMotorSlave = ctre.WPI_TalonSRX(
+            constants.RIGHT_MOTOR_SLAVE_ID)
+        self.leftMotorMaster = ctre.WPI_TalonSRX(
+            constants.LEFT_MOTOR_MASTER_ID)
+        self.leftMotorSlave = ctre.WPI_TalonSRX(constants.LEFT_MOTOR_SLAVE_ID)
+        self.drive = drive.Drive(
+            self, self.leftMotorSlave, self.leftMotorMaster, self.rightMotorSlave, self.rightMotorMaster)
+        self.robotState = robotstate.RobotState(self)
+        self.timer = wpilib.Timer()
 
     # periodic is called whenever packet received, ~50 hertz
     # init is called when robot switches to mode
@@ -35,11 +40,14 @@ class Robot(wpilib.IterativeRobot):
 
     def teleopInit(self):
         print('test')
+        self.robotState.updateState(self.timer.getFPGATimestamp())
 
     def teleopPeriodic(self):
+        self.robotState.updateState(self.timer.getFPGATimestamp())
         self.robotDrive.arcadeDrive(self.stick.getX(), -self.stick.getY())
+        print(self.robotState.getState())
+
 
 # defining main function
 if __name__ == '__main__':
     wpilib.run(Robot)
-
