@@ -19,12 +19,12 @@ class TankDrive(Command):
         power = math.pow(oi.OI().getJoystick().getX(), 3)
         rotation = -oi.OI().getJoystick().getY()
         rotation = (rotation, 0)[abs(rotation) < 0.05]
-        left = power + rotation
+        left = power - rotation
         right = power + rotation
         drive.Drive().setPercentOutput(left, right)
 
     def isFinished(self):
-        return False  # Runs until interrupted
+        return False 
 
     def end(self):
         return
