@@ -5,35 +5,26 @@ import oi
 import drive
 
 class TankDrive(Command):
-    '''
-        Have the robot drive tank style using the PS3 Joystick until interrupted.
-    '''
-
-    def __init__(self,robot):
+    def __init__(self):
         super().__init__()
-        self.robot = robot
-        self.requires(self.robot)
+        self.requires(drive.Drive())
 
     def initialize(self):
-        '''Called just before this Command runs the first time'''
+        return
 
     def execute(self):
-        '''Called repeatedly when this Command is scheduled to run'''
-        power = math.pow(self.robot.oi.getJoystick().getX(), 3)
-        rotation = -self.robot.oi.getJoystick().getY()
+        power = math.pow(oi.OI().getJoystick().getX(), 3)
+        rotation = -oi.OI().getJoystick().getY()
         rotation = (rotation, 0)[abs(rotation) < 0.05]
         left = power + rotation
         right = power + rotation
-        self.robot.drive.setPercentOutput(left, right)
+        drive.Drive().setPercentOutput(left, right)
 
     def isFinished(self):
-        '''Make this return true when this Command no longer needs to run execute()'''
         return False  # Runs until interrupted
 
     def end(self):
-        '''Called once after isFinished returns true'''
+        return
 
     def interrupted(self):
-        '''Called when another command which requires one or more of the same
-           subsystems is scheduled to run'''
         self.end()
