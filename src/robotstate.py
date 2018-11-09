@@ -4,17 +4,19 @@ import math
 import wpilib
 from wpilib.command import Subsystem
 import constants
+from enum import Enum
+import drive
+import singleton
 
-class RobotState(Subsystem):
+class RobotState(metaclass=singleton.Singleton):
     '''The DriveTrain subsystem incorporates the sensors and actuators attached to
        the robots chassis. These include four drive motors, a left and right robot.drive
        and a gyro.
     '''
 
-    def __init__(self, robot):
+    def __init__(self):
         super().__init__()
-        self.robot = robot
-        self.drive = robot.drive
+        self.drive = drive.Drive()
 
         self.last_left_ecnoder_distance = 0
         self.last_right_ecnoder_distance = 0
@@ -27,45 +29,36 @@ class RobotState(Subsystem):
         self.heading = 0
         self.last_heading = 0
 
-        # self.gyro = wpilib.AnalogGyro(1)
-
-        # wpilib.LiveWindow.addSensor("Drive Train", "Gyro", self.gyro)
-
-    def log(self):
-        '''The log method puts interesting information to the SmartDashboard.'''
+    def outputToSmartDashboard(self):
         wpilib.SmartDashboard.putNumber(
-            "Left Distance", self.drive.getDistanceInchesLeft())
+            "Left Encoder Inches", self.drive.getDistanceInchesLeft())
         wpilib.SmartDashboard.putNumber(
-            "Right Distance", self.drive.getDistanceInchesRight())
-        # wpilib.SmartDashboard.putNumber("Gyro", self.gyro.getAngle())
-
-    def reset(self):
-        '''Reset the robots sensors to the zero states'''
-        # self.gyro.reset()
+            "Right Encoder Inches", self.drive.getDistanceInchesRight())
+        wpilib.SmartDashboard.putNumber("Gyro Angle", self.getAngle())
+        wpilib.SmartDashboard.putNumber("Pos X", self.getState()[0])
+        wpilib.SmartDashboard.putNumber("Pos Y", self.getState()[1])
+        wpilib.SmartDashboard.putNumber("Heading", self.getState()[2])
 
     def getDistance(self):
-        ''' :returns: The distance driven (average of left and right robot.drives)'''
-        return (self.robot.drive.getDistanceInchesLeft() + self.robot.drive.getDistanceInchesRight()) / 2.0
+        return (self.drive.getDistanceInchesLeft() + self.drive.getDistanceInchesRight()) / 2.0
 
     def getDistanceDelta(self):
-        ''' :returns: The distance driven (average of left and right robot.drives)'''
-        return (((self.last_left_ecnoder_distance-self.robot.drive.getDistanceInchesLeft()) + (self.last_right_ecnoder_distance-self.robot.drive.getDistanceInchesRight())) / 2.0)
+        return (((self.last_left_ecnoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_ecnoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
 
-    def getEncoderAngle(self):
-        return (self.robot.drive.getDistanceInchesLeft() + self.robot.drive.getDistanceInchesRight()) / constants.WHEEL_BASE
+    def getAngle(self):
+        return self.drive.gyro.getAngle()
 
-    def getEncoderAngleDelta(self):
-        ''' :returns: The distance driven (average of left and right robot.drives)'''
+    def getAngleDelta(self):
         return self.heading-self.last_heading
 
     def updateState(self, timestamp):
         self.timestamp = timestamp
         delta_time = self.timestamp-self.last_timestamp
-        self.heading += self.getEncoderAngleDelta()*delta_time
+        self.heading += self.getAngleDelta()*delta_time
         self.pos_x += self.getDistanceDelta()*math.cos(self.heading)*delta_time
         self.pos_y += self.getDistanceDelta()*math.sin(self.heading)*delta_time
-        self.last_left_ecnoder_distance = self.robot.drive.getDistanceInchesLeft()
-        self.last_right_ecnoder_distance = self.robot.drive.getDistanceInchesRight()
+        self.last_left_ecnoder_distance = self.drive.getDistanceInchesLeft()
+        self.last_right_ecnoder_distance = self.drive.getDistanceInchesRight()
         self.last_heading = self.heading
         self.last_timestamp = self.timestamp
 
