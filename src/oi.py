@@ -6,8 +6,7 @@ from wpilib.buttons import JoystickButton
 
 class OI:
     
-    def __init__(self, robot):
-        self.robot = robot
+    def __init__(self):
         self.stick = wpilib.Joystick(0)   
 
     def getJoystick(self):
