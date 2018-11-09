@@ -5,46 +5,52 @@ import robotstate
 import constants
 import drive
 import oi
+import wpilib.adxrs450_gyro
+import subsytemmanager
+
 
 class Robot(wpilib.IterativeRobot):
+    def __init__(self):
+        super().__init__()
+        self.drive = drive.Drive()
+        self.robot_state = robotstate.RobotState()
+        self.subystem_manager = subsytemmanager.SubsytemManager(
+            self.drive)
 
-    # called when robot turns on
-    def robotInit(self):
-        self.right_motor_master = ctre.WPI_TalonSRX(
-            constants.RIGHT_MOTOR_MASTER_ID)
-        self.right_motor_slave = ctre.WPI_TalonSRX(
-            constants.RIGHT_MOTOR_SLAVE_ID)
-        self.left_motor_master = ctre.WPI_TalonSRX(
-            constants.LEFT_MOTOR_MASTER_ID)
-        self.left_motor_slave = ctre.WPI_TalonSRX(constants.LEFT_MOTOR_SLAVE_ID)
-        self.drive = drive.Drive(
-            self, self.left_motor_slave, self.left_motor_master, self.right_motor_slave, self.right_motor_master)
-        self.oi = oi.OI(self)
-        self.robot_state = robotstate.RobotState(self)
         self.timer = wpilib.Timer()
+        self.oi = oi.OI()
 
-    # periodic is called whenever packet received, ~50 hertz
-    # init is called when robot switches to mode
-    def autonomousInit(self):
-        pass
-
-    def autonomousPeriodic(self):
-        pass
-
+    def robotInit(self):
+        self.subystem_manager.zeroSensors()
+        
     def disabledInit(self):
+        self.subystem_manager.zeroSensors()
         pass
 
     def disabledPeriodic(self):
+        self.robot_state.updateState(self.timer.getFPGATimestamp())
+        self.subystem_manager.outputToSmartDashboard()
         pass
 
+    def autonomousInit(self):
+        self.subystem_manager.zeroSensors()
+        pass
+
+    def autonomousPeriodic(self):
+        self.subystem_manager.update()
+        self.robot_state.updateState(self.timer.getFPGATimestamp())
+        self.subystem_manager.outputToSmartDashboard()
+        pass
+
+
     def teleopInit(self):
-        print('test')
+        self.subystem_manager.zeroSensors()
         self.robot_state.updateState(self.timer.getFPGATimestamp())
 
     def teleopPeriodic(self):
         self.robot_state.updateState(self.timer.getFPGATimestamp())
-        print(self.robot_state.getState())
-
+        self.subystem_manager.update()
+        self.subystem_manager.outputToSmartDashboard()
 
 # defining main function
 if __name__ == '__main__':
