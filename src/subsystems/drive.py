@@ -1,13 +1,16 @@
 
+import sys, os, inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
 import math
-
 import wpilib
 from wpilib.command import Subsystem
 import constants
 import ctre
 import oi
-import tankdrive
-import singleton
+from commands import tankdrive
+from utils import singleton
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
     '''The DriveTrain subsystem incorporates the sensors and actuators attached to

@@ -1,12 +1,12 @@
 import ctre
 import wpilib
 import wpilib.drive
+import wpilib.adxrs450_gyro
+from utils import subsytemmanager
+import oi
 import robotstate
 import constants
-import drive
-import oi
-import wpilib.adxrs450_gyro
-import subsytemmanager
+from subsystems import drive
 
 
 class Robot(wpilib.IterativeRobot):

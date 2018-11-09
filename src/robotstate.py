@@ -5,8 +5,8 @@ import wpilib
 from wpilib.command import Subsystem
 import constants
 from enum import Enum
-import drive
-import singleton
+from subsystems import drive
+from utils import singleton
 
 class RobotState(metaclass=singleton.Singleton):
     '''The DriveTrain subsystem incorporates the sensors and actuators attached to
