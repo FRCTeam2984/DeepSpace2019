@@ -1,22 +1,26 @@
 
-import sys, os, inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir) 
-import math
-import wpilib
-from wpilib.command import Subsystem
-import constants
-import ctre
-import oi
-from commands import tankdrive
 from utils import singleton
+from commands import tankdrive
+import oi
+import ctre
+import constants
+from wpilib.command import Subsystem
+import wpilib
+import math
+import sys
+import os
+import inspect
+currentdir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
-    '''The DriveTrain subsystem incorporates the sensors and actuators attached to
-       the robots chassis. These include four drive motors, a left and right encoder
-       and a gyro.
-    '''
+    """The Drive subsystem controls the robot's drive sensors and motors.
+        This includes 4 motors, 2 left and 2 right, and 2 encoders,
+        1 left, 1 right. It also include the gyroscope.
+    """
 
     def __init__(self):
         super().__init__()
@@ -40,15 +44,15 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.gyro = wpilib.adxrs450_gyro.ADXRS450_Gyro(0)
 
     def initDefaultCommand(self):
+        """Set the default command for the Drive subsytem."""
         self.setDefaultCommand(tankdrive.TankDrive())
-
-    def log(self):
-        return
 
     def reset(self):
         return
 
     def setPercentOutput(self, left_signal, right_signal):
+        """Set the percent speed of the left and right motors."""
+
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
         self.left_motor_master.set(
@@ -57,31 +61,41 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             ctre.ControlMode.PercentOutput, right_signal)
 
     def getDistanceTicksLeft(self):
+        """Return the distance (in ticks) of the left encoder."""
         return self.left_motor_master.getSelectedSensorPosition(0)
 
     def getVelocityTicksLeft(self):
+        """Return the velocity (in ticks/sec) of the left encoder."""
         return self.left_motor_master.getSelectedSensorVeloicty(0)
 
     def getDistanceTicksRight(self):
+        """Return the distance (in ticks) of the right encoder."""
         return self.right_motor_master.getSelectedSensorPosition(0)
 
     def getVelocityTicksRight(self):
+        """Return the velocity (in ticks/sec) of the right encoder."""
         return self.right_motor_master.getSelectedSensorVeloicty(0)
 
     def ticksToInchesLeft(self, ticks):
+        """Convert ticks to inches for the left encoder."""
         return (ticks/constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)*constants.WHEEL_CIRCUMFERENCE
 
     def ticksToInchesRight(self, ticks):
+        """Convert ticks to inches for the right encoder."""
         return (ticks/constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)*constants.WHEEL_CIRCUMFERENCE
 
     def getDistanceInchesLeft(self):
+        """Return the distance (in inches) of the left encoder."""
         return self.ticksToInchesLeft(self.getDistanceTicksLeft())
 
     def getVelocityTicksInchesLeft(self):
+        """Return the velocity (in inches/sec) of the left encoder."""
         return self.ticksToInchesLeft(self.getVelocityTicksLeft())
 
     def getDistanceInchesRight(self):
+        """Return the distance (in inches) of the right encoder."""
         return self.ticksToInchesRight(self.getDistanceTicksRight())
 
     def getVelocityTicksInchesRight(self):
+        """Return the velocity (in inches/sec) of the right encoder."""
         return self.ticksToInchesRight(self.getVelocityTicksRight())

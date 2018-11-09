@@ -21,22 +21,26 @@ class Robot(wpilib.IterativeRobot):
         self.oi = oi.OI()
 
     def robotInit(self):
+        """Run when the robot turns on"""
         self.subystem_manager.zeroSensors()
         
     def disabledInit(self):
+        """Run when the robot enters disabled mode"""
         self.subystem_manager.zeroSensors()
-        pass
 
     def disabledPeriodic(self):
+        """Run periodically during disabled mode."""
         self.robot_state.updateState(self.timer.getFPGATimestamp())
         self.subystem_manager.outputToSmartDashboard()
         pass
 
     def autonomousInit(self):
+        """Run when the robot enters auto mode"""
         self.subystem_manager.zeroSensors()
         pass
 
     def autonomousPeriodic(self):
+        """Run periodically during auto mode."""
         self.subystem_manager.update()
         self.robot_state.updateState(self.timer.getFPGATimestamp())
         self.subystem_manager.outputToSmartDashboard()
@@ -44,10 +48,12 @@ class Robot(wpilib.IterativeRobot):
 
 
     def teleopInit(self):
+        """Run when the robot enters teleop mode"""
         self.subystem_manager.zeroSensors()
         self.robot_state.updateState(self.timer.getFPGATimestamp())
 
     def teleopPeriodic(self):
+        """Run periodically during teleop mode."""
         self.robot_state.updateState(self.timer.getFPGATimestamp())
         self.subystem_manager.update()
         self.subystem_manager.outputToSmartDashboard()

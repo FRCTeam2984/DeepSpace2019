@@ -9,12 +9,10 @@ from subsystems import drive
 from utils import singleton
 
 class RobotState(metaclass=singleton.Singleton):
-    '''The DriveTrain subsystem incorporates the sensors and actuators attached to
-       the robots chassis. These include four drive motors, a left and right robot.drive
-       and a gyro.
-    '''
+
 
     def __init__(self):
+        """Initilize the RobotState class."""
         super().__init__()
         self.drive = drive.Drive()
 
@@ -40,18 +38,23 @@ class RobotState(metaclass=singleton.Singleton):
         wpilib.SmartDashboard.putNumber("Heading", self.getState()[2])
 
     def getDistance(self):
+        """Use encoders to return the distance driven in inches."""
         return (self.drive.getDistanceInchesLeft() + self.drive.getDistanceInchesRight()) / 2.0
 
     def getDistanceDelta(self):
+        """Use encoders to return the distance change in inches."""
         return (((self.last_left_ecnoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_ecnoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
 
     def getAngle(self):
+        """Use the gyroscope to return the angle in radians."""
         return self.drive.gyro.getAngle()
 
     def getAngleDelta(self):
+        """Use the gyroscope to return the angle change in radians."""
         return self.heading-self.last_heading
 
     def updateState(self, timestamp):
+        """Use odometry to update the robot state."""
         self.timestamp = timestamp
         delta_time = self.timestamp-self.last_timestamp
         self.heading += self.getAngleDelta()*delta_time
@@ -63,4 +66,5 @@ class RobotState(metaclass=singleton.Singleton):
         self.last_timestamp = self.timestamp
 
     def getState(self):
+        """Return the robot position and heading."""
         return [self.pos_x, self.pos_y, self.heading]

@@ -1,5 +1,5 @@
 import math
-
+"""Global constants that are accesed throughout the project"""
 LEFT_MOTOR_SLAVE_ID = 23
 LEFT_MOTOR_MASTER_ID = 28
 RIGHT_MOTOR_SLAVE_ID = 12
