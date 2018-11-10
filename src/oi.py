@@ -1,5 +1,3 @@
-from wpilib import SmartDashboard
-from wpilib.buttons import JoystickButton
 from wpilib import Joystick
 
 

@@ -1,13 +1,35 @@
+import sys
+import json
 import math
-"""Global constants that are accesed throughout the project"""
-LEFT_MOTOR_SLAVE_ID = 23
-LEFT_MOTOR_MASTER_ID = 28
-RIGHT_MOTOR_SLAVE_ID = 12
-RIGHT_MOTOR_MASTER_ID = 22
 
-WHEEL_DIAMETER = 6  # inches
-WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER*math.pi  # inches
-WHEEL_BASE = 27.75  # inches (distance between wheels)
+class Constants:
+    """Global constants that are accesed throughout the project"""
+    LEFT_MOTOR_SLAVE_ID = 23
+    LEFT_MOTOR_MASTER_ID = 28
+    RIGHT_MOTOR_SLAVE_ID = 12
+    RIGHT_MOTOR_MASTER_ID = 22
 
-DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1000  # UPDATE
-DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1000  # UPDATE
+    CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
+
+    WHEEL_DIAMETER = 6  # inches
+    WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER*math.pi  # inches
+    WHEEL_BASE = 27.75  # inches (distance between wheels)
+
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1000  # UPDATE
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1000  # UPDATE
+    @staticmethod
+    def updateConstants():
+        try:
+            json_file = open(Constants.CONSTANTS_JSON_PATH, "r") 
+            file_dict = json.load(json_file)
+            for var_name in file_dict.keys():
+                if hasattr(Constants, var_name):
+                    setattr(Constants, file_dict[var_name])
+        except FileNotFoundError:
+            try:
+                json_file = open(Constants.CONSTANTS_JSON_PATH, "w") 
+                json.dump(Constants.__dict__, json_file)
+            except FileNotFoundError:
+                print("Failed to dump constants json, probably unit testing")
+                return
+

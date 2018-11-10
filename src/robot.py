@@ -2,19 +2,21 @@ import ctre
 import wpilib as wpi
 import oi
 import robotstate
-import constants
+from constants import Constants
 from subsystems import drive
 from utils import submanager
 
 class Robot(wpi.IterativeRobot):
     def __init__(self):
         super().__init__()
+        Constants.updateConstants()
         self.robot_state = robotstate.RobotState()
         self.subsystem_manager = submanager.SubsystemManager(
             drive.Drive())
 
         self.timer = wpi.Timer()
         self.oi = oi.OI()
+        
 
     def robotInit(self):
         """Run when the robot turns on"""
