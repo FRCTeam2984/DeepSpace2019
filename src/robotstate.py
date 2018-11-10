@@ -28,6 +28,10 @@ class RobotState(metaclass=singleton.Singleton):
             "Left Encoder Inches", self.drive.getDistanceInchesLeft())
         Dash.putNumber(
             "Right Encoder Inches", self.drive.getDistanceInchesRight())
+        Dash.putNumber(
+            "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
+        Dash.putNumber(
+            "Right Encoder Ticks", self.drive.getDistanceTicksRight())
         Dash.putNumber("Gyro Angle", self.getAngle())
         Dash.putNumber("Pos X", self.pose.x)
         Dash.putNumber("Pos Y", self.pose.y)
@@ -43,7 +47,7 @@ class RobotState(metaclass=singleton.Singleton):
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
-        return self.drive.gyro.getAngle()
+        return math.radians(self.drive.gyro.getAngle())
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
@@ -57,6 +61,7 @@ class RobotState(metaclass=singleton.Singleton):
         self.pose.angle = self.getAngle()
         # update x and y positions
         self.pose.x += self.getDistanceDelta()*math.cos(self.pose.angle)
+        Dash.putNumber("Pos Y Test",self.getDistanceDelta()*math.sin(self.pose.angle))
         self.pose.y += self.getDistanceDelta()*math.sin(self.pose.angle)
         # update last distances for next periodic
         self.last_left_ecnoder_distance = self.drive.getDistanceInchesLeft()
