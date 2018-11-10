@@ -1,10 +1,6 @@
-
 import math
-
-import wpilib
-from wpilib.command import Subsystem
+import wpilib as wpi
 import constants
-from enum import Enum
 from subsystems import drive
 from utils import singleton
 from utils import pose
@@ -13,7 +9,7 @@ from utils import pose
 class RobotState(metaclass=singleton.Singleton):
 
     def __init__(self):
-        """Initilize the RobotState class."""
+        """Initilize the RobotState class"""
         super().__init__()
         self.drive = drive.Drive()
 
@@ -27,14 +23,14 @@ class RobotState(metaclass=singleton.Singleton):
         self.last_angle = 0
 
     def outputToSmartDashboard(self):
-        wpilib.SmartDashboard.putNumber(
+        wpi.SmartDashboard.putNumber(
             "Left Encoder Inches", self.drive.getDistanceInchesLeft())
-        wpilib.SmartDashboard.putNumber(
+        wpi.SmartDashboard.putNumber(
             "Right Encoder Inches", self.drive.getDistanceInchesRight())
-        wpilib.SmartDashboard.putNumber("Gyro Angle", self.getAngle())
-        wpilib.SmartDashboard.putNumber("Pos X", self.pose.x)
-        wpilib.SmartDashboard.putNumber("Pos Y", self.pose.y)
-        wpilib.SmartDashboard.putNumber("Heading", self.pose.angle)
+        wpi.SmartDashboard.putNumber("Gyro Angle", self.getAngle())
+        wpi.SmartDashboard.putNumber("Pos X", self.pose.x)
+        wpi.SmartDashboard.putNumber("Pos Y", self.pose.y)
+        wpi.SmartDashboard.putNumber("Heading", self.pose.angle)
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
@@ -66,4 +62,4 @@ class RobotState(metaclass=singleton.Singleton):
 
     def getState(self):
         """Return the robot pose (position and orientation)."""
-        return pose
+        return self.pose

@@ -1,14 +1,4 @@
-'''
-stop()
-reset()
-outputToSmartDashboard()
-writeToLog()
-zeroSensors()
-registerEnabledLoops(Looper enabledLooper):
-'''
-
-
-class SubsytemManager:
+class SubsystemManager:
     """Loops over all subsystems and, provided that the method exists,
         calls the methods of the class"""
 
