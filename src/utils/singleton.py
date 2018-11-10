@@ -9,6 +9,5 @@ class Singleton(type):
         """Checks if the ineriting class has already been called,
             and returns the previously made instance if so."""
         if cls not in cls._instances:
-            cls._instances[cls] = super(
-                Singleton, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super().__call__(*args, **kwargs)
         return cls._instances[cls]
