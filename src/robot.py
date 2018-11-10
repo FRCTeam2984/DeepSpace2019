@@ -32,6 +32,7 @@ class Robot(wpilib.IterativeRobot):
         """Run periodically during disabled mode."""
         self.robot_state.updateState(self.timer.getFPGATimestamp())
         self.subystem_manager.outputToSmartDashboard()
+        self.robot_state.outputToSmartDashboard()
         pass
 
     def autonomousInit(self):
@@ -44,6 +45,7 @@ class Robot(wpilib.IterativeRobot):
         self.subystem_manager.update()
         self.robot_state.updateState(self.timer.getFPGATimestamp())
         self.subystem_manager.outputToSmartDashboard()
+        self.robot_state.outputToSmartDashboard()
         pass
 
 
@@ -57,6 +59,7 @@ class Robot(wpilib.IterativeRobot):
         self.robot_state.updateState(self.timer.getFPGATimestamp())
         self.subystem_manager.update()
         self.subystem_manager.outputToSmartDashboard()
+        self.robot_state.outputToSmartDashboard()
 
 # defining main function
 if __name__ == '__main__':
