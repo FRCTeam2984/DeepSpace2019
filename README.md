@@ -18,6 +18,8 @@ A homegrown FRC robot repository
 3. Open vscode and install Python extension
 4. Clone this repo into any directory, and run `code .` while in that directory
 
+Update requirements.txt: `[pip executable] freeze > requirements.txt`
+
 # Deploy to robot
 1. Run `[python executable] robot.py deploy`
 
