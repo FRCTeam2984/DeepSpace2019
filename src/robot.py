@@ -5,6 +5,7 @@ import robotstate
 import constants
 from subsystems import drive
 from utils import submanager
+from wpilib.command import Scheduler
 
 class Robot(wpi.IterativeRobot):
     def __init__(self):
@@ -19,6 +20,7 @@ class Robot(wpi.IterativeRobot):
     def robotInit(self):
         """Run when the robot turns on"""
         self.subsystem_manager.zeroSensors()
+        self.subsystem_manager.reset()
 
     def disabledInit(self):
         """Run when the robot enters disabled mode"""
@@ -52,9 +54,10 @@ class Robot(wpi.IterativeRobot):
     def teleopPeriodic(self):
         """Run periodically during teleop mode."""
         self.robot_state.updateState(self.timer.getFPGATimestamp())
+        self.robot_state.outputToSmartDashboard()
         self.subsystem_manager.update()
         self.subsystem_manager.outputToSmartDashboard()
-        self.robot_state.outputToSmartDashboard()
+        Scheduler.getInstance().run()
 
 
 # defining main function
