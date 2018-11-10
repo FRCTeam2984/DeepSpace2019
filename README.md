@@ -13,12 +13,10 @@ A homegrown FRC robot repository
 
 
 # Install dev environment
-1. `[pip executable] install pyfrc`
-2. `[pip executable] install pynetworktables`
-3. `[pip executable] install -U robotpy-ctre`
-4. Install vscode
-5. Open vscode and install Python extension
-6. Clone this repo into any directory, and run `code .` while in that directory
+1. `[pip executable] install -r requirements.txt` 
+2. Install vscode
+3. Open vscode and install Python extension
+4. Clone this repo into any directory, and run `code .` while in that directory
 
 # Deploy to robot
 1. Run `[python executable] robot.py deploy`
