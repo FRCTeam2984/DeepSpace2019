@@ -1,1 +1,1 @@
-__all__ = ["pose, singleton", "subsytemmanager"]
+__all__ = ["pose", "singleton", "subsytemmanager"]
