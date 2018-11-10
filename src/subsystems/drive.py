@@ -25,9 +25,11 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
     def __init__(self):
         super().__init__()
 
+        # Init timestamps
         self.timestamp = 0
         self.last_timestamp = 0
 
+        # Set motor ids
         self.left_motor_slave = ctre.WPI_TalonSRX(
             constants.LEFT_MOTOR_SLAVE_ID)
         self.left_motor_master = ctre.WPI_TalonSRX(
@@ -37,10 +39,13 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.right_motor_master = ctre.WPI_TalonSRX(
             constants.RIGHT_MOTOR_MASTER_ID)
 
+        # Set up motors in slave-master config
         self.right_motor_slave.set(
             ctre.ControlMode.Follower, constants.RIGHT_MOTOR_MASTER_ID)
         self.left_motor_slave.set(ctre.ControlMode.Follower,
                                   constants.LEFT_MOTOR_MASTER_ID)
+
+        # Create new gyro
         self.gyro = wpilib.adxrs450_gyro.ADXRS450_Gyro(0)
 
     def initDefaultCommand(self):
