@@ -1,6 +1,6 @@
 import ctre
 
-import constants
+from constants import Constants
 from utils import singleton
 from commands import tankdrive
 from wpilib.command import Subsystem
@@ -18,19 +18,19 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
         # Set motor ids
         self.left_motor_slave = ctre.WPI_TalonSRX(
-            constants.LEFT_MOTOR_SLAVE_ID)
+            Constants.LEFT_MOTOR_SLAVE_ID)
         self.left_motor_master = ctre.WPI_TalonSRX(
-            constants.LEFT_MOTOR_MASTER_ID)
+            Constants.LEFT_MOTOR_MASTER_ID)
         self.right_motor_slave = ctre.WPI_TalonSRX(
-            constants.RIGHT_MOTOR_SLAVE_ID)
+            Constants.RIGHT_MOTOR_SLAVE_ID)
         self.right_motor_master = ctre.WPI_TalonSRX(
-            constants.RIGHT_MOTOR_MASTER_ID)
+            Constants.RIGHT_MOTOR_MASTER_ID)
 
         # Set up motors in slave-master config
         self.right_motor_slave.set(
-            ctre.ControlMode.Follower, constants.RIGHT_MOTOR_MASTER_ID)
+            ctre.ControlMode.Follower, Constants.RIGHT_MOTOR_MASTER_ID)
         self.left_motor_slave.set(ctre.ControlMode.Follower,
-                                  constants.LEFT_MOTOR_MASTER_ID)
+                                  Constants.LEFT_MOTOR_MASTER_ID)
 
         # Create new gyro
         self.gyro = adxrs450_gyro.ADXRS450_Gyro(0)
@@ -70,11 +70,11 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def ticksToInchesLeft(self, ticks):
         """Convert ticks to inches for the left encoder."""
-        return (ticks/constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)*constants.WHEEL_CIRCUMFERENCE
+        return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)*Constants.WHEEL_CIRCUMFERENCE
 
     def ticksToInchesRight(self, ticks):
         """Convert ticks to inches for the right encoder."""
-        return (ticks/constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)*constants.WHEEL_CIRCUMFERENCE
+        return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)*Constants.WHEEL_CIRCUMFERENCE
 
     def getDistanceInchesLeft(self):
         """Return the distance (in inches) of the left encoder."""

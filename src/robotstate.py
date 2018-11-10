@@ -1,5 +1,4 @@
 import math
-import constants
 
 from wpilib import SmartDashboard as Dash
 from subsystems import drive
