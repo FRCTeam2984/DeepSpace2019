@@ -1,20 +1,17 @@
 import ctre
 import wpilib as wpi
-import utils
 import oi
 import robotstate
 import constants
-import subsystems as subs
-
+from subsystems import drive
+from utils import submanager
 
 class Robot(wpi.IterativeRobot):
     def __init__(self):
         super().__init__()
-        self.testing = utils.pose.Pose()
         self.robot_state = robotstate.RobotState()
-        print(dir(utils))
-        self.subsystem_manager = utils.submanager.SubsystemManager(
-            subs.drive.Drive())
+        self.subsystem_manager = submanager.SubsystemManager(
+            drive.Drive())
 
         self.timer = wpi.Timer()
         self.oi = oi.OI()

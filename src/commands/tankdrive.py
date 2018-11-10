@@ -1,10 +1,10 @@
-from subsystems import drive
-import oi
 import math
-from wpilib.command import Command
 import sys
 import os
-import inspect
+
+import oi
+from subsystems import drive
+from wpilib.command import Command
 
 
 class TankDrive(Command):

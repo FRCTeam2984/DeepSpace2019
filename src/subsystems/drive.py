@@ -1,21 +1,13 @@
+import ctre
+
+import constants
 from utils import singleton
 from commands import tankdrive
-import oi
-import ctre
-import constants
 from wpilib.command import Subsystem
-import wpilib
-import math
-import sys
-import os
-import inspect
-
+from wpilib import adxrs450_gyro
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
-    """The Drive subsystem controls the robot's drive sensors and motors.
-        This includes 4 motors, 2 left and 2 right, and 2 encoders,
-        1 left, 1 right. It also include the gyroscope.
-    """
+    """The Drive subsystem controls the sensors and motors"""
 
     def __init__(self):
         super().__init__()
@@ -41,7 +33,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                                   constants.LEFT_MOTOR_MASTER_ID)
 
         # Create new gyro
-        self.gyro = wpilib.adxrs450_gyro.ADXRS450_Gyro(0)
+        self.gyro = adxrs450_gyro.ADXRS450_Gyro(0)
 
     def initDefaultCommand(self):
         """Set the default command for the Drive subsytem."""
