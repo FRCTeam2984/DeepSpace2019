@@ -9,6 +9,7 @@ from subsystems import drive
 from utils import singleton
 from utils import pose
 
+
 class RobotState(metaclass=singleton.Singleton):
 
     def __init__(self):

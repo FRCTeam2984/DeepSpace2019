@@ -1,11 +1,15 @@
-import sys, os, inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir) 
-from wpilib.command import Command
-import math
-import oi
 from subsystems import drive
+import oi
+import math
+from wpilib.command import Command
+import sys
+import os
+import inspect
+currentdir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
 
 class TankDrive(Command):
     def __init__(self):
@@ -24,7 +28,7 @@ class TankDrive(Command):
         drive.Drive().setPercentOutput(left, right)
 
     def isFinished(self):
-        return False 
+        return False
 
     def end(self):
         return

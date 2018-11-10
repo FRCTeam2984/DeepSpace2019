@@ -23,7 +23,7 @@ class Robot(wpilib.IterativeRobot):
     def robotInit(self):
         """Run when the robot turns on"""
         self.subystem_manager.zeroSensors()
-        
+
     def disabledInit(self):
         """Run when the robot enters disabled mode"""
         self.subystem_manager.zeroSensors()
@@ -48,7 +48,6 @@ class Robot(wpilib.IterativeRobot):
         self.robot_state.outputToSmartDashboard()
         pass
 
-
     def teleopInit(self):
         """Run when the robot enters teleop mode"""
         self.subystem_manager.zeroSensors()
@@ -60,6 +59,7 @@ class Robot(wpilib.IterativeRobot):
         self.subystem_manager.update()
         self.subystem_manager.outputToSmartDashboard()
         self.robot_state.outputToSmartDashboard()
+
 
 # defining main function
 if __name__ == '__main__':

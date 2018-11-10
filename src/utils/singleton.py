@@ -4,9 +4,11 @@ class Singleton(type):
         it runs the \_\_call\_\_ method, checking if it has already 
         been called and, if so, returns that instance"""
     _instances = {}
+
     def __call__(cls, *args, **kwargs):
         """Checks if the ineriting class has already been called,
             and returns the previously made instance if so."""
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super(
+                Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
