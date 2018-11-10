@@ -6,11 +6,22 @@ A homegrown FRC robot repository
 2. Run `[pip executable] install robotpy-installer`
 3. While connected to the internet, run `robotpy-installer download-robotpy`
 4. Connect back to the robot and run `robotpy-installer install-robotpy`
+5. Connect back to internet and run `robotpy-installer download-opkg python36-robotpy-cscore`
+6. Connect back to the robot and run `robotpy-installer install-opkg python36-robotpy-cscore`
+7. Connect back to internet and run `robotpy-installer download-opkg python36-robotpy-ctre`
+8. Connect back to robot and run `robotpy-installer install-opkg python36-robotpy-ctre`
+
 
 # Install dev environment
 1. `[pip executable] install pyfrc`
 2. `[pip executable] install pynetworktables`
-3. 
+3. `[pip executable] install -U robotpy-ctre`
+4. Install vscode
+5. Open vscode and install Python extension
+6. Clone this repo into any directory, and run `code .` while in that directory
 
 # Deploy to robot
 1. Run `[python executable] robot.py deploy`
+
+# Run unit tests
+1. Run `[python executable] robot.py test`
