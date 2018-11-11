@@ -6,6 +6,7 @@ from commands import tankdrive
 from wpilib.command import Subsystem
 from wpilib import adxrs450_gyro
 
+
 class Drive(Subsystem, metaclass=singleton.Singleton):
     """The Drive subsystem controls the sensors and motors"""
 
@@ -44,8 +45,8 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         return
 
     def zeroSensors(self):
-        self.left_motor_master.setSelectedSensorPosition(0,0,0)
-        self.right_motor_master.setSelectedSensorPosition(0,0,0)
+        self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
+        self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.gyro.reset()
 
     def setPercentOutput(self, left_signal, right_signal):
