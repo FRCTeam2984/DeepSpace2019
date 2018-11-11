@@ -33,14 +33,20 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                                   Constants.LEFT_MOTOR_MASTER_ID)
 
         # Create new gyro
-        self.gyro = adxrs450_gyro.ADXRS450_Gyro(0)
+        self.gyro = adxrs450_gyro.ADXRS450_Gyro()
 
     def initDefaultCommand(self):
         """Set the default command for the Drive subsytem."""
         self.setDefaultCommand(tankdrive.TankDrive())
 
     def reset(self):
+        self.gyro.calibrate()
         return
+
+    def zeroSensors(self):
+        self.left_motor_master.setSelectedSensorPosition(0,0,0)
+        self.right_motor_master.setSelectedSensorPosition(0,0,0)
+        self.gyro.reset()
 
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent speed of the left and right motors."""

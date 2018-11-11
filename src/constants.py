@@ -1,5 +1,10 @@
 import json
 import math
+"""Global constants that are accesed throughout the project"""
+LEFT_MOTOR_SLAVE_ID = 28
+LEFT_MOTOR_MASTER_ID = 23
+RIGHT_MOTOR_SLAVE_ID = 12
+RIGHT_MOTOR_MASTER_ID = 22
 
 class Constants:
     """Global constants that are accesed throughout the project"""
@@ -14,8 +19,11 @@ class Constants:
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER*math.pi  # inches
     WHEEL_BASE = 27.75  # inches (distance between wheels)
 
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1000  # UPDATE
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1000  # UPDATE
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 4096  # UPDATE
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT =  4096  # UPDATE
+
+    TANK_DRIVE_EXPONENT = 3
+    
     @staticmethod
     def updateConstants():
         try:
