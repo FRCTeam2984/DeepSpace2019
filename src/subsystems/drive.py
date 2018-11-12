@@ -8,7 +8,8 @@ from wpilib import adxrs450_gyro
 
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
-    """The Drive subsystem controls the sensors and motors"""
+    """The Drive subsystem controls the drive motors
+    and encoders"""
 
     def __init__(self):
         super().__init__()
@@ -33,21 +34,16 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.left_motor_slave.set(ctre.ControlMode.Follower,
                                   Constants.LEFT_MOTOR_MASTER_ID)
 
-        # Create new gyro
-        self.gyro = adxrs450_gyro.ADXRS450_Gyro()
-
     def initDefaultCommand(self):
         """Set the default command for the Drive subsytem."""
         self.setDefaultCommand(tankdrive.TankDrive())
 
     def reset(self):
-        self.gyro.calibrate()
-        return
+        pass
 
     def zeroSensors(self):
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
-        self.gyro.reset()
 
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent speed of the left and right motors."""

@@ -1,65 +1,36 @@
-import ctre
 import wpilib as wpi
+import ctre
 import oi
-import robotstate
+from commandbased import CommandBasedRobot
 from constants import Constants
-from subsystems import drive
-from utils import submanager
-from wpilib.command import Scheduler
 
-class Robot(wpi.IterativeRobot):
-    def __init__(self):
-        super().__init__()
-        Constants.updateConstants()
-        self.robot_state = robotstate.RobotState()
-        self.subsystem_manager = submanager.SubsystemManager(
-            drive.Drive())
+from commands.autogroup import AutonomousCommandGroup
 
-        self.timer = wpi.Timer()
-        self.oi = oi.OI()
-        
+
+class Robot(CommandBasedRobot):
 
     def robotInit(self):
         """Run when the robot turns on"""
-        self.subsystem_manager.zeroSensors()
-        self.subsystem_manager.reset()
+        # Update constants from json file on robot
+        Constants.updateConstants()
+        # Set command group member variables
+        self.autonomous = AutonomousCommandGroup
 
     def disabledInit(self):
-        """Run when the robot enters disabled mode"""
-        self.subsystem_manager.zeroSensors()
-
-    def disabledPeriodic(self):
-        """Run periodically during disabled mode."""
-        self.robot_state.updateState(self.timer.getFPGATimestamp())
-        self.subsystem_manager.outputToSmartDashboard()
-        self.robot_state.outputToSmartDashboard()
+        """Run when robot enters disabled mode"""
         pass
 
     def autonomousInit(self):
         """Run when the robot enters auto mode"""
-        self.subsystem_manager.zeroSensors()
-        pass
-
-    def autonomousPeriodic(self):
-        """Run periodically during auto mode."""
-        self.subsystem_manager.update()
-        self.robot_state.updateState(self.timer.getFPGATimestamp())
-        self.subsystem_manager.outputToSmartDashboard()
-        self.robot_state.outputToSmartDashboard()
-        pass
+        self.scheduler.
 
     def teleopInit(self):
         """Run when the robot enters teleop mode"""
-        self.subsystem_manager.zeroSensors()
-        self.robot_state.updateState(self.timer.getFPGATimestamp())
+        pass
 
-    def teleopPeriodic(self):
-        """Run periodically during teleop mode."""
-        self.robot_state.updateState(self.timer.getFPGATimestamp())
-        self.robot_state.outputToSmartDashboard()
-        self.subsystem_manager.update()
-        self.subsystem_manager.outputToSmartDashboard()
-        Scheduler.getInstance().run()
+    def testInit(self):
+        """Run when the robot enters test mode"""
+        pass
 
 
 # defining main function
