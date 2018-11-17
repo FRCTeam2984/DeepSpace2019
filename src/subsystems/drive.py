@@ -2,7 +2,7 @@ import ctre
 
 from constants import Constants
 from utils import singleton
-from commands import tankdrive
+from commands.tankdrive import TankDrive
 from wpilib.command import Subsystem
 from wpilib import adxrs450_gyro
 
@@ -33,6 +33,9 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             ctre.ControlMode.Follower, Constants.RIGHT_MOTOR_MASTER_ID)
         self.left_motor_slave.set(ctre.ControlMode.Follower,
                                   Constants.LEFT_MOTOR_MASTER_ID)
+
+    def initDefaultCommand(self):
+        self.setDefaultCommand(TankDrive())
 
     def zeroSensors(self):
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)

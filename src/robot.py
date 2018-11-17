@@ -21,9 +21,6 @@ class Robot(CommandBasedRobot):
         self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
         self.autonomous = autogroup.AutonomousCommandGroup()
-        self.disabled = disabledgroup.DisabledCommandGroup()
-        self.teleop = teleopgroup.TeleopCommandGroup()
-        self.test = testgroup.TestCommandGroup()
 
     def globalInit(self):
         """Run on every init"""
@@ -32,7 +29,6 @@ class Robot(CommandBasedRobot):
     def disabledInit(self):
         """Run when robot enters disabled mode"""
         self.globalInit()
-        self.disabled.start()
 
     def autonomousInit(self):
         """Run when the robot enters auto mode"""
@@ -42,12 +38,10 @@ class Robot(CommandBasedRobot):
     def teleopInit(self):
         """Run when the robot enters teleop mode"""
         self.globalInit()
-        self.teleop.start()
 
     def testInit(self):
         """Run when the robot enters test mode"""
         self.globalInit()
-        self.test.start()
 
 
 # defining main function
