@@ -4,7 +4,11 @@ import oi
 from commandbased import CommandBasedRobot
 from constants import Constants
 
-from commands.autogroup import AutonomousCommandGroup
+from commands import autogroup
+from commands import disabledgroup
+from commands import teleopgroup
+from commands import testgroup
+from commands import updateodemetry
 
 
 class Robot(CommandBasedRobot):
@@ -13,24 +17,37 @@ class Robot(CommandBasedRobot):
         """Run when the robot turns on"""
         # Update constants from json file on robot
         Constants.updateConstants()
+        # Robot odemetry command
+        self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
-        self.autonomous = AutonomousCommandGroup
+        self.autonomous = autogroup.AutonomousCommandGroup()
+        self.disabled = disabledgroup.DisabledCommandGroup()
+        self.teleop = teleopgroup.TeleopCommandGroup()
+        self.test = testgroup.TestCommandGroup()
+
+    def globalInit(self):
+        """Run on every init"""
+        self.updateodemetry.start()
 
     def disabledInit(self):
         """Run when robot enters disabled mode"""
-        pass
+        self.globalInit()
+        self.disabled.start()
 
     def autonomousInit(self):
         """Run when the robot enters auto mode"""
-        self.scheduler.
+        self.globalInit()
+        self.autonomous.start()
 
     def teleopInit(self):
         """Run when the robot enters teleop mode"""
-        pass
+        self.globalInit()
+        self.teleop.start()
 
     def testInit(self):
         """Run when the robot enters test mode"""
-        pass
+        self.globalInit()
+        self.test.start()
 
 
 # defining main function
