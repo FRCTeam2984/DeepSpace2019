@@ -8,16 +8,19 @@ from wpilib.command import Command
 from wpilib.smartdashboard import SmartDashboard
 from constants import Constants
 
+
 class TankDrive(Command):
     def __init__(self):
         super().__init__()
         self.requires(drive.Drive())
+        drive.Drive().zeroSensors()
 
     def initialize(self):
         return
 
     def execute(self):
-        power = -math.pow(oi.OI().getJoystick().getY(), Constants.TANK_DRIVE_EXPONENT)
+        power = -math.pow(oi.OI().getJoystick().getY(),
+                          Constants.TANK_DRIVE_EXPONENT)
         rotation = -oi.OI().getJoystick().getZ()
         rotation = (rotation, 0)[abs(rotation) < 0.05]
         left = power - rotation
@@ -29,6 +32,3 @@ class TankDrive(Command):
 
     def end(self):
         return
-
-    def interrupted(self):
-        self.end()
