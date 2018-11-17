@@ -1,1 +1,2 @@
-__all__ = ["tankdrive"]
+__all__ = ["autogroup", "disabledgroup",
+           "tankdrive", "teleopgroup", "testgroup"]

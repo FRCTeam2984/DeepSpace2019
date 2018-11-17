@@ -4,23 +4,31 @@ from wpilib import SmartDashboard as Dash
 from subsystems import drive
 from utils import singleton
 from utils import pose
+from wpilib import adxrs450_gyro
 
 
-class RobotState(metaclass=singleton.Singleton):
+class Odemetry(metaclass=singleton.Singleton):
 
     def __init__(self):
-        """Initilize the RobotState class"""
+        """Initilize the Odemetry class"""
         super().__init__()
         self.drive = drive.Drive()
 
         self.timestamp = 0
         self.last_timestamp = 0
 
+        # Gyroscope
+        self.gyro = adxrs450_gyro.ADXRS450_Gyro()
+        self.gyro.calibrate()
+
         self.pose = pose.Pose()
 
-        self.last_left_ecnoder_distance = 0
-        self.last_right_ecnoder_distance = 0
+        self.last_left_encoder_distance = 0
+        self.last_right_encoder_distance = 0
         self.last_angle = 0
+
+    def reset(self):
+        self.gyro.reset()
 
     def outputToSmartDashboard(self):
         Dash.putNumber(
@@ -42,11 +50,11 @@ class RobotState(metaclass=singleton.Singleton):
 
     def getDistanceDelta(self):
         """Use encoders to return the distance change in inches."""
-        return (((self.last_left_ecnoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_ecnoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
+        return (((self.last_left_encoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_encoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
-        return math.radians(self.drive.gyro.getAngle())
+        return math.radians(self.gyro.getAngle())
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
@@ -60,11 +68,12 @@ class RobotState(metaclass=singleton.Singleton):
         self.pose.angle = self.getAngle()
         # update x and y positions
         self.pose.x += self.getDistanceDelta()*math.cos(self.pose.angle)
-        Dash.putNumber("Pos Y Test",self.getDistanceDelta()*math.sin(self.pose.angle))
+        Dash.putNumber("Pos Y Test", self.getDistanceDelta()
+                       * math.sin(self.pose.angle))
         self.pose.y += self.getDistanceDelta()*math.sin(self.pose.angle)
         # update last distances for next periodic
-        self.last_left_ecnoder_distance = self.drive.getDistanceInchesLeft()
-        self.last_right_ecnoder_distance = self.drive.getDistanceInchesRight()
+        self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
+        self.last_right_encoder_distance = self.drive.getDistanceInchesRight()
         # update last angle and timestamp for next periodic
         self.last_angle = self.pose.angle
         self.last_timestamp = self.timestamp
