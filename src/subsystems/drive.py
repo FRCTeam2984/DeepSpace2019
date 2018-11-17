@@ -34,13 +34,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.left_motor_slave.set(ctre.ControlMode.Follower,
                                   Constants.LEFT_MOTOR_MASTER_ID)
 
-    def initDefaultCommand(self):
-        """Set the default command for the Drive subsytem."""
-        self.setDefaultCommand(tankdrive.TankDrive())
-
-    def reset(self):
-        pass
-
     def zeroSensors(self):
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
@@ -61,7 +54,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def getVelocityTicksLeft(self):
         """Return the velocity (in ticks/sec) of the left encoder."""
-        return self.left_motor_master.getSelectedSensorVeloicty(0)
+        return self.left_motor_master.getSelectedSensorVelocity(0)
 
     def getDistanceTicksRight(self):
         """Return the distance (in ticks) of the right encoder."""
@@ -69,7 +62,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def getVelocityTicksRight(self):
         """Return the velocity (in ticks/sec) of the right encoder."""
-        return self.right_motor_master.getSelectedSensorVeloicty(0)
+        return self.right_motor_master.getSelectedSensorVelocity(0)
 
     def ticksToInchesLeft(self, ticks):
         """Convert ticks to inches for the left encoder."""
