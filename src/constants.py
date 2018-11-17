@@ -27,7 +27,7 @@ class Constants:
             file_dict = json.load(json_file)
             for var_name in file_dict.keys():
                 if hasattr(Constants, var_name):
-                    setattr(Constants, file_dict[var_name])
+                    setattr(Constants, var_name, file_dict[var_name])
         except FileNotFoundError:
             try:
                 json_file = open(Constants.CONSTANTS_JSON_PATH, "w")
