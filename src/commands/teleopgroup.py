@@ -1,4 +1,4 @@
-from wpilib.command import CommandGroup
+from wpilib.command import CommandGroup, Scheduler
 
 
 class TeleopCommandGroup(CommandGroup):
@@ -6,4 +6,4 @@ class TeleopCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Teleop Program')
-        # TODO run tank drive
+        Scheduler.getInstance().run()
