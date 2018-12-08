@@ -12,8 +12,9 @@ from constants import Constants
 class TankDrive(Command):
     def __init__(self):
         super().__init__()
-        self.requires(drive.Drive())
-        drive.Drive().zeroSensors()
+        self.drive = drive.Drive()
+        self.requires(self.drive)
+        self.drive.zeroSensors()
 
     def initialize(self):
         return
@@ -25,7 +26,7 @@ class TankDrive(Command):
         rotation = (rotation, 0)[abs(rotation) < 0.05]
         left = power - rotation
         right = power + rotation
-        drive.Drive().setPercentOutput(left, right)
+        self.drive.setPercentOutput(left, right)
 
     def isFinished(self):
         return False

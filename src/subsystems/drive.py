@@ -5,6 +5,7 @@ from utils import singleton
 from commands import tankdrive
 from wpilib.command import Subsystem
 from wpilib import adxrs450_gyro
+import commands.tankdrive as tankdrive
 
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
@@ -87,3 +88,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
     def getVelocityTicksInchesRight(self):
         """Return the velocity (in inches/sec) of the right encoder."""
         return self.ticksToInchesRight(self.getVelocityTicksRight())
+
+    def initDefaultCommand(self):
+        return self.setDefaultCommand(tankdrive.TankDrive())
