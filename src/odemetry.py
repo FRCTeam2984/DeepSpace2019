@@ -5,6 +5,7 @@ from subsystems import drive
 from utils import singleton
 from utils import pose
 from wpilib import adxrs450_gyro
+from wpilib import PowerDistributionPanel
 
 
 class Odemetry(metaclass=singleton.Singleton):
@@ -13,7 +14,7 @@ class Odemetry(metaclass=singleton.Singleton):
         """Initilize the Odemetry class"""
         super().__init__()
         self.drive = drive.Drive()
-
+        self.pdp = PowerDistributionPanel(60)
         self.timestamp = 0
         self.last_timestamp = 0
 
@@ -43,6 +44,13 @@ class Odemetry(metaclass=singleton.Singleton):
         Dash.putNumber("Pos X", self.pose.x)
         Dash.putNumber("Pos Y", self.pose.y)
         Dash.putNumber("Heading", self.pose.angle)
+        Dash.putNumber("Left Master Voltage", self.left_motor_master.getVoltageLeftMaster())
+        Dash.putNumber("Right Master Voltage", self.right_motor_master.getVoltageRightMaster())
+        Dash.putNumber("Right Slave Voltage", self.right_motor_slave.getVoltageRightSlave())
+        Dash.putNumber("Left Slave Voltage", self.left_motor_slave.getVoltageLeftSlave())
+        for i in range(16):
+            Dash.putNumber("channel " + i + " current", self.pdp.getCurrent(i))
+
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""

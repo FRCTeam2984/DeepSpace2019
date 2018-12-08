@@ -49,6 +49,23 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.right_motor_master.set(
             ctre.ControlMode.PercentOutput, right_signal)
 
+
+    def getVoltageLeftMaster(self):
+        """Return the voltage of the left master motor"""
+        return self.left_motor_master.getBusVoltage()
+
+    def getVoltageRightMaster(self):
+        """Returns the voltage for the right master motor"""
+        return self.right_motor_master.getBusVoltage()
+
+    def getVoltageRightSlave(self):
+        """Returns the voltage for the right slave motor"""
+        return self.right_motor_slave.getBusVoltage()
+
+    def getVoltageLeftSlave(self):
+        """Returns the voltage for the left slave motor"""
+        return self.left_motor_slave.getBusVoltage()
+
     def getDistanceTicksLeft(self):
         """Return the distance (in ticks) of the left encoder."""
         return self.left_motor_master.getSelectedSensorPosition(0)
