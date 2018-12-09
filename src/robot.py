@@ -1,13 +1,13 @@
+#!/usr/bin/env python
 from commands import (autogroup, disabledgroup, teleopgroup, testgroup,
                       updateodemetry)
 
-import wpilib as wpi
-from wpilib.cameraserver import CameraServer
 import ctre
 import wpilib as wpi
 from commandbased import CommandBasedRobot
-from wpilib import PowerDistributionPanel
+from wpilib import PowerDistributionPanel as PDP
 from wpilib import SmartDashboard as Dash
+from wpilib.cameraserver import CameraServer
 
 import oi
 from constants import Constants
@@ -20,7 +20,7 @@ class Robot(CommandBasedRobot):
         # Update constants from json file on robot
         Constants.updateConstants()
         # The PDP
-        self.pdp = PowerDistributionPanel(Constants.PDP_ID)
+        self.pdp = PDP(Constants.PDP_ID)
         # Robot odemetry command
         self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
