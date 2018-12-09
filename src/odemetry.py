@@ -5,6 +5,7 @@ from subsystems import drive
 from utils import singleton
 from utils import pose
 from wpilib import adxrs450_gyro
+from ctre.pigeonimu import PigeonIMU
 
 
 class Odemetry(metaclass=singleton.Singleton):
@@ -19,6 +20,7 @@ class Odemetry(metaclass=singleton.Singleton):
 
         # Gyroscope
         self.gyro = adxrs450_gyro.ADXRS450_Gyro()
+        # self.gyro2 = PigeonIMU(6)
         self.gyro.calibrate()
 
         self.pose = pose.Pose()
@@ -43,6 +45,7 @@ class Odemetry(metaclass=singleton.Singleton):
         Dash.putNumber("Pos X", self.pose.x)
         Dash.putNumber("Pos Y", self.pose.y)
         Dash.putNumber("Heading", self.pose.angle)
+        # Dash.putNumber("Gyro 2 Yaw", self.gyro2.getYawPitchRoll()[0])
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
@@ -61,7 +64,7 @@ class Odemetry(metaclass=singleton.Singleton):
         return self.pose.angle-self.last_angle
 
     def updateState(self, timestamp):
-        """Use odometry to update the robot state."""
+        """Use odemetry to update the robot state."""
         self.timestamp = timestamp
         #delta_time = self.timestamp-self.last_timestamp
         # update angle

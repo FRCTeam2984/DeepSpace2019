@@ -1,4 +1,5 @@
 import wpilib as wpi
+from wpilib.cameraserver import CameraServer
 import ctre
 import oi
 from commandbased import CommandBasedRobot
@@ -24,6 +25,8 @@ class Robot(CommandBasedRobot):
         self.disabled = disabledgroup.DisabledCommandGroup()
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
+        # Start the camera sever
+        CameraServer.launch()
 
     def globalInit(self):
         """Run on every init"""
@@ -48,7 +51,6 @@ class Robot(CommandBasedRobot):
         """Run when the robot enters test mode"""
         self.globalInit()
         self.test.start()
-
 
 # defining main function
 if __name__ == '__main__':
