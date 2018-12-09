@@ -56,8 +56,10 @@ class Robot(CommandBasedRobot):
         self.test.start()
 
     def outputToSmartDashboard(self):
+        Dash.putNumber("Total Current", self.pdp.getTotalCurrent())
         for i in range(16):
-            Dash.putNumber("channel " + i + " current", self.pdp.getCurrent(i))
+            Dash.putNumber("Channel {} Current".format(i),
+                           self.pdp.getCurrent(i))
 
 
 # defining main function

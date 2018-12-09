@@ -32,8 +32,8 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             Constants.RIGHT_MOTOR_MASTER_ID)
 
         # Set up motors in slave-master config
-        self.right_motor_slave.set(
-            ctre.ControlMode.Follower, Constants.RIGHT_MOTOR_MASTER_ID)
+        self.right_motor_slave.set(ctre.ControlMode.Follower,
+                                   Constants.RIGHT_MOTOR_MASTER_ID)
         self.left_motor_slave.set(ctre.ControlMode.Follower,
                                   Constants.LEFT_MOTOR_MASTER_ID)
 
@@ -43,13 +43,13 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def outputToSmartDashboard(self):
         Dash.putNumber("Left Master Voltage",
-                       self.left_motor_master.getVoltageLeftMaster())
+                       self.getVoltageLeftMaster())
         Dash.putNumber("Right Master Voltage",
-                       self.right_motor_master.getVoltageRightMaster())
-        Dash.putNumber("Right Slave Voltage",
-                       self.right_motor_slave.getVoltageRightSlave())
+                       self.getVoltageRightMaster())
         Dash.putNumber("Left Slave Voltage",
-                       self.left_motor_slave.getVoltageLeftSlave())
+                       self.getVoltageLeftSlave())
+        Dash.putNumber("Right Slave Voltage",
+                       self.getVoltageRightSlave())
 
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent speed of the left and right motors."""
