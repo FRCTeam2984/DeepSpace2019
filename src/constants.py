@@ -7,10 +7,10 @@ class Constants:
 
     PDP_ID = 60
 
-    LEFT_MOTOR_SLAVE_ID = 23
-    LEFT_MOTOR_MASTER_ID = 28
-    RIGHT_MOTOR_SLAVE_ID = 12
-    RIGHT_MOTOR_MASTER_ID = 22
+    LEFT_MOTOR_SLAVE_ID = 1
+    LEFT_MOTOR_MASTER_ID = 3
+    RIGHT_MOTOR_SLAVE_ID = 5
+    RIGHT_MOTOR_MASTER_ID = 2
 
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 

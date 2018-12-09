@@ -6,4 +6,3 @@ class TeleopCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Teleop Program')
-        Scheduler.getInstance().run()

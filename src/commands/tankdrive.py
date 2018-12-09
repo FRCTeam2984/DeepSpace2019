@@ -23,7 +23,7 @@ class TankDrive(Command):
     def execute(self):
         power = -math.pow(oi.OI().getJoystick().getY(),
                           Constants.TANK_DRIVE_EXPONENT)
-        rotation = -oi.OI().getJoystick().getZ()
+        rotation = oi.OI().getJoystick().getZ()
         rotation = (rotation, 0)[abs(rotation) < 0.05]
         left = power - rotation
         right = power + rotation

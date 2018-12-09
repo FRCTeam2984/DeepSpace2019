@@ -1,6 +1,8 @@
 from commands import (autogroup, disabledgroup, teleopgroup, testgroup,
                       updateodemetry)
 
+import wpilib as wpi
+from wpilib.cameraserver import CameraServer
 import ctre
 import wpilib as wpi
 from commandbased import CommandBasedRobot
@@ -26,6 +28,8 @@ class Robot(CommandBasedRobot):
         self.disabled = disabledgroup.DisabledCommandGroup()
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
+        # Start the camera sever
+        CameraServer.launch()
 
     def globalInit(self):
         """Run on every init"""
