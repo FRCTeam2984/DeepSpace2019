@@ -1,12 +1,13 @@
 import math
-import sys
 import os
+import sys
 
-import oi
-from subsystems import drive
 from wpilib.command import Command
 from wpilib.smartdashboard import SmartDashboard
+
+import oi
 from constants import Constants
+from subsystems import drive
 
 
 class TankDrive(Command):

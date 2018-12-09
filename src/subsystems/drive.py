@@ -1,11 +1,13 @@
+import commands.tankdrive as tankdrive
+from commands import tankdrive as tankdrive
+
 import ctre
+from wpilib import SmartDashboard as Dash
+from wpilib import adxrs450_gyro
+from wpilib.command import Subsystem
 
 from constants import Constants
 from utils import singleton
-from commands import tankdrive
-from wpilib.command import Subsystem
-from wpilib import adxrs450_gyro
-import commands.tankdrive as tankdrive
 
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
@@ -39,6 +41,16 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
 
+    def outputToSmartDashboard(self):
+        Dash.putNumber("Left Master Voltage",
+                       self.left_motor_master.getVoltageLeftMaster())
+        Dash.putNumber("Right Master Voltage",
+                       self.right_motor_master.getVoltageRightMaster())
+        Dash.putNumber("Right Slave Voltage",
+                       self.right_motor_slave.getVoltageRightSlave())
+        Dash.putNumber("Left Slave Voltage",
+                       self.left_motor_slave.getVoltageLeftSlave())
+
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent speed of the left and right motors."""
 
@@ -48,7 +60,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             ctre.ControlMode.PercentOutput, left_signal)
         self.right_motor_master.set(
             ctre.ControlMode.PercentOutput, right_signal)
-
 
     def getVoltageLeftMaster(self):
         """Return the voltage of the left master motor"""
