@@ -1,15 +1,16 @@
+from commands import (autogroup, disabledgroup, teleopgroup, testgroup,
+                      updateodemetry)
+
 import wpilib as wpi
 from wpilib.cameraserver import CameraServer
 import ctre
-import oi
+import wpilib as wpi
 from commandbased import CommandBasedRobot
-from constants import Constants
+from wpilib import PowerDistributionPanel
+from wpilib import SmartDashboard as Dash
 
-from commands import autogroup
-from commands import disabledgroup
-from commands import teleopgroup
-from commands import testgroup
-from commands import updateodemetry
+import oi
+from constants import Constants
 
 
 class Robot(CommandBasedRobot):
@@ -18,6 +19,8 @@ class Robot(CommandBasedRobot):
         """Run when the robot turns on"""
         # Update constants from json file on robot
         Constants.updateConstants()
+        # The PDP
+        self.pdp = PowerDistributionPanel(Constants.PDP_ID)
         # Robot odemetry command
         self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
@@ -51,6 +54,11 @@ class Robot(CommandBasedRobot):
         """Run when the robot enters test mode"""
         self.globalInit()
         self.test.start()
+
+    def outputToSmartDashboard(self):
+        for i in range(16):
+            Dash.putNumber("channel " + i + " current", self.pdp.getCurrent(i))
+
 
 # defining main function
 if __name__ == '__main__':
