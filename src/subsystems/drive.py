@@ -16,11 +16,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def __init__(self):
         super().__init__()
-
-        # Init timestamps
-        self.timestamp = 0
-        self.last_timestamp = 0
-
         # Set motor ids
         self.left_motor_slave = ctre.WPI_TalonSRX(
             Constants.LEFT_MOTOR_SLAVE_ID)
@@ -32,10 +27,14 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             Constants.RIGHT_MOTOR_MASTER_ID)
 
         # Set up motors in slave-master config
-        self.right_motor_slave.set(ctre.ControlMode.Follower,
-                                   Constants.RIGHT_MOTOR_MASTER_ID)
-        self.left_motor_slave.set(ctre.ControlMode.Follower,
-                                  Constants.LEFT_MOTOR_MASTER_ID)
+        # self.right_motor_slave.set(ctre.ControlMode.Follower,
+        #                            Constants.RIGHT_MOTOR_MASTER_ID)
+        # self.left_motor_slave.set(ctre.ControlMode.Follower,
+        #                           Constants.LEFT_MOTOR_MASTER_ID)
+        self.right_motor_master.set(ctre.ControlMode.Follower,
+                                    Constants.RIGHT_MOTOR_SLAVE_ID)
+        self.left_motor_master.set(ctre.ControlMode.Follower,
+                                   Constants.LEFT_MOTOR_SLAVE_ID)
 
     def zeroSensors(self):
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
@@ -53,7 +52,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent speed of the left and right motors."""
-
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
         self.left_motor_master.set(
