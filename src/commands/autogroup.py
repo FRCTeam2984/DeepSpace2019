@@ -1,4 +1,5 @@
 from wpilib.command import CommandGroup
+from commands import driveforward
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -6,4 +7,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        # TODO add drive forward command
+        self.addSequential(driveforward.DriveForward(1, 1, 1000))

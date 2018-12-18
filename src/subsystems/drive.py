@@ -32,7 +32,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                                   Constants.LEFT_MOTOR_MASTER_ID)
 
     def zeroSensors(self):
-        print("Zeroing")
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
 
