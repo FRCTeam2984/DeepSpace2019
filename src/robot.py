@@ -8,6 +8,7 @@ from commandbased import CommandBasedRobot
 from wpilib import PowerDistributionPanel as PDP
 from wpilib import SmartDashboard as Dash
 from wpilib.cameraserver import CameraServer
+from wpilib.command import Command
 
 import oi
 from constants import Constants
@@ -16,6 +17,7 @@ from constants import Constants
 class Robot(CommandBasedRobot):
 
     def robotInit(self):
+        Command.getRobot = lambda x=0: self
         """Run when the robot turns on"""
         # Update constants from json file on robot
         Constants.updateConstants()
@@ -26,6 +28,7 @@ class Robot(CommandBasedRobot):
         # Set command group member variables
         self.autonomous = autogroup.AutonomousCommandGroup()
         self.disabled = disabledgroup.DisabledCommandGroup()
+        self.disabled.setRunWhenDisabled(True)
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
         # Start the camera sever

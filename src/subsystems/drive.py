@@ -25,18 +25,14 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             Constants.RIGHT_MOTOR_SLAVE_ID)
         self.right_motor_master = ctre.WPI_TalonSRX(
             Constants.RIGHT_MOTOR_MASTER_ID)
-
         # Set up motors in slave-master config
-        # self.right_motor_slave.set(ctre.ControlMode.Follower,
-        #                            Constants.RIGHT_MOTOR_MASTER_ID)
-        # self.left_motor_slave.set(ctre.ControlMode.Follower,
-        #                           Constants.LEFT_MOTOR_MASTER_ID)
-        self.right_motor_master.set(ctre.ControlMode.Follower,
-                                    Constants.RIGHT_MOTOR_SLAVE_ID)
-        self.left_motor_master.set(ctre.ControlMode.Follower,
-                                   Constants.LEFT_MOTOR_SLAVE_ID)
+        self.right_motor_slave.set(ctre.WPI_TalonSRX.ControlMode.Follower,
+                                   Constants.RIGHT_MOTOR_MASTER_ID)
+        self.left_motor_slave.set(ctre.WPI_TalonSRX.ControlMode.Follower,
+                                  Constants.LEFT_MOTOR_MASTER_ID)
 
     def zeroSensors(self):
+        print("Zeroing")
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
 
@@ -55,9 +51,9 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
         self.left_motor_master.set(
-            ctre.ControlMode.PercentOutput, left_signal)
+            ctre.WPI_TalonSRX.ControlMode.PercentOutput, left_signal)
         self.right_motor_master.set(
-            ctre.ControlMode.PercentOutput, right_signal)
+            ctre.WPI_TalonSRX.ControlMode.PercentOutput, right_signal)
 
     def getVoltageLeftMaster(self):
         """Return the voltage of the left master motor"""
