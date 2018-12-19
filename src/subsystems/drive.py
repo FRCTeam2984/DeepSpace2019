@@ -12,7 +12,7 @@ from utils import singleton
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
     """The Drive subsystem controls the drive motors
-    and encoders"""
+    and encoders."""
 
     def __init__(self):
         super().__init__()
@@ -32,6 +32,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                                   Constants.LEFT_MOTOR_MASTER_ID)
 
     def zeroSensors(self):
+        """Set the encoder positions to 0."""
         self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
         self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
 
@@ -55,19 +56,19 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, right_signal)
 
     def getVoltageLeftMaster(self):
-        """Return the voltage of the left master motor"""
+        """Return the voltage of the left master motor."""
         return self.left_motor_master.getBusVoltage()
 
     def getVoltageRightMaster(self):
-        """Returns the voltage for the right master motor"""
+        """Returns the voltage for the right master motor."""
         return self.right_motor_master.getBusVoltage()
 
     def getVoltageRightSlave(self):
-        """Returns the voltage for the right slave motor"""
+        """Returns the voltage for the right slave motor."""
         return self.right_motor_slave.getBusVoltage()
 
     def getVoltageLeftSlave(self):
-        """Returns the voltage for the left slave motor"""
+        """Returns the voltage for the left slave motor."""
         return self.left_motor_slave.getBusVoltage()
 
     def getDistanceTicksLeft(self):

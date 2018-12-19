@@ -3,7 +3,7 @@ import math
 
 
 class Constants:
-    """Global constants that are accesed throughout the project"""
+    """Global constants that are accesed throughout the project."""
 
     PDP_ID = 60
 
