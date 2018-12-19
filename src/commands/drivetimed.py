@@ -5,7 +5,7 @@ from subsystems import drive
 import wpilib
 
 
-class DriveForward(Command):
+class DriveTimed(Command):
     def __init__(self, left_signal, right_signal, timeout=1000):
         super().__init__()
         self.drive = drive.Drive()
