@@ -3,7 +3,7 @@ import subsystems.drive as drive
 import commands.zerosensors as zerosensors
 
 class DisabledCommandGroup(CommandGroup):
-    """Commands to run when robot is disabled"""
+    """Commands to run when robot is disabled."""
 
     def __init__(self):
         super().__init__('Disabled Program')

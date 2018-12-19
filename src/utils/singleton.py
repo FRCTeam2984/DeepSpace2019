@@ -2,7 +2,7 @@ class Singleton(type):
     r"""A metaclass that is to be inherited by any class that wants
         to be a singleton. When the inheriting class is called,
         it runs the __call__ method, checking if it has already 
-        been called and, if so, returns that instance"""
+        been called and, if so, returns that instance."""
     _instances = {}
 
     def __call__(cls, *args, **kwargs):

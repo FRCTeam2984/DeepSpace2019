@@ -8,6 +8,7 @@ from commandbased import CommandBasedRobot
 from wpilib import PowerDistributionPanel as PDP
 from wpilib import SmartDashboard as Dash
 from wpilib.cameraserver import CameraServer
+from wpilib.command import Command
 
 import oi
 from constants import Constants
@@ -16,7 +17,8 @@ from constants import Constants
 class Robot(CommandBasedRobot):
 
     def robotInit(self):
-        """Run when the robot turns on"""
+        Command.getRobot = lambda x=0: self
+        """Run when the robot turns on."""
         # Update constants from json file on robot
         Constants.updateConstants()
         # The PDP
@@ -26,32 +28,33 @@ class Robot(CommandBasedRobot):
         # Set command group member variables
         self.autonomous = autogroup.AutonomousCommandGroup()
         self.disabled = disabledgroup.DisabledCommandGroup()
+        self.disabled.setRunWhenDisabled(True)
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
         # Start the camera sever
         CameraServer.launch()
 
     def globalInit(self):
-        """Run on every init"""
+        """Run on every init."""
         self.updateodemetry.start()
 
     def disabledInit(self):
-        """Run when robot enters disabled mode"""
+        """Run when robot enters disabled mode."""
         self.globalInit()
         self.disabled.start()
 
     def autonomousInit(self):
-        """Run when the robot enters auto mode"""
+        """Run when the robot enters auto mode."""
         self.globalInit()
         self.autonomous.start()
 
     def teleopInit(self):
-        """Run when the robot enters teleop mode"""
+        """Run when the robot enters teleop mode."""
         self.globalInit()
         self.teleop.start()
 
     def testInit(self):
-        """Run when the robot enters test mode"""
+        """Run when the robot enters test mode."""
         self.globalInit()
         self.test.start()
 

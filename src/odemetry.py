@@ -13,7 +13,7 @@ from utils import pose, singleton
 class Odemetry(metaclass=singleton.Singleton):
 
     def __init__(self):
-        """Initilize the Odemetry class"""
+        """Initilize the Odemetry class."""
         super().__init__()
         self.drive = drive.Drive()
         self.timestamp = 0

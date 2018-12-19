@@ -3,11 +3,11 @@ from wpilib import Joystick
 
 class OI:
     """Deals with anything controller related,
-    be it gamepads, joysticks, or steering wheels"""
+    be it gamepads, joysticks, or steering wheels."""
 
     def __init__(self):
         self.stick = Joystick(0)
 
     def getJoystick(self):
-        """Return the main joystick used"""
+        """Return the main joystick used."""
         return self.stick
