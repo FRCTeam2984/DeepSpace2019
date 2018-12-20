@@ -1,5 +1,5 @@
-# HomegrownRobot
-A homegrown FRC robot repository
+# DeepSpace2019
+Vikings Robotics's code for DeepSpace 2019
 
 # Basic setup
 1. Install python 3.5 or newer
@@ -7,7 +7,7 @@ A homegrown FRC robot repository
 3. Install pip
 4. Fork the repository that is owned by `frcteam2984`
 5. Clone your forked repository to any directory
-6. While in that directory, run `git remote add upstream https://github.com/FRCTeam2984/HomegrownRobot.git`
+6. While in that directory, run `git remote add upstream https://github.com/FRCTeam2984/DeepSpace2019.git`
 
 # Install dev environment
 1. `[pip executable] install pyfrc`
