@@ -16,6 +16,7 @@ class PIDF:
 
         self.setpoint = setpoint
         self.output = 0
+        self.has_updated = False
 
     def update(self, input, dt):
         """Update the PIDF controller."""
@@ -29,6 +30,7 @@ class PIDF:
         + (self.kd * self.derivative) + (self.kf * self.setpoint)
 
         self.last_input = input
+        self.has_updated = True
         return self.output
 
     def reset(self):
