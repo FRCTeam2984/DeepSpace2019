@@ -56,6 +56,10 @@ class Odemetry(metaclass=singleton.Singleton):
         """Use encoders to return the distance change in inches."""
         return (((self.last_left_encoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_encoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
 
+    def getVelocity(self):
+        """Use the distance delta to return the velocity in inches/sec."""
+        return self.getDistanceDelta()/(self.timestamp-self.last_timestamp)
+
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
         return math.radians(self.gyro.getAngle())
@@ -67,13 +71,10 @@ class Odemetry(metaclass=singleton.Singleton):
     def updateState(self, timestamp):
         """Use odemetry to update the robot state."""
         self.timestamp = timestamp
-        #delta_time = self.timestamp-self.last_timestamp
         # update angle
         self.pose.angle = self.getAngle()
         # update x and y positions
         self.pose.x += self.getDistanceDelta()*math.cos(self.pose.angle)
-        Dash.putNumber("Pos Y Test", self.getDistanceDelta()
-                       * math.sin(self.pose.angle))
         self.pose.y += self.getDistanceDelta()*math.sin(self.pose.angle)
         # update last distances for next periodic
         self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()

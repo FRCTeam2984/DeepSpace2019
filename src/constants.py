@@ -15,13 +15,19 @@ class Constants:
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
     WHEEL_DIAMETER = 6  # inches
-    WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER*math.pi  # inches
+    WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
     WHEEL_BASE = 27.75  # inches (distance between wheels)
 
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 4096  # UPDATE
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 4096  # UPDATE
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 4096  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 4096  # TODO update
+
+    TURN_TO_ANGLE_KP = 1
+    TURN_TO_ANGLE_KI = 1
+    TURN_TO_ANGLE_KD = 1
+    TURN_TO_ANGLE_TOLERANCE = 1
 
     TANK_DRIVE_EXPONENT = 3
+    JOYSTICK_DEADZONE = 0.05
 
     @staticmethod
     def updateConstants():
