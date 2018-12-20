@@ -16,7 +16,9 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def __init__(self):
         super().__init__()
-        # Set motor ids
+
+    def init(self):
+        """Initialize the drive motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
         self.left_motor_slave = ctre.WPI_TalonSRX(
             Constants.LEFT_MOTOR_SLAVE_ID)
         self.left_motor_master = ctre.WPI_TalonSRX(
@@ -26,10 +28,8 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.right_motor_master = ctre.WPI_TalonSRX(
             Constants.RIGHT_MOTOR_MASTER_ID)
         # Set up motors in slave-master config
-        self.right_motor_slave.set(ctre.WPI_TalonSRX.ControlMode.Follower,
-                                   Constants.RIGHT_MOTOR_MASTER_ID)
-        self.left_motor_slave.set(ctre.WPI_TalonSRX.ControlMode.Follower,
-                                  Constants.LEFT_MOTOR_MASTER_ID)
+        self.right_motor_slave.follow(self.right_motor_master)
+        self.left_motor_slave.follow(self.left_motor_master)
 
     def zeroSensors(self):
         """Set the encoder positions to 0."""

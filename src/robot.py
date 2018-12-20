@@ -12,7 +12,7 @@ from wpilib.command import Command
 
 import oi
 from constants import Constants
-
+from subsystems import drive
 
 class Robot(CommandBasedRobot):
 
@@ -21,6 +21,8 @@ class Robot(CommandBasedRobot):
         """Run when the robot turns on."""
         # Update constants from json file on robot
         Constants.updateConstants()
+        # Initialize drive objects
+        drive.Drive().init()
         # The PDP
         self.pdp = PDP(Constants.PDP_ID)
         # Robot odemetry command
