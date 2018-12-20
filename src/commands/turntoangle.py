@@ -14,10 +14,10 @@ class TurnToAngle(Command):
         self.odemetry = odemetry.Odemetry()
         self.requires(self.drive)
         self.setpoint = setpoint
-        self.kp = 1
-        self.ki = 1
-        self.kd = 1
-        self.error_tolerance = 1
+        self.kp = Constants.TURN_TO_ANGLE_KP
+        self.ki = Constants.TURN_TO_ANGLE_KI
+        self.kd = Constants.TURN_TO_ANGLE_KD
+        self.error_tolerance = Constants.TURN_TO_ANGLE_TOLERANCE
         self.controller = pidf.PIDF(self.setpoint, self.kp, self.ki, self.kd)
         self.timestamp = 0
         self.last_timestamp = 0
