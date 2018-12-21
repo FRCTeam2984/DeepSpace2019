@@ -21,7 +21,7 @@ class Odemetry(metaclass=singleton.Singleton):
 
         # Gyroscope
         self.gyro = adxrs450_gyro.ADXRS450_Gyro()
-        # self.gyro2 = PigeonIMU(6)
+        # self.gyro2 = PigeonIMU(7)
         self.gyro.calibrate()
 
         self.pose = pose.Pose()
@@ -54,7 +54,7 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getDistanceDelta(self):
         """Use encoders to return the distance change in inches."""
-        return (((self.last_left_encoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_encoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
+        return (((self.drive.getDistanceInchesLeft()-self.last_left_encoder_distance) + (self.drive.getDistanceInchesRight()-self.last_right_encoder_distance)) / 2.0)
 
     def getVelocity(self):
         """Use the distance delta to return the velocity in inches/sec."""

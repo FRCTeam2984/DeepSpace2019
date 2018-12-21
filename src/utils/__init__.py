@@ -1,1 +1,1 @@
-__all__ = ["pose", "singleton", "submanager"]
+__all__ = ["pose", "singleton"]

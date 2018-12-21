@@ -19,22 +19,23 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def init(self):
         """Initialize the drive motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
-        self.left_motor_slave = ctre.WPI_TalonSRX(
-            Constants.LEFT_MOTOR_SLAVE_ID)
-        self.left_motor_master = ctre.WPI_TalonSRX(
-            Constants.LEFT_MOTOR_MASTER_ID)
-        self.right_motor_slave = ctre.WPI_TalonSRX(
-            Constants.RIGHT_MOTOR_SLAVE_ID)
-        self.right_motor_master = ctre.WPI_TalonSRX(
-            Constants.RIGHT_MOTOR_MASTER_ID)
+        self.ls_motor = ctre.WPI_TalonSRX(Constants.LS_MOTOR_ID)
+        self.lm_motor = ctre.WPI_TalonSRX(Constants.LM_MOTOR_ID)
+        self.rs_motor = ctre.WPI_TalonSRX(Constants.RS_MOTOR_ID)
+        self.rm_motor = ctre.WPI_TalonSRX(Constants.RM_MOTOR_ID)
         # Set up motors in slave-master config
-        self.right_motor_slave.follow(self.right_motor_master)
-        self.left_motor_slave.follow(self.left_motor_master)
+        self.rs_motor.follow(self.rm_motor)
+        self.ls_motor.follow(self.lm_motor)
+
+        self.lm_motor.configSelectedFeedbackSensor(
+            ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
+        self.rm_motor.configSelectedFeedbackSensor(
+            ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
 
     def zeroSensors(self):
         """Set the encoder positions to 0."""
-        self.left_motor_master.setSelectedSensorPosition(0, 0, 0)
-        self.right_motor_master.setSelectedSensorPosition(0, 0, 0)
+        self.lm_motor.setSelectedSensorPosition(0, 0, 0)
+        self.rm_motor.setSelectedSensorPosition(0, 0, 0)
 
     def outputToSmartDashboard(self):
         Dash.putNumber("Left Master Voltage",
@@ -50,42 +51,42 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         """Set the percent speed of the left and right motors."""
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
-        self.left_motor_master.set(
+        self.lm_motor.set(
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, left_signal)
-        self.right_motor_master.set(
+        self.rm_motor.set(
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, right_signal)
 
     def getVoltageLeftMaster(self):
         """Return the voltage of the left master motor."""
-        return self.left_motor_master.getBusVoltage()
+        return self.lm_motor.getBusVoltage()
 
     def getVoltageRightMaster(self):
         """Returns the voltage for the right master motor."""
-        return self.right_motor_master.getBusVoltage()
+        return self.rm_motor.getBusVoltage()
 
     def getVoltageRightSlave(self):
         """Returns the voltage for the right slave motor."""
-        return self.right_motor_slave.getBusVoltage()
+        return self.rs_motor.getBusVoltage()
 
     def getVoltageLeftSlave(self):
         """Returns the voltage for the left slave motor."""
-        return self.left_motor_slave.getBusVoltage()
+        return self.ls_motor.getBusVoltage()
 
     def getDistanceTicksLeft(self):
         """Return the distance (in ticks) of the left encoder."""
-        return self.left_motor_master.getSelectedSensorPosition(0)
+        return self.lm_motor.getSelectedSensorPosition(0)
 
     def getVelocityTicksLeft(self):
         """Return the velocity (in ticks/sec) of the left encoder."""
-        return self.left_motor_master.getSelectedSensorVelocity(0)
+        return self.lm_motor.getSelectedSensorVelocity(0)
 
     def getDistanceTicksRight(self):
         """Return the distance (in ticks) of the right encoder."""
-        return self.right_motor_master.getSelectedSensorPosition(0)
+        return self.rm_motor.getSelectedSensorPosition(0)
 
     def getVelocityTicksRight(self):
         """Return the velocity (in ticks/sec) of the right encoder."""
-        return self.right_motor_master.getSelectedSensorVelocity(0)
+        return self.rm_motor.getSelectedSensorVelocity(0)
 
     def ticksToInchesLeft(self, ticks):
         """Convert ticks to inches for the left encoder."""
