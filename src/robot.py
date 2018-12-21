@@ -20,7 +20,8 @@ class Robot(CommandBasedRobot):
         Command.getRobot = lambda x=0: self
         """Run when the robot turns on."""
         # Update constants from json file on robot
-        Constants.updateConstants()
+        if self.isReal():
+            Constants.updateConstants()
         # Initialize drive objects
         drive.Drive().init()
         # The PDP
