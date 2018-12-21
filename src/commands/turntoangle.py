@@ -3,7 +3,7 @@ from wpilib.command import Command
 
 from constants import Constants
 from subsystems import drive
-from utils import pidf
+from utils import pid
 import odemetry
 
 
@@ -18,10 +18,11 @@ class TurnToAngle(Command):
         self.ki = Constants.TURN_TO_ANGLE_KI
         self.kd = Constants.TURN_TO_ANGLE_KD
         self.error_tolerance = Constants.TURN_TO_ANGLE_TOLERANCE
-        self.controller = pidf.PIDF(self.setpoint, self.kp, self.ki, self.kd)
+        self.controller = pid.PID(
+            self.setpoint, self.kp, self.ki, self.kd, True, -180, 180)
         self.timestamp = 0
         self.last_timestamp = 0
-        self.done_time = 0
+        self.cur_error = 0
 
     def initialize(self):
         return
@@ -30,13 +31,14 @@ class TurnToAngle(Command):
         self.timestamp = self.timeSinceInitialized()
         dt = self.timestamp - self.last_timestamp
         self.last_timestamp = self.timestamp
-        output = self.controller.update(self.odemetry.getAngle(), dt)
+        output = self.controller.update(
+            math.degrees(self.odemetry.getAngle()), dt)
         print("Output: {}, Error: {}".format(
             output, self.controller.cur_error))
         self.drive.setPercentOutput(output, -output)
 
     def isFinished(self):
-        return self.controller.cur_error < self.error_tolerance and self.controller.has_updated
+        return abs(self.controller.cur_error) < self.error_tolerance
 
     def end(self):
         self.drive.setPercentOutput(0, 0)
