@@ -24,3 +24,6 @@ class PurePursuit():
             lookahead_cur += math.hypot(dx, dy)
             index += 1
         return self.points[index]
+
+    def isDone(self):
+        return False
