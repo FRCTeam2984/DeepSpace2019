@@ -24,4 +24,5 @@ class FollowPath(Command):
         return self.follower.isDone()
 
     def end(self):
+        self.drive.setPercentOutput(0, 0)
         return

@@ -49,7 +49,6 @@ class Robot(CommandBasedRobot):
     def autonomousInit(self):
         """Run when the robot enters auto mode."""
         self.globalInit()
-        self.autonomous.getPath()
         self.autonomous.start()
 
     def teleopInit(self):
