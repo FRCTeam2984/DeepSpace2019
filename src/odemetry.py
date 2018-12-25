@@ -1,9 +1,9 @@
 import math
 
+from ctre.pigeonimu import PigeonIMU
 from wpilib import PowerDistributionPanel
 from wpilib import SmartDashboard as Dash
-from wpilib import adxrs450_gyro
-from ctre.pigeonimu import PigeonIMU
+from wpilib import analoggyro, hal
 
 from constants import Constants
 from subsystems import drive
@@ -20,9 +20,12 @@ class Odemetry(metaclass=singleton.Singleton):
         self.last_timestamp = 0
 
         # Gyroscope
-        self.gyro = adxrs450_gyro.ADXRS450_Gyro()
-        # self.gyro2 = PigeonIMU(7)
-        self.gyro.calibrate()
+        if hal.isSimulation():
+            self.gyro = analoggyro.AnalogGyro(0)
+        else:
+            self.gyro = PigeonIMU(Constants.GYRO_ID)
+
+        self.calibrate()
 
         self.pose = pose.Pose()
 
@@ -31,7 +34,17 @@ class Odemetry(metaclass=singleton.Singleton):
         self.last_angle = 0
 
     def reset(self):
-        self.gyro.reset()
+        if hal.isSimulation():
+            self.gyro.reset()
+        else:
+            self.gyro.setYaw(0, 0)
+
+    def calibrate(self):
+        if hal.isSimulation():
+            self.gyro.calibrate()
+        else:
+            # TODO how to calibrate pigeon
+            pass
 
     def outputToSmartDashboard(self):
         Dash.putNumber(
@@ -42,11 +55,11 @@ class Odemetry(metaclass=singleton.Singleton):
             "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
         Dash.putNumber(
             "Right Encoder Ticks", self.drive.getDistanceTicksRight())
+
         Dash.putNumber("Gyro Angle", self.getAngle())
         Dash.putNumber("Pos X", self.pose.x)
         Dash.putNumber("Pos Y", self.pose.y)
         Dash.putNumber("Heading", self.pose.angle)
-        # Dash.putNumber("Gyro 2 Yaw", self.gyro2.getYawPitchRoll()[0])
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
@@ -62,7 +75,10 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
-        return math.radians(self.gyro.getAngle())
+        if hal.isSimulation():
+            return math.radians(self.gyro.getAngle())
+        else:
+            return math.radians(self.gyro.getYawPitchRoll()[0])
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
