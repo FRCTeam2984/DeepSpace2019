@@ -3,14 +3,21 @@ from commands import drivetimed, turntoangle, followpath
 import wpilib
 import math
 
+
 class AutonomousCommandGroup(CommandGroup):
     """Robot follows path and set of actions."""
 
     def __init__(self):
         super().__init__('Autonomous Program')
         self.ds = wpilib.DriverStation.getInstance()
-        self.addSequential(followpath.FollowPath("example.json"))
 
-    def initialize(self):
+    def getPath(self):
         data = self.ds.getGameSpecificMessage()
-        print("Game Data: {}".format(data))
+
+        # TODO create and implement actual paths
+        if(data == "LLL"):
+            self.addSequential(followpath.FollowPath("example.json"))
+        elif(data == "RRR"):
+            self.addSequential(followpath.FollowPath("example.json"))
+        else:
+            self.addSequential(followpath.FollowPath("example.json"))

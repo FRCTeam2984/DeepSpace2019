@@ -4,6 +4,7 @@ from utils import purepursuit, hermitespline
 from subsystems import drive
 import odemetry
 
+
 class FollowPath(Command):
     def __init__(self, filename):
         super().__init__()
@@ -17,8 +18,7 @@ class FollowPath(Command):
         return
 
     def execute(self):
-        self.drive.setPercentOutput(1,1)
-        pass
+        self.drive.setPercentOutput(1, 1)
 
     def isFinished(self):
         return self.follower.isDone()
