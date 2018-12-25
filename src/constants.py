@@ -9,6 +9,9 @@ class Constants:
     # PDP
     PDP_ID = 60
 
+    # Gyro
+    GYRO_ID = 7
+
     # Drive motors
     LS_MOTOR_ID = 1
     LM_MOTOR_ID = 3
@@ -34,8 +37,20 @@ class Constants:
     LOOKAHEAD_DIST = 1
 
     # Joystick values
-    TANK_DRIVE_EXPONENT = 3
+    DRIVER_PORT = 0
+    OPERATOR_PORT = 1
+
+    DRIVER_X_MOD = 1
+    DRIVER_Y_MOD = 1
+    DRIVER_Z_MOD = -1
+
+    OPERATOR_X_MOD = 1
+    OPERATOR_Y_MOD = 1
+    OPERATOR_Z_MOD = 1
+
     JOYSTICK_DEADZONE = 0.05
+
+    TANK_DRIVE_EXPONENT = 3
 
     @staticmethod
     def updateConstants():
