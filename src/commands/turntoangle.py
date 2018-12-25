@@ -8,7 +8,7 @@ import odemetry
 
 
 class TurnToAngle(Command):
-    def __init__(self, setpoint):
+    def __init__(self, setpoint, relative=False):
         super().__init__()
         self.drive = drive.Drive()
         self.odemetry = odemetry.Odemetry()
@@ -23,10 +23,13 @@ class TurnToAngle(Command):
         self.timestamp = 0
         self.last_timestamp = 0
         self.cur_error = 0
+        self.relative = relative
 
     def initialize(self):
-        return
-
+        if self.relative:
+            self.setpoint += math.degrees(self.odemetry.getAngle())
+            self.controller.setpoint = self.setpoint
+        print(self.setpoint)
     def execute(self):
         self.timestamp = self.timeSinceInitialized()
         dt = self.timestamp - self.last_timestamp

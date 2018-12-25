@@ -1,13 +1,13 @@
 import math
-
+from constants import Constants
 
 class PurePursuit():
     """An implementation of the Pure Pursuit path tracking algorithm."""
 
-    def __init__(self, points, lookahead_dist):
+    def __init__(self, points):
 
         self.points = points
-        self.lookahead_dist = lookahead_dist
+        self.lookahead_dist = Constants.LOOKAHEAD_DIST
 
     def getLookheadPoint(self, state):
         """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""

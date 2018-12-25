@@ -11,7 +11,7 @@ class FollowPath(Command):
         self.odemetry = odemetry.Odemetry()
         self.requires(self.drive)
         self.spline = hermitespline.HermiteSpline(filename=filename)
-        self.follower = purepursuit.PurePursuit(self.spline.getPoints(), 1)
+        self.follower = purepursuit.PurePursuit(self.spline.getPoints())
 
     def initialize(self):
         return

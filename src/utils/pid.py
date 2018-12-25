@@ -23,12 +23,11 @@ class PID:
     def update(self, input, dt):
         """Update the PID controller."""
         self.cur_error = self.setpoint - input
-        if self.continuous:
-            if abs(self.cur_error) > (self.maxIn - self.minIn) / 2:
-                if self.cur_error > 0:
-                    self.cur_error = self.cur_error - self.maxIn + self.minIn
-                else:
-                    self.cur_error = self.cur_error + self.maxIn - self.minIn
+        if self.continuous and abs(self.cur_error) > (self.maxIn - self.minIn) / 2:
+            if self.cur_error > 0:
+                self.cur_error = self.cur_error - self.maxIn + self.minIn
+            else:
+                self.cur_error = self.cur_error + self.maxIn - self.minIn
         self.proportion = self.cur_error
         self.integral = self.integral + (self.cur_error * dt)
         self.derivative = (self.cur_error - self.last_error) / dt

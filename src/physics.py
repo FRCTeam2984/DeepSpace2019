@@ -20,9 +20,9 @@ class PhysicsEngine:
         self.drivetrain = drivetrains.TwoMotorDrivetrain(
             deadzone=drivetrains.linear_deadzone(0.2))
         self.controller.add_device_gyro_channel('adxrs450_spi_0_angle')
-        self.motion = motion.LinearMotion(
-            'Motion', 10, Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)
-        self.k_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT / \
+        self.kl_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT / \
+            Constants.WHEEL_CIRCUMFERENCE
+        self.kr_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT / \
             Constants.WHEEL_CIRCUMFERENCE
 
     def initialize(self, hal_data):
@@ -35,8 +35,8 @@ class PhysicsEngine:
         speed, rotation = self.drivetrain.get_vector(-l_signal, r_signal)
 
         hal_data['CAN'][Constants.LM_MOTOR_ID]['quad_position'] += int(
-            self.drivetrain.l_speed * tm_diff * self.k_encoder)
+            self.drivetrain.l_speed * tm_diff * self.kl_encoder)
         hal_data['CAN'][Constants.RM_MOTOR_ID]['quad_position'] += int(
-            self.drivetrain.r_speed * tm_diff * self.k_encoder)
+            self.drivetrain.r_speed * tm_diff * self.kr_encoder)
 
         self.controller.drive(speed, rotation, tm_diff)
