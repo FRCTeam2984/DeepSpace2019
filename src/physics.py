@@ -19,7 +19,7 @@ class PhysicsEngine:
         self.drive = drive.Drive()
         self.drivetrain = drivetrains.TwoMotorDrivetrain(
             deadzone=drivetrains.linear_deadzone(0.2))
-        self.controller.add_device_gyro_channel('adxrs450_spi_0_angle')
+            
         self.kl_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT / \
             Constants.WHEEL_CIRCUMFERENCE
         self.kr_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT / \

@@ -23,6 +23,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.lm_motor = ctre.WPI_TalonSRX(Constants.LM_MOTOR_ID)
         self.rs_motor = ctre.WPI_TalonSRX(Constants.RS_MOTOR_ID)
         self.rm_motor = ctre.WPI_TalonSRX(Constants.RM_MOTOR_ID)
+        
         # Set up motors in slave-master config
         self.rs_motor.follow(self.rm_motor)
         self.ls_motor.follow(self.lm_motor)
