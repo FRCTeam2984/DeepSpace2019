@@ -5,6 +5,7 @@ import os.path
 
 from utils import hermitecurve as hc
 from utils import pose, vector2d
+from paths import jsonfinder
 
 
 class HermiteSpline:
@@ -76,20 +77,22 @@ class HermiteSpline:
 
     def load(self, filename):
         """Load a json path file into a spline. The paths folder is searched by default."""
-        if os.path.exists("paths/{}".format(filename)) and not os.path.exists(filename):
-            filename = "paths/{}".format(filename)
-        with open(filename) as path_data:
-            path_json = json.load(path_data)
-            for point_data in path_json:
-                try:
-                    pose_data = point_data["pose"]
-                    pose0 = pose.Pose(
-                        pose_data["x"], pose_data["y"], pose_data["heading"])
-                    self.addPose(pose0)
-                except KeyError:
-                    print("Json is invalid")
-                    return
-        self.updateCurves()
+        path = jsonfinder.getPath(filename)
+        try:
+            with open(path) as path_data:
+                path_json = json.load(path_data)
+                for point_data in path_json:
+                    try:
+                        pose_data = point_data["pose"]
+                        pose0 = pose.Pose(
+                            pose_data["x"], pose_data["y"], pose_data["heading"])
+                        self.addPose(pose0)
+                    except KeyError:
+                        print("Json is invalid")
+                        return
+            self.updateCurves()
+        except FileNotFoundError:
+            print("{} not found".format(filename))
 
     def __str__(self):
         return "[{}]".format(", ".join(str(p) for p in self.poses))

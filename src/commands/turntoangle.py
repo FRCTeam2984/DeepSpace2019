@@ -29,7 +29,6 @@ class TurnToAngle(Command):
         if self.relative:
             self.setpoint += math.degrees(self.odemetry.getAngle())
             self.controller.setpoint = self.setpoint
-        print(self.setpoint)
 
     def execute(self):
         self.timestamp = self.timeSinceInitialized()
