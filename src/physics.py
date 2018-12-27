@@ -9,6 +9,7 @@ from pyfrc.physics import drivetrains, motion
 
 import odemetry
 
+motion.LinearMotion
 
 
 class PhysicsEngine:
@@ -28,6 +29,7 @@ class PhysicsEngine:
             Constants.WHEEL_CIRCUMFERENCE / 12
 
     def initialize(self, hal_data):
+        hal_data.setdefault('custom', {})
         pass
 
     def update_sim(self, hal_data, now, tm_diff):
@@ -43,4 +45,5 @@ class PhysicsEngine:
 
         self.controller.drive(speed, rotation, tm_diff)
 
-        hal_data['custom']['Pose'] = [round(i,3) for i in self.controller.get_position()]
+        hal_data['custom']['Pose'] = [
+            round(i, 2) for i in self.controller.get_position()]
