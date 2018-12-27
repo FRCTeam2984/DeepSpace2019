@@ -7,7 +7,7 @@ from wpilib import adxrs450_gyro
 from wpilib.command import Subsystem
 
 from constants import Constants
-from utils import singleton
+from utils import singleton, units
 
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
@@ -23,7 +23,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.lm_motor = ctre.WPI_TalonSRX(Constants.LM_MOTOR_ID)
         self.rs_motor = ctre.WPI_TalonSRX(Constants.RS_MOTOR_ID)
         self.rm_motor = ctre.WPI_TalonSRX(Constants.RM_MOTOR_ID)
-        
+
         # Set up motors in slave-master config
         self.rs_motor.follow(self.rm_motor)
         self.ls_motor.follow(self.lm_motor)
@@ -89,29 +89,21 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         """Return the velocity (in ticks/sec) of the right encoder."""
         return self.rm_motor.getSelectedSensorVelocity(0)
 
-    def ticksToInchesLeft(self, ticks):
-        """Convert ticks to inches for the left encoder."""
-        return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)*Constants.WHEEL_CIRCUMFERENCE
-
-    def ticksToInchesRight(self, ticks):
-        """Convert ticks to inches for the right encoder."""
-        return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)*Constants.WHEEL_CIRCUMFERENCE
-
     def getDistanceInchesLeft(self):
         """Return the distance (in inches) of the left encoder."""
-        return self.ticksToInchesLeft(self.getDistanceTicksLeft())
+        return units.ticksToInchesLeft(self.getDistanceTicksLeft())
 
     def getVelocityTicksInchesLeft(self):
         """Return the velocity (in inches/sec) of the left encoder."""
-        return self.ticksToInchesLeft(self.getVelocityTicksLeft())
+        return units.ticksToInchesLeft(self.getVelocityTicksLeft())
 
     def getDistanceInchesRight(self):
         """Return the distance (in inches) of the right encoder."""
-        return self.ticksToInchesRight(self.getDistanceTicksRight())
+        return units.ticksToInchesRight(self.getDistanceTicksRight())
 
     def getVelocityTicksInchesRight(self):
         """Return the velocity (in inches/sec) of the right encoder."""
-        return self.ticksToInchesRight(self.getVelocityTicksRight())
+        return units.ticksToInchesRight(self.getVelocityTicksRight())
 
     def initDefaultCommand(self):
         return self.setDefaultCommand(tankdrive.TankDrive())
