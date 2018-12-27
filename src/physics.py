@@ -7,23 +7,25 @@ from subsystems import drive
 from constants import Constants
 from pyfrc.physics import drivetrains, motion
 
+import odemetry
+
+
 
 class PhysicsEngine:
-
-    X_WHEELBASE = 0.50
-    Y_WHEELBASE = 0.62
-    GRAVITY = 9.8
 
     def __init__(self, controller):
         self.controller = controller
         self.drive = drive.Drive()
+        self.odemetry = odemetry.Odemetry()
         self.drivetrain = drivetrains.TwoMotorDrivetrain(
-            deadzone=drivetrains.linear_deadzone(0.2))
-            
+            x_wheelbase=Constants.WHEEL_BASE, speed=Constants.THEORETICAL_MAX_SPEED)
+        self.initial_x = self.controller.get_position()[0]
+        self.initial_y = self.controller.get_position()[1]
+
         self.kl_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT / \
-            Constants.WHEEL_CIRCUMFERENCE
+            Constants.WHEEL_CIRCUMFERENCE / 12
         self.kr_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT / \
-            Constants.WHEEL_CIRCUMFERENCE
+            Constants.WHEEL_CIRCUMFERENCE / 12
 
     def initialize(self, hal_data):
         pass
@@ -40,3 +42,5 @@ class PhysicsEngine:
             self.drivetrain.r_speed * tm_diff * self.kr_encoder)
 
         self.controller.drive(speed, rotation, tm_diff)
+
+        hal_data['custom']['Pose'] = [round(i,3) for i in self.controller.get_position()]

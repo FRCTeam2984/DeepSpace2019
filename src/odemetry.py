@@ -18,6 +18,7 @@ class Odemetry(metaclass=singleton.Singleton):
         self.drive = drive.Drive()
         self.timestamp = 0
         self.last_timestamp = 0
+        self.dt = 0
 
         # Gyroscope
         if hal.isSimulation():
@@ -71,7 +72,10 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getVelocity(self):
         """Use the distance delta to return the velocity in inches/sec."""
-        return self.getDistanceDelta()/(self.timestamp-self.last_timestamp)
+        if self.dt != 0:
+            return self.getDistanceDelta()/self.dt
+        else:
+            return 0
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
@@ -87,11 +91,12 @@ class Odemetry(metaclass=singleton.Singleton):
     def updateState(self, timestamp):
         """Use odemetry to update the robot state."""
         self.timestamp = timestamp
+        self.dt = self.timestamp-self.last_timestamp
         # update angle
         self.pose.angle = self.getAngle()
         # update x and y positions
-        self.pose.x += self.getDistanceDelta()*math.cos(self.pose.angle)
-        self.pose.y += self.getDistanceDelta()*math.sin(self.pose.angle)
+        self.pose.x += self.getDistanceDelta()*self.dt*math.cos(self.pose.angle)
+        self.pose.y += self.getDistanceDelta()*self.dt*math.sin(self.pose.angle)
         # update last distances for next periodic
         self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
         self.last_right_encoder_distance = self.drive.getDistanceInchesRight()

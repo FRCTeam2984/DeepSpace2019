@@ -6,6 +6,9 @@ class Constants:
     """Global constants that are accesed throughout the project."""
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
+    # Motion
+    THEORETICAL_MAX_SPEED = 10
+
     # PDP
     PDP_ID = 60
 
@@ -50,7 +53,7 @@ class Constants:
 
     JOYSTICK_DEADZONE = 0.05
 
-    TANK_DRIVE_EXPONENT = 3
+    TANK_DRIVE_EXPONENT = 1
 
     @staticmethod
     def updateConstants():
