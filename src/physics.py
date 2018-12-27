@@ -5,11 +5,9 @@ import ctre
 
 from subsystems import drive
 from constants import Constants
-from pyfrc.physics import drivetrains, motion
+from pyfrc.physics import drivetrains
 
 import odemetry
-
-motion.LinearMotion
 
 
 class PhysicsEngine:
