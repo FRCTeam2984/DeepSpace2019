@@ -1,6 +1,7 @@
 import math
 from constants import Constants
 
+
 class PurePursuit():
     """An implementation of the Pure Pursuit path tracking algorithm."""
 
