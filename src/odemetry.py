@@ -11,6 +11,7 @@ from utils import pose, singleton
 
 
 class Odemetry(metaclass=singleton.Singleton):
+    """A singleton dealing with the odemetry of the robot."""
 
     def __init__(self):
         """Initilize the Odemetry class."""
@@ -49,18 +50,17 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def outputToSmartDashboard(self):
         Dash.putNumber(
-            "Left Encoder Inches", self.drive.getDistanceInchesLeft())
-        Dash.putNumber(
-            "Right Encoder Inches", self.drive.getDistanceInchesRight())
-        Dash.putNumber(
             "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
         Dash.putNumber(
             "Right Encoder Ticks", self.drive.getDistanceTicksRight())
+        Dash.putNumber(
+            "Left Encoder Inches", self.drive.getDistanceInchesLeft())
+        Dash.putNumber(
+            "Right Encoder Inches", self.drive.getDistanceInchesRight())
 
-        Dash.putNumber("Gyro Angle", self.getAngle())
         Dash.putNumber("Pos X", self.pose.x)
         Dash.putNumber("Pos Y", self.pose.y)
-        Dash.putNumber("Heading", self.pose.angle)
+        Dash.putNumber("Angle", self.getAngle())
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
@@ -95,8 +95,8 @@ class Odemetry(metaclass=singleton.Singleton):
         # update angle
         self.pose.angle = self.getAngle()
         # update x and y positions
-        self.pose.x += self.getDistanceDelta()*self.dt*math.cos(self.pose.angle)
-        self.pose.y += self.getDistanceDelta()*self.dt*math.sin(self.pose.angle)
+        self.pose.x += self.getDistanceDelta() * math.cos(self.pose.angle)
+        self.pose.y += self.getDistanceDelta() * math.sin(self.pose.angle)
         # update last distances for next periodic
         self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
         self.last_right_encoder_distance = self.drive.getDistanceInchesRight()
@@ -105,5 +105,5 @@ class Odemetry(metaclass=singleton.Singleton):
         self.last_timestamp = self.timestamp
 
     def getState(self):
-        """Return the robot pose (position and orientation)."""
+        """Return the robot pose (position [inches] and orientation [radians])."""
         return self.pose
