@@ -27,6 +27,12 @@ class PurePursuit():
             else:
                 v = min(Constants.MAX_VELOCITY, Constants.CURVE_VELOCITY_MOD/c)
             self.velocities.append(v)
+        for i in reversed(range(0, len(self.velocities)-1)):
+            distance = self.points[i].getDistance(self.points[i+1])
+            new_velocity = math.sqrt(
+                self.velocities[i+1]**2 + (2 * Constants.MAX_ACCELERATION * distance))
+            new_velocity = min(self.velocities[i], new_velocity)
+            self.velocities[i] = new_velocity
 
     def getLookheadPoint(self, state):
         """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""

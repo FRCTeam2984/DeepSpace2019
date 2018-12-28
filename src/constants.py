@@ -40,7 +40,8 @@ class Constants:
     MAX_VELOCITY = 60  # inches/sec
     LOOKAHEAD_DIST = 1
     CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
-
+    MAX_ACCELERATION = 10 # inches/sec/sec
+    
     # Joystick values
     DRIVER_PORT = 0
     OPERATOR_PORT = 1
