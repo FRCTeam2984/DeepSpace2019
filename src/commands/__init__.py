@@ -1,2 +1,2 @@
-__all__ = ["autogroup", "disabledgroup",
-           "tankdrive", "teleopgroup", "testgroup"]
+__all__ = ["autogroup", "autopath", "disabledgroup", "drivetimed", "followpath",
+           "tankdrive", "teleopgroup", "testgroup", "turntoangle", "updateodemetry", "zerosensors"]
