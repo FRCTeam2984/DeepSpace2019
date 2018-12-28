@@ -1,1 +1,1 @@
-__all__ = "jsonfinder"
+__all__ = ["jsonfinder"]

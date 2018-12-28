@@ -38,10 +38,10 @@ class Constants:
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
-    LOOKAHEAD_DIST = 1
-    CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
-    MAX_ACCELERATION = 10 # inches/sec/sec
-    
+    MAX_ACCELERATION = 10  # inches/sec/sec
+    LOOKAHEAD_DIST = 1  # smaller == overshoot, bigger == longer to correct
+    CURVE_VELOCITY_MOD = 0.5  # smaller == slower around turns
+
     # Joystick values
     DRIVER_PORT = 0
     OPERATOR_PORT = 1
