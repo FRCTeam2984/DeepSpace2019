@@ -37,7 +37,9 @@ class Constants:
     TURN_TO_ANGLE_TOLERANCE = 1
 
     # Pure pursuit values
+    MAX_VELOCITY = 60  # inches/sec
     LOOKAHEAD_DIST = 1
+    CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
 
     # Joystick values
     DRIVER_PORT = 0

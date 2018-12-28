@@ -13,6 +13,7 @@ class FollowPath(Command):
         self.requires(self.drive)
         self.spline = hermitespline.HermiteSpline(filename=filename)
         self.follower = purepursuit.PurePursuit(self.spline.getPoints())
+        self.follower.computeVelocities()
 
     def initialize(self):
         return
