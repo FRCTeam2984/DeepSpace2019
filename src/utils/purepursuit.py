@@ -1,19 +1,21 @@
 import math
 from constants import Constants
+from utils import vector2d
 
 
 class PurePursuit():
     """An implementation of the Pure Pursuit path tracking algorithm."""
 
-    def __init__(self, spline):
+    def __init__(self, path):
 
-        self.spline = spline
-        self.points = self.spline.getPoints()
-        self.curvatures = self.spline.getCurvatures()
+        self.path = path
+        self.points = self.path.getPoints()
+        self.curvatures = self.path.getCurvatures()
         self.lookahead_dist = Constants.LOOKAHEAD_DIST
         self.velocities = []
 
     def computeVelocities(self):
+        """Compute the velocities along the path."""
         # Compute the velocities along the path using the curvature and Constants.CURVE_VELOCITY_MOD
         for curvature in self.curvatures:
             if curvature == 0:
@@ -46,5 +48,17 @@ class PurePursuit():
             index += 1
         return self.points[index]
 
+    def update(self, state):
+        """Update the pure pursuit follower."""
+        # TODO update follower values
+        self.last_state = state
+
+    def getTargetVelocities(self):
+        """Get the target velocities of the left and right wheels."""
+        # TODO get target velocities
+        return vector2d.Vector2D(1, 1)
+
     def isDone(self):
+        """Check if the path is done being followed."""
+        # TODO check if done
         return False

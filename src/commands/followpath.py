@@ -29,7 +29,9 @@ class FollowPath(Command):
         return
 
     def execute(self):
-        self.drive.setPercentOutput(1, 1)
+        self.follower.update(self.odemetry.getState())
+        velocities = self.follower.getTargetVelocities()
+        self.drive.setPercentOutput(velocities.x, velocities.y)
 
     def isFinished(self):
         return self.follower.isDone()
