@@ -1,0 +1,20 @@
+[
+ {
+  "pose": {
+   "x": 50,
+   "y": 300,
+   "heading": -90
+  },
+  "speed": 60,
+  "comment": ""
+ },
+ {
+  "pose": {
+   "x": 300,
+   "y": 50,
+   "heading": 0
+  },
+  "speed": 60,
+  "comment": ""
+ }
+]

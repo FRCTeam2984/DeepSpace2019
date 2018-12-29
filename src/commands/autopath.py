@@ -13,12 +13,7 @@ class AutoPath(InstantCommand):
         data = self.ds.getGameSpecificMessage()
 
         # TODO create and implement actual paths
-        if(data == "LLL"):
-            followpath.FollowPath("example.json").start()
-        elif(data == "RRR"):
-            followpath.FollowPath("example.json").start()
-        else:
-            followpath.FollowPath("example.json").start()
+        followpath.FollowPath("example.json").start()
 
     def end(self):
         pass
