@@ -92,7 +92,7 @@ class HermiteSpline:
 
     def get2ndDerivatives(self):
         """Interpolate a list of 2nd derivatives that is self.res long."""
-        return [self.interpolat2ndeDerivative(i/self.res) for i in range(0, self.res+1)]
+        return [self.interpolate2ndDerivative(i/self.res) for i in range(0, self.res+1)]
 
     def getCurvatures(self):
         """Interpolate a list of curvatures that is self.res long."""

@@ -41,6 +41,7 @@ class HermiteCurve:
         return vector2d.Vector2D(ddx, ddy)
 
     def interpolateCurvature(self, t):
+        """Interpolate a curvature along the generated curve where 0 <= t <= 1."""
         dx = self.interpolateDerivative(t).x
         dy = self.interpolateDerivative(t).y
         ddx = self.interpolate2ndDerivative(t).x
