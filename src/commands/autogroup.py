@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import autopath
+from commands import pathchooser
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -7,4 +7,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(autopath.AutoPath())
+        self.addSequential(pathchooser.PathChooser())
