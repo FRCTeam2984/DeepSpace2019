@@ -5,28 +5,24 @@ from constants import Constants
 class PurePursuit():
     """An implementation of the Pure Pursuit path tracking algorithm."""
 
-    def __init__(self, points):
+    def __init__(self, spline):
 
-        self.points = points
+        self.spline = spline
+        self.points = self.spline.getPoints()
+        self.curvatures = self.spline.getCurvatures()
         self.lookahead_dist = Constants.LOOKAHEAD_DIST
-        self.curvatures = [0]
         self.velocities = []
 
-    def computeCurvatures(self):
-        self.curvatures = [0]
-        for i in range(1, len(self.points)-1):
-            self.curvatures.append(self.points[i].getCurvature(
-                self.points[i-1], self.points[i+1]))
-        self.curvatures.append(0)
-
     def computeVelocities(self):
-        self.computeCurvatures()
-        for c in self.curvatures:
-            if c == 0:
-                v = Constants.MAX_VELOCITY
+        # Compute the velocities along the path using the curvature and Constants.CURVE_VELOCITY_MOD
+        for curvature in self.curvatures:
+            if curvature == 0:
+                velocity = Constants.MAX_VELOCITY
             else:
-                v = min(Constants.MAX_VELOCITY, Constants.CURVE_VELOCITY_MOD/c)
-            self.velocities.append(v)
+                velocity = min(Constants.MAX_VELOCITY,
+                               Constants.CURVE_VELOCITY_MOD/curvature)
+            self.velocities.append(velocity)
+        # Limit the acceleration of the velocities
         for i in reversed(range(0, len(self.velocities)-1)):
             distance = self.points[i].getDistance(self.points[i+1])
             new_velocity = math.sqrt(

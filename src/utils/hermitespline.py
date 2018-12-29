@@ -66,14 +66,37 @@ class HermiteSpline:
             self._getT(t)[0])
         return ret
 
+    def interpolate2ndDerivative(self, t):
+        """Interpolate a 2nd derivative along the spline where 0 <= t <= 1."""
+        if len(self.curves) == 0:
+            return None
+        ret = self.curves[self._getT(t)[1]].interpolate2ndDerivative(
+            self._getT(t)[0])
+        return ret
+
+    def interpolateCurvature(self, t):
+        """Interpolate the curvature along the spline where 0 <= t <= 1."""
+        if len(self.curves) == 0:
+            return None
+        ret = self.curves[self._getT(t)[1]].interpolateCurvature(
+            self._getT(t)[0])
+        return ret
+
     def getPoints(self):
         """Interpolate a list of points that is self.res long."""
         return [self.interpolatePoint(i/self.res) for i in range(0, self.res+1)]
 
     def getDerivatives(self):
         """Interpolate a list of derivatives that is self.res long."""
-
         return [self.interpolateDerivative(i/self.res) for i in range(0, self.res+1)]
+
+    def get2ndDerivatives(self):
+        """Interpolate a list of 2nd derivatives that is self.res long."""
+        return [self.interpolat2ndeDerivative(i/self.res) for i in range(0, self.res+1)]
+
+    def getCurvatures(self):
+        """Interpolate a list of curvatures that is self.res long."""
+        return [self.interpolateCurvature(i/self.res) for i in range(0, self.res+1)]
 
     def load(self, filename):
         """Load a json path file into a spline. The paths folder is searched by default."""

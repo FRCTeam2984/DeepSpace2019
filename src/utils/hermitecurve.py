@@ -30,9 +30,22 @@ class HermiteCurve:
 
     def interpolateDerivative(self, t):
         """Interpolate a derivative along the generated curve where 0 <= t <= 1."""
-        dx = (3 * self.ax * t ** 2) + (2 * self.bx * t) + (self.cx)
         dy = (3 * self.ay * t ** 2) + (2 * self.by * t) + (self.cy)
+        dx = (3 * self.ax * t ** 2) + (2 * self.bx * t) + (self.cx)
         return vector2d.Vector2D(dx, dy)
+
+    def interpolate2ndDerivative(self, t):
+        """Interpolate a 2nd derivative along the generated curve where 0 <= t <= 1."""
+        ddx = (6 * self.ax * t) + (2 * self.bx)
+        ddy = (6 * self.ay * t) + (2 * self.by)
+        return vector2d.Vector2D(ddx, ddy)
+
+    def interpolateCurvature(self, t):
+        dx = self.interpolateDerivative(t).x
+        dy = self.interpolateDerivative(t).y
+        ddx = self.interpolate2ndDerivative(t).x
+        ddy = self.interpolate2ndDerivative(t).y
+        return (dx*ddy - dy*ddx) / ((dx*dx + dy*dy) * math.hypot(dx, dy))
 
     def computeCoefficients(self):
         """Compute the coefficients of the curve equations. This must be called inorder to make interpolations."""

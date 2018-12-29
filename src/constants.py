@@ -40,7 +40,7 @@ class Constants:
     MAX_VELOCITY = 60  # inches/sec
     MAX_ACCELERATION = 10  # inches/sec/sec
     LOOKAHEAD_DIST = 1  # smaller == overshoot, bigger == longer to correct
-    CURVE_VELOCITY_MOD = 0.5  # smaller == slower around turns
+    CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
 
     # Joystick values
     DRIVER_PORT = 0
