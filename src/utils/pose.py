@@ -5,7 +5,7 @@ class Pose:
     """A simple class to store position (vector),
     and orientation (angle)."""
 
-    def __init__(self, x=0.0, y=0.0, angle=0.0,pos=None):
+    def __init__(self, x=0.0, y=0.0, angle=0.0, pos=None):
         if pos == None:
             self.pos = vector2d.Vector2D(x, y)
         else:
