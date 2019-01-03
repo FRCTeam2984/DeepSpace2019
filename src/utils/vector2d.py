@@ -23,8 +23,8 @@ class Vector2D:
         return other.getMagnitude()
 
     def getRotated(self, theta):
-        x = self.x * math.cos(theta) - self.y * math.sin(theta)
-        y = self.x * math.sin(theta) + self.y * math.cos(theta)
+        x = self.x * math.cos(theta) + self.y * math.sin(theta)
+        y = -self.x * math.sin(theta) + self.y * math.cos(theta)
         return Vector2D(x, y)
 
     def __eq__(self, other):
