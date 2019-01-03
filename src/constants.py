@@ -39,7 +39,8 @@ class Constants:
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
     MAX_ACCELERATION = 10  # inches/sec/sec
-    LOOKAHEAD_DIST = 1  # smaller == overshoot, bigger == longer to correct
+    # TODO dynamically change lookahead distance based on the curvature of path/velocity of robot
+    LOOKAHEAD_DIST = 1  # shorter == more overshoot, longer == longer to correct
     CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
 
     # Joystick values

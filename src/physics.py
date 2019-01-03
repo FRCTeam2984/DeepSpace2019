@@ -22,13 +22,12 @@ class PhysicsEngine:
         self.initial_y = self.controller.get_position()[1]
 
         self.kl_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT / \
-            Constants.WHEEL_CIRCUMFERENCE / 12
+            Constants.WHEEL_CIRCUMFERENCE  # / 12
         self.kr_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT / \
-            Constants.WHEEL_CIRCUMFERENCE / 12
+            Constants.WHEEL_CIRCUMFERENCE  # / 12
 
     def initialize(self, hal_data):
         hal_data.setdefault('custom', {})
-        pass
 
     def update_sim(self, hal_data, now, tm_diff):
         l_signal = hal_data['CAN'][Constants.LM_MOTOR_ID]['value']

@@ -7,7 +7,7 @@ from wpilib import analoggyro, hal
 
 from constants import Constants
 from subsystems import drive
-from utils import pose, singleton
+from utils import pose, singleton, vector2d
 
 
 class Odemetry(metaclass=singleton.Singleton):
@@ -58,8 +58,8 @@ class Odemetry(metaclass=singleton.Singleton):
         Dash.putNumber(
             "Right Encoder Inches", self.drive.getDistanceInchesRight())
 
-        Dash.putNumber("Pos X", self.pose.x)
-        Dash.putNumber("Pos Y", self.pose.y)
+        Dash.putNumber("Pos X", self.pose.pos.x)
+        Dash.putNumber("Pos Y", self.pose.pos.y)
         Dash.putNumber("Angle", self.getAngle())
 
     def getDistance(self):
@@ -95,8 +95,8 @@ class Odemetry(metaclass=singleton.Singleton):
         # update angle
         self.pose.angle = self.getAngle()
         # update x and y positions
-        self.pose.x += self.getDistanceDelta() * math.cos(self.pose.angle)
-        self.pose.y += self.getDistanceDelta() * math.sin(self.pose.angle)
+        self.pose.pos.x += self.getDistanceDelta() * math.cos(self.pose.angle)
+        self.pose.pos.y += self.getDistanceDelta() * math.sin(self.pose.angle)
         # update last distances for next periodic
         self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
         self.last_right_encoder_distance = self.drive.getDistanceInchesRight()
@@ -106,4 +106,5 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getState(self):
         """Return the robot pose (position [inches] and orientation [radians])."""
+        # return pose.Pose(pos=self.pose.pos+50, angle=self.pose.angle)
         return self.pose

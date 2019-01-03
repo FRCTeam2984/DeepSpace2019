@@ -50,20 +50,20 @@ class HermiteCurve:
 
     def computeCoefficients(self):
         """Compute the coefficients of the curve equations. This must be called inorder to make interpolations."""
-        scale = 2 * math.hypot(self.end.x - self.start.x,
-                               self.end.y - self.start.y)
+        scale = 2 * math.hypot(self.end.pos.x - self.start.pos.x,
+                               self.end.pos.y - self.start.pos.y)
         self.dx0 = scale * math.cos(math.radians(self.start.angle))
         self.dx1 = scale * math.cos(math.radians(self.end.angle))
-        self.ax = self.dx0 + self.dx1 + 2 * self.start.x - 2 * self.end.x
-        self.bx = -2 * self.dx0 - self.dx1 - 3 * self.start.x + 3 * self.end.x
+        self.ax = self.dx0 + self.dx1 + 2 * self.start.pos.x - 2 * self.end.pos.x
+        self.bx = -2 * self.dx0 - self.dx1 - 3 * self.start.pos.x + 3 * self.end.pos.x
         self.cx = self.dx0
-        self.dx = self.start.x
+        self.dx = self.start.pos.x
         self.dy0 = scale * math.sin(math.radians(self.start.angle))
         self.dy1 = scale * math.sin(math.radians(self.end.angle))
-        self.ay = self.dy0 + self.dy1 + 2 * self.start.y - 2 * self.end.y
-        self.by = -2 * self.dy0 - self.dy1 - 3 * self.start.y + 3 * self.end.y
+        self.ay = self.dy0 + self.dy1 + 2 * self.start.pos.y - 2 * self.end.pos.y
+        self.by = -2 * self.dy0 - self.dy1 - 3 * self.start.pos.y + 3 * self.end.pos.y
         self.cy = self.dy0
-        self.dy = self.start.y
+        self.dy = self.start.pos.y
 
     def __str__(self):
         return "[{}, {}]".format(self.start, self.end)
