@@ -7,7 +7,7 @@ class Constants:
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
     # Motion
-    THEORETICAL_MAX_SPEED = 10
+    THEORETICAL_MAX_VELOCITY = 60
 
     # PDP
     PDP_ID = 60
@@ -43,12 +43,12 @@ class Constants:
     MAX_VELOCITY = 60  # inches/sec
     MAX_ACCELERATION = 10  # inches/sec/sec
     # TODO dynamically change lookahead distance based on the curvature of path/velocity of robot
-    LOOKAHEAD_DIST = 12  # shorter == more overshoot, longer == longer to correct
+    LOOKAHEAD_DIST = 24  # shorter == more overshoot, longer == longer to correct
     CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
 
-    PURE_PURSUIT_KP = 0.006
-    PURE_PURSUIT_KI = 0.01
-    PURE_PURSUIT_KD = 0.0001
+    PURE_PURSUIT_KV = 1 / THEORETICAL_MAX_VELOCITY
+    PURE_PURSUIT_KA = 0.002
+    PURE_PURSUIT_KP = 0.01
 
     # Joystick values
     DRIVER_PORT = 0

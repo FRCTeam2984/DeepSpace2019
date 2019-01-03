@@ -8,6 +8,8 @@ import odemetry
 from constants import Constants
 from subsystems import drive
 from utils import pose
+import json
+from pyfrc import config
 
 
 class PhysicsEngine:
@@ -17,10 +19,11 @@ class PhysicsEngine:
         self.drive = drive.Drive()
         self.odemetry = odemetry.Odemetry()
         self.drivetrain = drivetrains.TwoMotorDrivetrain(
-            x_wheelbase=Constants.WHEEL_BASE, speed=Constants.THEORETICAL_MAX_SPEED)
-        self.initial_x = self.controller.get_position()[0]
-        self.initial_y = self.controller.get_position()[1]
+            x_wheelbase=Constants.WHEEL_BASE/12, speed=Constants.THEORETICAL_MAX_VELOCITY/12)
+        self.starting_x = config.config_obj['pyfrc']['robot']['starting_x']*12
+        self.starting_y = config.config_obj['pyfrc']['robot']['starting_y']*12
 
+        # print("init {}".format(self.initial_x))
         self.kl_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT / \
             Constants.WHEEL_CIRCUMFERENCE  # / 12
         self.kr_encoder = Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT / \
@@ -31,7 +34,8 @@ class PhysicsEngine:
 
     def update_sim(self, hal_data, now, tm_diff):
         pos = self.controller.get_position()
-        self.odemetry.pose = pose.Pose(pos[0]*12, pos[1]*12, pos[2])
+        self.odemetry.pose = pose.Pose(
+            pos[0]*12, pos[1]*12, pos[2])
         l_signal = hal_data['CAN'][Constants.LM_MOTOR_ID]['value']
         r_signal = hal_data['CAN'][Constants.RM_MOTOR_ID]['value']
         speed, rotation = self.drivetrain.get_vector(-l_signal, r_signal)

@@ -80,9 +80,9 @@ class Odemetry(metaclass=singleton.Singleton):
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
         if hal.isSimulation():
-            return math.radians(self.gyro.getAngle())
+            return -math.radians(self.gyro.getAngle())
         else:
-            return math.radians(self.gyro.getYawPitchRoll()[0])
+            return -math.radians(self.gyro.getYawPitchRoll()[0])
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
