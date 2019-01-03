@@ -13,7 +13,7 @@ class PurePursuit():
         self.curvatures = self.path.getCurvatures()
         self.lookahead_dist = Constants.LOOKAHEAD_DIST
         self.velocities = []
-        self.last_lookahead = 0
+        self.last_lookahead_index = 0
         self.cur_curvature = 0
         self.target_velocities = vector2d.Vector2D(0, 0)
 
@@ -52,14 +52,14 @@ class PurePursuit():
     #         index += 1
     #     return self.points[index]
 
-    def getLookaheadPoint(self, state):
+    def updateLookaheadPointIndex(self, state):
         """Loop over the points in the path to get the lookahead point given the current robot state."""
-        for i in range(self.last_lookahead, len(self.points)-1):
+        for i in range(self.last_lookahead_index, len(self.points)-1):
             lookahead = self.computeLookaheadPoint(
                 self.points[i], self.points[i+1], state)
             if lookahead != None:
-                self.last_lookahead = i
-                return self.points[i]
+                self.last_lookahead_index = i
+                return
 
     def computeLookaheadPoint(self, start, end, center):
         """Compute the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
@@ -85,24 +85,16 @@ class PurePursuit():
                 return start + t1 * segment_direction
             return None
 
-    def getCurvature(self, state):
-        lookahead = self.points[self.last_lookahead]
+    def updateCurvature(self, state):
+        lookahead = self.points[self.last_lookahead_index]
         if lookahead == None:
             return None
         if lookahead.x == state.pos.x:
             return None
-        # slope = (lookahead.y - state.pos.y) / (lookahead.x - state.pos.x)
-        slope = math.tan(state.angle)
-        a = -slope
-        b = 1
-        c = slope * state.pos.x - state.pos.y
-        x_distance = abs((a * lookahead.x) +
-                         (b * lookahead.y) + c)/math.hypot(a, b)
-        curvature = (2 * x_distance) / self.lookahead_dist**2
-        sign = math.sin(state.angle) * (lookahead.x - state.pos.x) - \
-            math.cos(state.angle) * (lookahead.y - state.pos.y)
-        self.cur_curvature = math.copysign(curvature, sign)
-        return self.cur_curvature
+        transform = lookahead - state.pos
+        transform = transform.getRotated(-state.angle)
+
+        self.cur_curvature = (2 * transform.x) / self.lookahead_dist**2
 
     def getClosestPoint(self, state):
         index = 0
@@ -114,7 +106,7 @@ class PurePursuit():
                 index = i
         return index
 
-    def getTargetVelocities(self, state):
+    def updateTargetVelocities(self, state):
         """Get the target velocities of the left and right wheels."""
         closest = self.getClosestPoint(state)
         robot_velocity = self.velocities[closest]
@@ -123,15 +115,14 @@ class PurePursuit():
         r_velocity = robot_velocity * \
             (2 - self.cur_curvature * Constants.TRACK_WIDTH)/2
         self.target_velocities = vector2d.Vector2D(l_velocity, r_velocity)
-        return self.target_velocities
 
     def update(self, state):
         """Update the pure pursuit follower."""
-        self.getLookaheadPoint(state.pos)
-        self.getCurvature(state)
-        self.getTargetVelocities(state.pos)
+        self.updateLookaheadPointIndex(state.pos)
+        self.updateCurvature(state)
+        self.updateTargetVelocities(state.pos)
         print("state: {}\nlookahead: {}\ncurvature: {}\ntarget velocities: {}\n".format(
-            state, self.points[self.last_lookahead], self.cur_curvature, self.target_velocities))
+            state, self.points[self.last_lookahead_index], self.cur_curvature, self.target_velocities))
 
     def isDone(self):
         """Check if the path is done being followed."""

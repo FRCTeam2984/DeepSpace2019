@@ -11,6 +11,9 @@ class Vector2D:
     def getMagnitude(self):
         return math.hypot(self.x, self.y)
 
+    def getArgument(self):
+        return math.atan2(self.x, self.y)
+
     def getNormal(self):
         return self / self.getMagnitude()
 
@@ -18,6 +21,11 @@ class Vector2D:
         """Compute the distance between 2 vectors."""
         other = self - other
         return other.getMagnitude()
+
+    def getRotated(self, theta):
+        x = self.x * math.cos(theta) - self.y * math.sin(theta)
+        y = self.x * math.sin(theta) + self.y * math.cos(theta)
+        return Vector2D(x, y)
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and (self.x == other.x) and (self.y == other.y)
