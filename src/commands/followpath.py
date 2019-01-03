@@ -1,6 +1,6 @@
 
 from wpilib.command import Command
-from utils import purepursuit, hermitespline
+from utils import purepursuit, hermitespline, vector2d
 from subsystems import drive
 import odemetry
 import matplotlib.pyplot as plt
@@ -26,10 +26,12 @@ class FollowPath(Command):
         # plt.show()
 
     def initialize(self):
+
         return
 
     def execute(self):
-        self.follower.update(self.odemetry.getState())
+        state = self.odemetry.getState()
+        self.follower.update(state)
         velocities = self.follower.getTargetVelocities()
         self.drive.setPercentOutput(velocities.x, velocities.y)
 
