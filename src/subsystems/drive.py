@@ -49,7 +49,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                        self.getVoltageRightSlave())
 
     def setPercentOutput(self, left_signal, right_signal):
-        """Set the percent speed of the left and right motors."""
+        """Set the percent output of the left and right motors."""
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
         self.lm_motor.set(
