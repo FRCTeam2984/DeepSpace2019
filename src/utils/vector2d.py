@@ -8,28 +8,62 @@ class Vector2D:
         self.x = x
         self.y = y
 
-    def getDistance(self, vec):
+    def getMagnitude(self):
+        return math.hypot(self.x, self.y)
+
+    def getNormal(self):
+        return self / self.getMagnitude()
+
+    def getDistance(self, other):
         """Compute the distance between 2 vectors."""
-        return math.hypot(vec.x-self.x, vec.y-self.y)
-
-    # TODO remove
-    # def getCurvature(self, p0, p1):
-    #     if self.x == p0.x:
-    #         p0.x += 0.0001
-
-    #     k1 = 0.5 * (self.x**2 + self.y**2 - p0.x**2 - p0.y**2)/(self.x - p0.x)
-    #     k2 = (self.y - p0.y)/(self.x - p0.x)
-    #     denom = ((p1.x * k2) - p1.y + p0.y - (p0.x * k2))
-    #     if denom == 0:
-    #         return 0
-    #     b = 0.5 * (p0.x**2 - (2 * p0.x * k1) + p0.y**2 - p1.x**2 + (2 *
-    #                                                                 p1.x * k1) - p1.y**2)/denom
-    #     a = k1 - (k2 * b)
-    #     r = math.hypot(self.x - a, self.y - b)
-    #     return 1/r
+        other = self - other
+        return other.getMagnitude()
 
     def __eq__(self, other):
-        return (self.x == other.x) and (self.y == other.y)
+        return isinstance(other, self.__class__) and (self.x == other.x) and (self.y == other.y)
+
+    def __add__(self, other):
+        if isinstance(other, self.__class__):
+            x = self.x + other.x
+            y = self.y + other.y
+        elif isinstance(other, int) or isinstance(other, float):
+            x = self.x + other
+            y = self.y + other
+        return Vector2D(x, y)
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
+    def __sub__(self, other):
+        return self + (-other)
+
+    def __rsub__(self, other):
+        return self.__sub__(other)
+
+    def __mul__(self, other):
+        if isinstance(other, self.__class__):
+            x = self.x * other.x
+            y = self.y * other.y
+            return x + y
+        elif isinstance(other, int) or isinstance(other, float):
+            x = self.x * other
+            y = self.y * other
+            return Vector2D(x, y)
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+    def __truediv__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            x = self.x / other
+            y = self.y / other
+            return Vector2D(x, y)
+
+    def __rtruediv__(self, other):
+        return self.__truediv__(other)
+
+    def __neg__(self):
+        return Vector2D(-self.x, -self.y)
 
     def __str__(self):
         return "({}, {})".format(round(self.x, 3), round(self.y, 3))
