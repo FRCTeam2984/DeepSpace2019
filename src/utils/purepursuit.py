@@ -14,6 +14,8 @@ class PurePursuit():
         self.lookahead_dist = Constants.LOOKAHEAD_DIST
         self.velocities = []
         self.last_lookahead = 0
+        self.cur_curvature = 0
+        self.target_velocities = vector2d.Vector2D(0, 0)
 
     def computeVelocities(self):
         """Compute the velocities along the path."""
@@ -83,12 +85,14 @@ class PurePursuit():
                 return start + t1 * segment_direction
             return None
 
-    def getCurvature(self, lookahead, state):
+    def getCurvature(self, state):
+        lookahead = self.points[self.last_lookahead]
         if lookahead == None:
             return None
         if lookahead.x == state.pos.x:
             return None
-        slope = (lookahead.y - state.pos.y) / (lookahead.x - state.pos.x)
+        # slope = (lookahead.y - state.pos.y) / (lookahead.x - state.pos.x)
+        slope = math.tan(state.angle)
         a = -slope
         b = 1
         c = slope * state.pos.x - state.pos.y
@@ -97,19 +101,37 @@ class PurePursuit():
         curvature = (2 * x_distance) / self.lookahead_dist**2
         sign = math.sin(state.angle) * (lookahead.x - state.pos.x) - \
             math.cos(state.angle) * (lookahead.y - state.pos.y)
-        return math.copysign(curvature, sign)
+        self.cur_curvature = math.copysign(curvature, sign)
+        return self.cur_curvature
+
+    def getClosestPoint(self, state):
+        index = 0
+        smallest_distance = self.points[index].getDistance(state)
+        for i in range(0, len(self.points)):
+            distance = self.points[i].getDistance(state)
+            if smallest_distance > distance:
+                smallest_distance = distance
+                index = i
+        return index
+
+    def getTargetVelocities(self, state):
+        """Get the target velocities of the left and right wheels."""
+        closest = self.getClosestPoint(state)
+        robot_velocity = self.velocities[closest]
+        l_velocity = robot_velocity * \
+            (2 + self.cur_curvature * Constants.TRACK_WIDTH)/2
+        r_velocity = robot_velocity * \
+            (2 - self.cur_curvature * Constants.TRACK_WIDTH)/2
+        self.target_velocities = vector2d.Vector2D(l_velocity, r_velocity)
+        return self.target_velocities
 
     def update(self, state):
         """Update the pure pursuit follower."""
-        lookahead = self.getLookaheadPoint(state.pos)
-        curvature = self.getCurvature(lookahead, state)
-        print("state: {}\nlookahead: {}\ncurvature: {}\n".format(state,lookahead,curvature))
-        self.last_state = state
-
-    def getTargetVelocities(self):
-        """Get the target velocities of the left and right wheels."""
-        # TODO compute target velocities
-        return vector2d.Vector2D(1, 1)
+        self.getLookaheadPoint(state.pos)
+        self.getCurvature(state)
+        self.getTargetVelocities(state.pos)
+        print("state: {}\nlookahead: {}\ncurvature: {}\ntarget velocities: {}\n".format(
+            state, self.points[self.last_lookahead], self.cur_curvature, self.target_velocities))
 
     def isDone(self):
         """Check if the path is done being followed."""
