@@ -22,9 +22,12 @@ class Constants:
     RM_MOTOR_ID = 2
 
     # Wheel measurements
-    WHEEL_DIAMETER = 6  # inches
+    WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
-    WHEEL_BASE = 27.75  # inches (distance between wheels)
+    # inches (distance between front and back wheels) TODO update
+    WHEEL_BASE = 27.75
+    # inches (distance between left and right wheels) TODO update
+    TRACK_WIDTH = 27.75
 
     # Encoder measurements
     DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 4096  # TODO update
@@ -40,8 +43,12 @@ class Constants:
     MAX_VELOCITY = 60  # inches/sec
     MAX_ACCELERATION = 10  # inches/sec/sec
     # TODO dynamically change lookahead distance based on the curvature of path/velocity of robot
-    LOOKAHEAD_DIST = 1  # shorter == more overshoot, longer == longer to correct
+    LOOKAHEAD_DIST = 12  # shorter == more overshoot, longer == longer to correct
     CURVE_VELOCITY_MOD = 0.25  # smaller == slower around turns
+
+    PURE_PURSUIT_KP = 0.006
+    PURE_PURSUIT_KI = 0.01
+    PURE_PURSUIT_KD = 0.0001
 
     # Joystick values
     DRIVER_PORT = 0
