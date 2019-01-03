@@ -106,5 +106,4 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getState(self):
         """Return the robot pose (position [inches] and orientation [radians])."""
-        # return pose.Pose(pos=self.pose.pos+50, angle=self.pose.angle)
         return self.pose

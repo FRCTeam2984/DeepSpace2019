@@ -2,12 +2,12 @@
 import math
 
 import ctre
-
-from subsystems import drive
-from constants import Constants
 from pyfrc.physics import drivetrains
 
 import odemetry
+from constants import Constants
+from subsystems import drive
+from utils import pose
 
 
 class PhysicsEngine:
@@ -30,9 +30,10 @@ class PhysicsEngine:
         hal_data.setdefault('custom', {})
 
     def update_sim(self, hal_data, now, tm_diff):
+        pos = self.controller.get_position()
+        self.odemetry.pose = pose.Pose(pos[0]*12, pos[1]*12, pos[2])
         l_signal = hal_data['CAN'][Constants.LM_MOTOR_ID]['value']
         r_signal = hal_data['CAN'][Constants.RM_MOTOR_ID]['value']
-
         speed, rotation = self.drivetrain.get_vector(-l_signal, r_signal)
 
         hal_data['CAN'][Constants.LM_MOTOR_ID]['quad_position'] += int(
@@ -41,6 +42,5 @@ class PhysicsEngine:
             self.drivetrain.r_speed * tm_diff * self.kr_encoder)
 
         self.controller.drive(speed, rotation, tm_diff)
-
         hal_data['custom']['Pose'] = [
             round(i, 2) for i in self.controller.get_position()]
