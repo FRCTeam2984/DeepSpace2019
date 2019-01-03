@@ -16,12 +16,13 @@ class PurePursuit():
         self.last_lookahead_index = 0
         self.cur_curvature = 0
         self.target_velocities = vector2d.Vector2D(0, 0)
+        self.closest_point_index = 0
 
     def computeVelocities(self):
         """Compute the velocities along the path."""
         # Compute the velocities along the path using the curvature and Constants.CURVE_VELOCITY_MOD
         for curvature in self.curvatures:
-            if curvature == 0:
+            if math.isclose(curvature, 0, rel_tol=1e-9, abs_tol=0.0):
                 velocity = Constants.MAX_VELOCITY
             else:
                 velocity = min(Constants.MAX_VELOCITY,
@@ -96,20 +97,19 @@ class PurePursuit():
 
         self.cur_curvature = (2 * transform.x) / self.lookahead_dist**2
 
-    def getClosestPoint(self, state):
-        index = 0
+    def updateClosestPointIndex(self, state):
+        index = self.closest_point_index
         smallest_distance = self.points[index].getDistance(state)
         for i in range(0, len(self.points)):
             distance = self.points[i].getDistance(state)
             if smallest_distance > distance:
                 smallest_distance = distance
                 index = i
-        return index
+        self.closest_point_index = index
 
     def updateTargetVelocities(self, state):
         """Get the target velocities of the left and right wheels."""
-        closest = self.getClosestPoint(state)
-        robot_velocity = self.velocities[closest]
+        robot_velocity = self.velocities[self.closest_point_index]
         l_velocity = robot_velocity * \
             (2 + self.cur_curvature * Constants.TRACK_WIDTH)/2
         r_velocity = robot_velocity * \
@@ -120,11 +120,15 @@ class PurePursuit():
         """Update the pure pursuit follower."""
         self.updateLookaheadPointIndex(state.pos)
         self.updateCurvature(state)
+        self.updateClosestPointIndex(state.pos)
         self.updateTargetVelocities(state.pos)
-        print("state: {}\nlookahead: {}\ncurvature: {}\ntarget velocities: {}\n".format(
-            state, self.points[self.last_lookahead_index], self.cur_curvature, self.target_velocities))
+        print("state: {}".format(state))
+        print("lookahead: {}".format(self.points[self.last_lookahead_index]))
+        print("curvature: {}".format(self.cur_curvature))
+        print("closest: {}".format(self.points[self.closest_point_index]))
+        print("target velocities: {}".format(self.target_velocities))
+        print("----------------------")
 
     def isDone(self):
         """Check if the path is done being followed."""
-        # TODO check if done
-        return False
+        return (len(self.points) - self.closest_point_index) <= 1
