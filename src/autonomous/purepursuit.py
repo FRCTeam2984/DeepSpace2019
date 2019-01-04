@@ -20,13 +20,13 @@ class PurePursuit():
 
     def computeVelocities(self):
         """Compute the velocities along the path."""
-        # Compute the velocities along the path using the curvature and Constants.CURVE_VELOCITY_MOD
+        # Compute the velocities along the path using the curvature and Constants.CURVE_VELOCITY
         for curvature in self.curvatures:
-            if math.isclose(curvature, 0, rel_tol=1e-9, abs_tol=0.0):
+            if abs(curvature) <= Constants.CURVATURE_THRESHOLD:
                 velocity = Constants.MAX_VELOCITY
             else:
                 velocity = min(Constants.MAX_VELOCITY,
-                               Constants.CURVE_VELOCITY_MOD/curvature)
+                               Constants.CURVE_VELOCITY/curvature)
             self.velocities.append(velocity)
         # Limit the acceleration of the velocities
         for i in reversed(range(0, len(self.velocities)-1)):
@@ -36,7 +36,7 @@ class PurePursuit():
             new_velocity = min(self.velocities[i], new_velocity)
             self.velocities[i] = new_velocity
 
-    # TODO - test old function
+    # TODO - test old function ]
     # def getLookaheadPoint(self, state):
     #     """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
     #     px = [p.x for p in self.points]
@@ -62,10 +62,8 @@ class PurePursuit():
                 self.last_lookahead_index = i
                 return
 
-    def computeLookaheadPoint(self, start, end, center):
+    def computeLookaheadPoint(self, start, end, state):
         """Compute the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
-        pstate = center
-        state = vector2d.Vector2D(pstate.x, pstate.y)
         segment_direction = end - start
         center_to_start = start - state
 
