@@ -1,13 +1,13 @@
 import math
 from constants import Constants
 from utils import vector2d
+from wpilib import SmartDashboard as Dash
 
 
 class PurePursuit():
     """An implementation of the Pure Pursuit path tracking algorithm."""
 
     def __init__(self, path):
-
         self.path = path
         self.points = self.path.getPoints()
         self.curvatures = self.path.getCurvatures()
@@ -63,7 +63,9 @@ class PurePursuit():
                 return
 
     def computeLookaheadPoint(self, start, end, state):
-        """Compute the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
+        """Compute the lookahead point given the current robot state.
+           Returns a point if the current state is self.lookahead_distance
+           from between start and end, otherwise returns None."""
         segment_direction = end - start
         center_to_start = start - state
 
@@ -85,6 +87,7 @@ class PurePursuit():
             return None
 
     def updateCurvature(self, state):
+        """Update the curvature from the current lookahead point to the current robot position."""
         lookahead = self.points[self.last_lookahead_index]
         if lookahead == None:
             return None
@@ -92,10 +95,10 @@ class PurePursuit():
             return None
         transform = lookahead - state.pos
         transform = transform.getRotated(-state.angle)
-
         self.cur_curvature = (2 * transform.x) / self.lookahead_dist**2
 
     def updateClosestPointIndex(self, state):
+        """Update the index of the closest point to the current robot position."""
         index = self.closest_point_index
         smallest_distance = self.points[index].getDistance(state)
         for i in range(0, len(self.points)):
@@ -106,26 +109,32 @@ class PurePursuit():
         self.closest_point_index = index
 
     def updateTargetVelocities(self, state):
-        """Get the target velocities of the left and right wheels."""
+        """Update the target velocities of the left and right wheels."""
         robot_velocity = self.velocities[self.closest_point_index]
         l_velocity = robot_velocity * \
-            (2 + self.cur_curvature * Constants.TRACK_WIDTH)/2
+            (2 + self.cur_curvature * Constants.TRACK_WIDTH) / \
+            2 / Constants.PURE_PURSUIT_KV
         r_velocity = robot_velocity * \
-            (2 - self.cur_curvature * Constants.TRACK_WIDTH)/2
+            (2 - self.cur_curvature * Constants.TRACK_WIDTH) / \
+            2 / Constants.PURE_PURSUIT_KV
         self.target_velocities = vector2d.Vector2D(l_velocity, r_velocity)
 
     def update(self, state):
-        """Update the pure pursuit follower."""
+        """Update the pure pursuit follower (runs all update functions)."""
         self.updateLookaheadPointIndex(state.pos)
         self.updateCurvature(state)
         self.updateClosestPointIndex(state.pos)
         self.updateTargetVelocities(state.pos)
-        print("state: {}".format(state))
-        print("lookahead: {}".format(self.points[self.last_lookahead_index]))
-        print("curvature: {}".format(self.cur_curvature))
-        print("closest: {}".format(self.points[self.closest_point_index]))
-        print("target velocities: {}".format(self.target_velocities))
-        print("----------------------")
+
+    def outputToSmartDashboard(self):
+        """Output values to the smart dashboard."""
+        lookahead = self.points[self.last_lookahead_index]
+        closest = self.points[self.closest_point_index]
+        Dash.putNumberArray("Lookahead Point", [lookahead.x, lookahead.y])
+        Dash.putNumber("Curvature", self.cur_curvature)
+        Dash.putNumberArray("Closes Point", [closest.x, closest.y])
+        Dash.putNumberArray("Target Velocities", [
+                       self.target_velocities.x, self.target_velocities.y])
 
     def isDone(self):
         """Check if the path is done being followed."""
