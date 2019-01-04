@@ -10,6 +10,7 @@ from paths import jsonfinder
 
 class HermiteSpline:
     """A cubic Hermite spline made up of several HermiteCurves."""
+
     def __init__(self, poses=None, filename=None):
         self.curves = []
         self.res = 100
