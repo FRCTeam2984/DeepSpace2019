@@ -15,7 +15,7 @@ class PurePursuit():
         self.velocities = []
         self.last_lookahead_index = 0
         self.cur_curvature = 0
-        self.target_velocities = vector2d.Vector2D(0, 0)
+        self.target_velocities = vector2d.Vector2D()
         self.closest_point_index = 0
 
     def computeVelocities(self):
@@ -66,6 +66,7 @@ class PurePursuit():
         """Compute the lookahead point given the current robot state.
            Returns a point if the current state is self.lookahead_distance
            from between start and end, otherwise returns None."""
+        # Algorithm for circle line segment intersection found here: https://stackoverflow.com/questions/1073336/circle-line-segment-collision-detection-algorithm/1084899#1084899
         segment_direction = end - start
         center_to_start = start - state
 
@@ -89,12 +90,10 @@ class PurePursuit():
     def updateCurvature(self, state):
         """Update the curvature from the current lookahead point to the current robot position."""
         lookahead = self.points[self.last_lookahead_index]
-        if lookahead == None:
-            return None
-        if lookahead.x == state.pos.x:
-            return None
+        # Transform the lookahead and state.pos to get an aligned vector
         transform = lookahead - state.pos
         transform = transform.getRotated(-state.angle)
+        # Use the transformed vector to calculate the curvature (derived from https://www.ri.cmu.edu/pub_files/pub3/coulter_r_craig_1992_1/coulter_r_craig_1992_1.pdf#page=12)
         self.cur_curvature = (2 * transform.x) / self.lookahead_dist**2
 
     def updateClosestPointIndex(self, state):
@@ -111,6 +110,7 @@ class PurePursuit():
     def updateTargetVelocities(self, state):
         """Update the target velocities of the left and right wheels."""
         robot_velocity = self.velocities[self.closest_point_index]
+        # Use kinematics (http://robotsforroboticists.com/drive-kinematics/) and algebra to find wheel target velocties
         l_velocity = robot_velocity * \
             (2 + self.cur_curvature * Constants.TRACK_WIDTH) / \
             2 / Constants.PURE_PURSUIT_KV
