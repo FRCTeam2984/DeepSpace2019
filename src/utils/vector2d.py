@@ -8,21 +8,25 @@ class Vector2D:
         self.x = x
         self.y = y
 
-    def getMagnitude(self):
-        return math.hypot(self.x, self.y)
-
-    def getArgument(self):
-        return math.atan2(self.x, self.y)
-
-    def getNormal(self):
-        return self / self.getMagnitude()
-
     def getDistance(self, other):
         """Compute the distance between 2 vectors."""
         other = self - other
         return other.getMagnitude()
 
+    def getMagnitude(self):
+        """Get the magnitude (distance to origin) of the vector."""
+        return math.hypot(self.x, self.y)
+
+    def getArgument(self):
+        """Get the argument (angle from the postive axis) of the vector."""
+        return math.atan2(self.x, self.y)
+
+    def getNormalized(self):
+        """Get the normalized (unit) vector (a vector with the same argument but a magntitude of 1)."""
+        return self / self.getMagnitude()
+
     def getRotated(self, theta):
+        """Get a vector that has been rotated about the origin by theta."""
         x = self.x * math.cos(theta) + self.y * math.sin(theta)
         y = -self.x * math.sin(theta) + self.y * math.cos(theta)
         return Vector2D(x, y)
