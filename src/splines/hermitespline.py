@@ -3,7 +3,7 @@ import json
 import math
 import os.path
 
-from utils import hermitecurve as hc
+from splines import hermitecurve as hc
 from utils import pose, vector2d
 from paths import jsonfinder
 

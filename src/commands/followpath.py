@@ -1,6 +1,8 @@
 
 from wpilib.command import Command
-from utils import purepursuit, hermitespline, vector2d, pid
+from autonomous import purepursuit
+from splines import hermitespline as hs
+from utils import vector2d, pid
 from subsystems import drive
 import odemetry
 import matplotlib.pyplot as plt
@@ -13,7 +15,7 @@ class FollowPath(Command):
         self.drive = drive.Drive()
         self.odemetry = odemetry.Odemetry()
         self.requires(self.drive)
-        self.spline = hermitespline.HermiteSpline(filename=filename)
+        self.spline = hs.HermiteSpline(filename=filename)
         self.follower = purepursuit.PurePursuit(self.spline)
         self.follower.computeVelocities()
         # x_list = [p.x for p in self.spline.getPoints()]
