@@ -34,10 +34,9 @@ class FollowPath(Command):
     def execute(self):
         state = self.odemetry.getState()
         self.follower.update(state)
+        self.follower.outputToSmartDashboard()
         velocities = self.follower.target_velocities
-        self.odemetry.target = velocities
-        self.drive.setPercentOutput(
-            velocities.x/Constants.PURE_PURSUIT_KV, velocities.y/Constants.PURE_PURSUIT_KV)
+        self.drive.setPercentOutput(vector=velocities)
 
     def isFinished(self):
         return self.follower.isDone()

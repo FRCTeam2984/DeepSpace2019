@@ -48,8 +48,11 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         Dash.putNumber("Right Slave Voltage",
                        self.getVoltageRightSlave())
 
-    def setPercentOutput(self, left_signal, right_signal):
+    def setPercentOutput(self, left_signal=0, right_signal=0, vector=None):
         """Set the percent output of the left and right motors."""
+        if vector != None:
+            left_signal = vector.x
+            right_signal = vector.y
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
         self.lm_motor.set(
