@@ -45,7 +45,7 @@ class Constants:
     # TODO dynamically change lookahead distance based on the curvature of path/velocity of robot
     LOOKAHEAD_DIST = 24  # shorter == more overshoot, longer == longer to correct
     CURVE_VELOCITY = 0.25  # smaller == slower around turns
-    CURVATURE_THRESHOLD = 1e9
+    CURVATURE_THRESHOLD = 1e-9
 
     PURE_PURSUIT_KV = 1 / THEORETICAL_MAX_VELOCITY
     PURE_PURSUIT_KA = 0.002
