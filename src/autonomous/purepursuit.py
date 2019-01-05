@@ -36,13 +36,17 @@ class PurePursuit():
             new_velocity = min(self.velocities[i], new_velocity)
             self.velocities[i] = new_velocity
 
-    # TODO - test old function
     def updateLookaheadPointIndex2(self, state):
-        """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
+        """Update the lookahead point given the current robot state.
+           Uses the minimum distance point if the state is more than
+           self.lookahead_distance from all points, otherwise uses the
+           closes point to self.loohead_distance"""
+        # Compute point distances to state and differences from those distances to self.lookahead_distance
         distances = [math.hypot(state.x - point.x,
                                 state.y - point.y) for point in self.points]
-        min_distance = min(distances)
         differences = [abs(d-self.lookahead_dist) for d in distances]
+        min_distance = min(distances)
+        # Get new lookahead index
         if min_distance <= self.lookahead_dist:
             self.last_lookahead_index = differences.index(min(differences))
         else:
@@ -114,7 +118,8 @@ class PurePursuit():
         self.target_velocities = vector2d.Vector2D(l_velocity, r_velocity)
 
     def update(self, state):
-        """Update the pure pursuit follower (runs all update functions)."""
+        """Update the pure pursuit follower(runs all update functions)."""
+        # TODO which lookahead function to use
         # self.updateLookaheadPointIndex(state.pos)
         self.updateLookaheadPointIndex2(state.pos)
         self.updateCurvature(state)
