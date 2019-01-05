@@ -36,7 +36,7 @@ class PurePursuit():
             new_velocity = min(self.velocities[i], new_velocity)
             self.velocities[i] = new_velocity
 
-    # TODO - test old function ]
+    # TODO - test old function
     # def getLookaheadPoint(self, state):
     #     """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
     #     px = [p.x for p in self.points]
@@ -134,7 +134,12 @@ class PurePursuit():
         Dash.putNumber("Curvature", self.cur_curvature)
         Dash.putNumberArray("Closes Point", [closest.x, closest.y])
         Dash.putNumberArray("Target Velocities", [
-                       self.target_velocities.x, self.target_velocities.y])
+            self.target_velocities.x, self.target_velocities.y])
+        print("Lookahead Point - {}".format(lookahead))
+        print("Curvature - {}".format(self.cur_curvature))
+        print("Closes Point - {}".format(closest))
+        print("Target Velocities - {}".format(self.target_velocities))
+        print("------------------------------")
 
     def isDone(self):
         """Check if the path is done being followed."""
