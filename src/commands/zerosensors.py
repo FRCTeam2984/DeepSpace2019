@@ -1,12 +1,5 @@
-import math
-import os
-import sys
+from wpilib.command import InstantCommand
 
-from wpilib.command import Command, InstantCommand
-from wpilib.smartdashboard import SmartDashboard
-
-import oi
-from constants import Constants
 from subsystems import drive
 
 

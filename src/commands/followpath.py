@@ -1,12 +1,13 @@
 
-from wpilib.command import Command
-from autonomous import purepursuit
-from splines import hermitespline as hs
-from utils import vector2d, pid
-from subsystems import drive
-import odemetry
 import matplotlib.pyplot as plt
+from wpilib.command import Command
+
+import odemetry
+from autonomous import purepursuit
 from constants import Constants
+from splines import hermitespline as hs
+from subsystems import drive
+from utils import pid, vector2d
 
 
 class FollowPath(Command):
