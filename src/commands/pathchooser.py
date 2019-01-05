@@ -12,7 +12,7 @@ class PathChooser(InstantCommand):
     def initialize(self):
         data = self.ds.getGameSpecificMessage()
         # TODO create and implement actual paths
-        followpath.FollowPath("example3.json").start()
+        followpath.FollowPath("example.json").start()
 
     def end(self):
         pass
