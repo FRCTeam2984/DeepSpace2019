@@ -37,21 +37,16 @@ class PurePursuit():
             self.velocities[i] = new_velocity
 
     # TODO - test old function
-    # def getLookaheadPoint(self, state):
-    #     """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
-    #     px = [p.x for p in self.points]
-    #     py = [p.y for p in self.points]
-    #     dx = [state.pos.x - x for x in px]
-    #     dy = [state.pos.y - y for y in py]
-    #     d = [abs(math.sqrt(idx ** 2 + idy ** 2)) for (idx, idy) in zip(dx, dy)]
-    #     index = d.index(min(d))
-    #     lookahead_cur = 0
-    #     while lookahead_cur < self.lookahead_dist and (index+1) < len(self.points):
-    #         dx = px[index+1] - px[index]
-    #         dy = py[index+1] - py[index]
-    #         lookahead_cur += math.hypot(dx, dy)
-    #         index += 1
-    #     return self.points[index]
+    def updateLookaheadPointIndex2(self, state):
+        """Get the lookahead point given the current robot state. Finds a point on the path at least self.lookhead_dist distance away from the current robot state."""
+        distances = [math.hypot(state.x - point.x,
+                                state.y - point.y) for point in self.points]
+        min_distance = min(distances)
+        differences = [abs(d-self.lookahead_dist) for d in distances]
+        if min_distance <= self.lookahead_dist:
+            self.last_lookahead_index = differences.index(min(differences))
+        else:
+            self.last_lookahead_index = distances.index(min_distance)
 
     def updateLookaheadPointIndex(self, state):
         """Loop over the points in the path to get the lookahead point given the current robot state."""
@@ -60,7 +55,6 @@ class PurePursuit():
                 self.points[i], self.points[i+1], state)
             if lookahead != None:
                 self.last_lookahead_index = i
-                return
 
     def computeLookaheadPoint(self, start, end, state):
         """Compute the lookahead point given the current robot state.
@@ -121,7 +115,8 @@ class PurePursuit():
 
     def update(self, state):
         """Update the pure pursuit follower (runs all update functions)."""
-        self.updateLookaheadPointIndex(state.pos)
+        # self.updateLookaheadPointIndex(state.pos)
+        self.updateLookaheadPointIndex2(state.pos)
         self.updateCurvature(state)
         self.updateClosestPointIndex(state.pos)
         self.updateTargetVelocities(state.pos)

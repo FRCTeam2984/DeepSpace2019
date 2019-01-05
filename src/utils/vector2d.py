@@ -27,8 +27,9 @@ class Vector2D:
 
     def getRotated(self, theta):
         """Get a vector that has been rotated about the origin by theta."""
-        x = self.x * math.cos(theta) + self.y * math.sin(theta)
-        y = -self.x * math.sin(theta) + self.y * math.cos(theta)
+        st, ct = math.sin(theta), math.cos(theta)
+        x = (self.x * ct) + (self.y * st)
+        y = -(self.x * st) + (self.y * ct)
         return Vector2D(x, y)
 
     def __eq__(self, other):
