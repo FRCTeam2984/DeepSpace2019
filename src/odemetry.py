@@ -42,9 +42,7 @@ class Odemetry(metaclass=singleton.Singleton):
             self.gyro.setYaw(0, 0)
 
     def calibrate(self):
-        if hal.isSimulation():
-            self.gyro.calibrate()
-        else:
+        if not hal.isSimulation():
             # TODO how to calibrate pigeon
             pass
 

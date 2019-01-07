@@ -1,5 +1,5 @@
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from wpilib.command import Command
 
 import odemetry

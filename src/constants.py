@@ -13,7 +13,7 @@ class Constants:
     PDP_ID = 60
 
     # Gyro
-    GYRO_ID = 7
+    GYRO_ID = 6
 
     # Drive motors
     LS_MOTOR_ID = 1
@@ -57,7 +57,7 @@ class Constants:
 
     DRIVER_X_MOD = 1
     DRIVER_Y_MOD = 1
-    DRIVER_Z_MOD = -1
+    DRIVER_Z_MOD = 1
 
     OPERATOR_X_MOD = 1
     OPERATOR_Y_MOD = 1
