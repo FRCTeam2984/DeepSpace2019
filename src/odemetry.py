@@ -3,7 +3,8 @@ import math
 from ctre.pigeonimu import PigeonIMU
 from wpilib import PowerDistributionPanel
 from wpilib import SmartDashboard as Dash
-from wpilib import analoggyro, hal
+from wpilib import analoggyro
+from wpilib.robotbase import hal
 
 from constants import Constants
 from subsystems import drive
