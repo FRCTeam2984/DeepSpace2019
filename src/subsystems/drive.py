@@ -78,7 +78,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def getDistanceTicksLeft(self):
         """Return the distance (in ticks) of the left encoder."""
-        return self.lm_motor.getSelectedSensorPosition(0)*(46.0/849.0)
+        return self.lm_motor.getSelectedSensorPosition(0)
 
     def getDistanceTicksRight(self):
         """Return the distance (in ticks) of the right encoder."""

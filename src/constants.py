@@ -69,7 +69,7 @@ class Constants:
     OPERATOR_Z_MOD = 1
 
     JOYSTICK_DEADZONE = 0.05
-    TANK_DRIVE_EXPONENT = 1
+    TANK_DRIVE_EXPONENT = 3
 
     @staticmethod
     def updateConstants():
