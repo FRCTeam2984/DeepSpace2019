@@ -21,6 +21,10 @@ class Constants:
     RS_MOTOR_ID = 5
     RM_MOTOR_ID = 2
 
+    # Intake motors
+    IR_MOTOR_ID = 6
+    IL_MOTOR_ID = 4
+
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
@@ -30,14 +34,15 @@ class Constants:
     TRACK_WIDTH = 27.75
 
     # Encoder measurements
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 4096  # TODO update
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 4096  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 360  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 360  # TODO update
 
     # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.006
-    TURN_TO_ANGLE_KI = 0.01
-    TURN_TO_ANGLE_KD = 0.0001
-    TURN_TO_ANGLE_TOLERANCE = 1
+    TURN_TO_ANGLE_KP = 0.34
+    TURN_TO_ANGLE_KI = 0.57
+    TURN_TO_ANGLE_KD = 0.0057
+
+    TURN_TO_ANGLE_TOLERANCE =  0.0873
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -56,7 +61,7 @@ class Constants:
     OPERATOR_PORT = 1
 
     DRIVER_X_MOD = 1
-    DRIVER_Y_MOD = 1
+    DRIVER_Y_MOD = -1
     DRIVER_Z_MOD = 1
 
     OPERATOR_X_MOD = 1
