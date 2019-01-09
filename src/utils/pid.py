@@ -30,7 +30,10 @@ class PID:
                 self.cur_error = self.cur_error + self.maxIn - self.minIn
         self.proportion = self.cur_error
         self.integral = self.integral + (self.cur_error * dt)
-        self.derivative = (self.cur_error - self.last_error) / dt
+        if dt == 0: 
+            self.derivative == 0
+        else:
+            self.derivative = (self.cur_error - self.last_error) / dt
 
         self.output = (self.kp * self.proportion) + (self.ki *
                                                      self.integral) + (self.kd * self.derivative)
