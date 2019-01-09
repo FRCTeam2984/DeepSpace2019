@@ -1,6 +1,7 @@
 import math
 
 from ctre.pigeonimu import PigeonIMU
+import ctre
 from wpilib import PowerDistributionPanel
 from wpilib import SmartDashboard as Dash
 from wpilib import analoggyro
@@ -8,7 +9,7 @@ from wpilib.robotbase import hal
 
 from constants import Constants
 from subsystems import drive
-from utils import pose, singleton, vector2d
+from utils import pose, singleton, units, vector2d
 
 
 class Odemetry(metaclass=singleton.Singleton):
@@ -22,11 +23,13 @@ class Odemetry(metaclass=singleton.Singleton):
         self.last_timestamp = 0
         self.dt = 0
 
+        self.ir_motor = ctre.WPI_TalonSRX(Constants.IR_MOTOR_ID)
+
         # Gyroscope
         if hal.isSimulation():
             self.gyro = analoggyro.AnalogGyro(0)
         else:
-            self.gyro = PigeonIMU(Constants.GYRO_ID)
+            self.gyro = PigeonIMU(self.ir_motor)
 
         self.calibrate()
 
@@ -41,6 +44,7 @@ class Odemetry(metaclass=singleton.Singleton):
             self.gyro.reset()
         else:
             self.gyro.setYaw(0, 0)
+            self.pose = pose.Pose()
 
     def calibrate(self):
         if not hal.isSimulation():
@@ -79,9 +83,9 @@ class Odemetry(metaclass=singleton.Singleton):
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
         if hal.isSimulation():
-            return -math.radians(self.gyro.getAngle())
+            return -units.degreesToRadians(self.gyro.getAngle())
         else:
-            return -math.radians(self.gyro.getYawPitchRoll()[0])
+            return -units.degreesToRadians(self.gyro.getYawPitchRoll()[0])
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
