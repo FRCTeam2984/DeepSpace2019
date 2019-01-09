@@ -68,25 +68,25 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         """Returns the voltage for the right master motor."""
         return self.rm_motor.getBusVoltage()
 
-    def getVoltageRightSlave(self):
-        """Returns the voltage for the right slave motor."""
-        return self.rs_motor.getBusVoltage()
-
     def getVoltageLeftSlave(self):
         """Returns the voltage for the left slave motor."""
         return self.ls_motor.getBusVoltage()
 
+    def getVoltageRightSlave(self):
+        """Returns the voltage for the right slave motor."""
+        return self.rs_motor.getBusVoltage()
+
     def getDistanceTicksLeft(self):
         """Return the distance (in ticks) of the left encoder."""
-        return self.lm_motor.getSelectedSensorPosition(0)
-
-    def getVelocityTicksLeft(self):
-        """Return the velocity (in ticks/sec) of the left encoder."""
-        return self.lm_motor.getSelectedSensorVelocity(0)
+        return self.lm_motor.getSelectedSensorPosition(0)*(46.0/849.0)
 
     def getDistanceTicksRight(self):
         """Return the distance (in ticks) of the right encoder."""
         return self.rm_motor.getSelectedSensorPosition(0)
+
+    def getVelocityTicksLeft(self):
+        """Return the velocity (in ticks/sec) of the left encoder."""
+        return self.lm_motor.getSelectedSensorVelocity(0)
 
     def getVelocityTicksRight(self):
         """Return the velocity (in ticks/sec) of the right encoder."""
@@ -96,15 +96,15 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         """Return the distance (in inches) of the left encoder."""
         return units.ticksToInchesLeft(self.getDistanceTicksLeft())
 
-    def getVelocityTicksInchesLeft(self):
-        """Return the velocity (in inches/sec) of the left encoder."""
-        return units.ticksToInchesLeft(self.getVelocityTicksLeft())
-
     def getDistanceInchesRight(self):
         """Return the distance (in inches) of the right encoder."""
         return units.ticksToInchesRight(self.getDistanceTicksRight())
 
-    def getVelocityTicksInchesRight(self):
+    def getVelocityInchesLeft(self):
+        """Return the velocity (in inches/sec) of the right encoder."""
+        return units.ticksToInchesLeft(self.getVelocityTicksLeft())
+
+    def getVelocityInchesRight(self):
         """Return the velocity (in inches/sec) of the right encoder."""
         return units.ticksToInchesRight(self.getVelocityTicksRight())
 
