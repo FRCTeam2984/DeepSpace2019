@@ -1,8 +1,8 @@
-from utils import joystick
+from utils import joystick, singleton
 from constants import Constants
 
 
-class OI:
+class OI(metaclass=singleton.Singleton):
     """Deals with anything controller related,
     be it gamepads, joysticks, or steering wheels."""
 
