@@ -1,5 +1,5 @@
 import math
-from utils import vector2d
+from utils import vector2d, units
 
 
 class HermiteCurve:
@@ -52,14 +52,14 @@ class HermiteCurve:
         """Compute the coefficients of the curve equations. This must be called inorder to make interpolations."""
         scale = 2 * math.hypot(self.end.pos.x - self.start.pos.x,
                                self.end.pos.y - self.start.pos.y)
-        self.dx0 = scale * math.cos(math.radians(-self.start.angle))
-        self.dx1 = scale * math.cos(math.radians(-self.end.angle))
+        self.dx0 = scale * math.cos(units.degreesToRadians(-self.start.angle))
+        self.dx1 = scale * math.cos(units.degreesToRadians(-self.end.angle))
         self.ax = self.dx0 + self.dx1 + 2 * self.start.pos.x - 2 * self.end.pos.x
         self.bx = -2 * self.dx0 - self.dx1 - 3 * self.start.pos.x + 3 * self.end.pos.x
         self.cx = self.dx0
         self.dx = self.start.pos.x
-        self.dy0 = scale * math.sin(math.radians(-self.start.angle))
-        self.dy1 = scale * math.sin(math.radians(-self.end.angle))
+        self.dy0 = scale * math.sin(units.degreesToRadians(-self.start.angle))
+        self.dy1 = scale * math.sin(units.degreesToRadians(-self.end.angle))
         self.ay = self.dy0 + self.dy1 + 2 * self.start.pos.y - 2 * self.end.pos.y
         self.by = -2 * self.dy0 - self.dy1 - 3 * self.start.pos.y + 3 * self.end.pos.y
         self.cy = self.dy0
