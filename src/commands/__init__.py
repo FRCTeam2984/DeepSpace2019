@@ -1,2 +1,3 @@
-__all__ = ["autogroup", "disabledgroup",
-           "tankdrive", "teleopgroup", "testgroup"]
+"""All the commands for  the robot."""
+__all__ = ["autogroup", "pathchooser", "disabledgroup", "drivetimed", "followpath",
+           "tankdrive", "teleopgroup", "testgroup", "turntoangle", "updateodemetry", "zerosensors"]

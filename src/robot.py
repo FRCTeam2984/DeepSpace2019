@@ -14,13 +14,15 @@ import oi
 from constants import Constants
 from subsystems import drive
 
+
 class Robot(CommandBasedRobot):
 
     def robotInit(self):
         Command.getRobot = lambda x=0: self
         """Run when the robot turns on."""
         # Update constants from json file on robot
-        Constants.updateConstants()
+        if self.isReal():
+            Constants.updateConstants()
         # Initialize drive objects
         drive.Drive().init()
         # The PDP

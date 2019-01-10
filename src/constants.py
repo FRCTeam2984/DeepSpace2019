@@ -4,30 +4,72 @@ import math
 
 class Constants:
     """Global constants that are accesed throughout the project."""
-
-    PDP_ID = 60
-
-    LEFT_MOTOR_SLAVE_ID = 1
-    LEFT_MOTOR_MASTER_ID = 3
-    RIGHT_MOTOR_SLAVE_ID = 5
-    RIGHT_MOTOR_MASTER_ID = 2
-
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
-    WHEEL_DIAMETER = 6  # inches
+    # Motion
+    THEORETICAL_MAX_VELOCITY = 60
+
+    # PDP
+    PDP_ID = 60
+
+    # Gyro
+    GYRO_ID = 6
+
+    # Drive motors
+    LS_MOTOR_ID = 1
+    LM_MOTOR_ID = 3
+    RS_MOTOR_ID = 5
+    RM_MOTOR_ID = 2
+
+    # Intake motors
+    IR_MOTOR_ID = 6
+    IL_MOTOR_ID = 4
+
+    # Wheel measurements
+    WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
-    WHEEL_BASE = 27.75  # inches (distance between wheels)
+    # inches (distance between front and back wheels) TODO update
+    WHEEL_BASE = 27.75
+    # inches (distance between left and right wheels) TODO update
+    TRACK_WIDTH = 27.75
 
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 4096  # TODO update
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 4096  # TODO update
+    # Encoder measurements
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 360  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 360  # TODO update
 
-    TURN_TO_ANGLE_KP = 1
-    TURN_TO_ANGLE_KI = 1
-    TURN_TO_ANGLE_KD = 1
-    TURN_TO_ANGLE_TOLERANCE = 1
+    # Turn to angle pid values
+    TURN_TO_ANGLE_KP = 0.34
+    TURN_TO_ANGLE_KI = 0.57
+    TURN_TO_ANGLE_KD = 0.0057
 
-    TANK_DRIVE_EXPONENT = 3
+    TURN_TO_ANGLE_TOLERANCE =  0.0873
+
+    # Pure pursuit values
+    MAX_VELOCITY = 60  # inches/sec
+    MAX_ACCELERATION = 10  # inches/sec/sec
+    # TODO dynamically change lookahead distance based on the curvature of path/velocity of robot
+    LOOKAHEAD_DIST = 24  # shorter == more overshoot, longer == longer to correct
+    CURVE_VELOCITY = 0.25  # smaller == slower around turns
+    CURVATURE_THRESHOLD = 1e-9
+
+    PURE_PURSUIT_KV = 1 / THEORETICAL_MAX_VELOCITY
+    PURE_PURSUIT_KA = 0.002
+    PURE_PURSUIT_KP = 0.01
+
+    # Joystick values
+    DRIVER_PORT = 0
+    OPERATOR_PORT = 1
+
+    DRIVER_X_MOD = 1
+    DRIVER_Y_MOD = -1
+    DRIVER_Z_MOD = 1
+
+    OPERATOR_X_MOD = 1
+    OPERATOR_Y_MOD = 1
+    OPERATOR_Z_MOD = 1
+
     JOYSTICK_DEADZONE = 0.05
+    TANK_DRIVE_EXPONENT = 3
 
     @staticmethod
     def updateConstants():

@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import drivetimed
+from commands import pathchooser
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -7,4 +7,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(drivetimed.DriveTimed(1, 1, 1000))
+        self.addSequential(pathchooser.PathChooser())
