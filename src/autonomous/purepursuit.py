@@ -27,7 +27,7 @@ class PurePursuit():
                 velocity = min(Constants.MAX_VELOCITY,
                                Constants.CURVE_VELOCITY/ppoint.curvature)
             ppoint.velocity = velocity
-        print(self.pursuit_points[0].velocity)
+        #print(self.pursuit_points[0].velocity)
         # Limit the acceleration of the velocities
         for i in reversed(range(0, len(self.pursuit_points)-1)):
             distance = self.pursuit_points[i].point.getDistance(self.pursuit_points[i+1].point)
