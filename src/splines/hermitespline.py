@@ -54,33 +54,29 @@ class HermiteSpline:
         """Interpolate a point along the spline where 0 <= t <= 1."""
         if len(self.curves) == 0:
             return None
-        ret = self.curves[self._getT(t)[1]].interpolatePoint(
+        return self.curves[self._getT(t)[1]].interpolatePoint(
             self._getT(t)[0])
-        return ret
 
     def interpolateDerivative(self, t):
         """Interpolate a derivative along the spline where 0 <= t <= 1."""
         if len(self.curves) == 0:
             return None
-        ret = self.curves[self._getT(t)[1]].interpolateDerivative(
+        return self.curves[self._getT(t)[1]].interpolateDerivative(
             self._getT(t)[0])
-        return ret
 
     def interpolate2ndDerivative(self, t):
         """Interpolate a 2nd derivative along the spline where 0 <= t <= 1."""
         if len(self.curves) == 0:
             return None
-        ret = self.curves[self._getT(t)[1]].interpolate2ndDerivative(
+        return self.curves[self._getT(t)[1]].interpolate2ndDerivative(
             self._getT(t)[0])
-        return ret
 
     def interpolateCurvature(self, t):
         """Interpolate the curvature along the spline where 0 <= t <= 1."""
         if len(self.curves) == 0:
             return None
-        ret = self.curves[self._getT(t)[1]].interpolateCurvature(
+        return self.curves[self._getT(t)[1]].interpolateCurvature(
             self._getT(t)[0])
-        return ret
 
     def getPoints(self):
         """Interpolate a list of points that is self.res long."""
@@ -111,6 +107,7 @@ class HermiteSpline:
                             pose_data["x"], pose_data["y"], pose_data["heading"])
                         self.addPose(pose0)
                     except KeyError:
+                        # TODO Make error reporting more obvious to operator
                         print("Json is invalid")
                         return
             self.updateCurves()
