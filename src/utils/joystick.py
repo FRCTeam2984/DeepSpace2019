@@ -25,7 +25,6 @@ class Joystick(joystick.Joystick):
         value = super().getY()
         if abs(value) < self.deadzone:
             return 0
-        print("DOG - {}".format(self.y_modifier))
         return self.y_modifier * value
 
     def getZ(self):

@@ -4,7 +4,7 @@ import math
 import os.path
 
 from splines import hermitecurve as hc
-from utils import pose, vector2d
+from utils import pose, vector2d, log
 from paths import jsonfinder
 
 
@@ -108,11 +108,11 @@ class HermiteSpline:
                         self.addPose(pose0)
                     except KeyError:
                         # TODO Make error reporting more obvious to operator
-                        print("Json is invalid")
+                        log.printerr("Json is invalid")
                         return
             self.updateCurves()
         except FileNotFoundError:
-            print("{} not found".format(filename))
+            log.printerr("{} not found".format(filename))
 
     def __str__(self):
         return "[{}]".format(", ".join(str(p) for p in self.poses))
