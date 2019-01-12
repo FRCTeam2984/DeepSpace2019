@@ -1,16 +1,19 @@
 import math
 
+from ctre.pigeonimu import PigeonIMU
+import ctre
 from wpilib import PowerDistributionPanel
 from wpilib import SmartDashboard as Dash
-from wpilib import adxrs450_gyro
-from ctre.pigeonimu import PigeonIMU
+from wpilib import analoggyro
+from wpilib.robotbase import hal
 
 from constants import Constants
 from subsystems import drive
-from utils import pose, singleton
+from utils import pose, singleton, units, vector2d
 
 
 class Odemetry(metaclass=singleton.Singleton):
+    """A singleton dealing with the odemetry of the robot."""
 
     def __init__(self):
         """Initilize the Odemetry class."""
@@ -18,11 +21,17 @@ class Odemetry(metaclass=singleton.Singleton):
         self.drive = drive.Drive()
         self.timestamp = 0
         self.last_timestamp = 0
+        self.dt = 0
+
+        self.ir_motor = ctre.WPI_TalonSRX(Constants.IR_MOTOR_ID)
 
         # Gyroscope
-        self.gyro = adxrs450_gyro.ADXRS450_Gyro()
-        # self.gyro2 = PigeonIMU(6)
-        self.gyro.calibrate()
+        if hal.isSimulation():
+            self.gyro = analoggyro.AnalogGyro(0)
+        else:
+            self.gyro = PigeonIMU(self.ir_motor)
+
+        self.calibrate()
 
         self.pose = pose.Pose()
 
@@ -31,22 +40,30 @@ class Odemetry(metaclass=singleton.Singleton):
         self.last_angle = 0
 
     def reset(self):
-        self.gyro.reset()
+        if hal.isSimulation():
+            self.gyro.reset()
+        else:
+            self.gyro.setYaw(0, 0)
+            self.pose = pose.Pose()
+
+    def calibrate(self):
+        if not hal.isSimulation():
+            # TODO how to calibrate pigeon
+            pass
 
     def outputToSmartDashboard(self):
-        Dash.putNumber(
-            "Left Encoder Inches", self.drive.getDistanceInchesLeft())
-        Dash.putNumber(
-            "Right Encoder Inches", self.drive.getDistanceInchesRight())
         Dash.putNumber(
             "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
         Dash.putNumber(
             "Right Encoder Ticks", self.drive.getDistanceTicksRight())
-        Dash.putNumber("Gyro Angle", self.getAngle())
-        Dash.putNumber("Pos X", self.pose.x)
-        Dash.putNumber("Pos Y", self.pose.y)
-        Dash.putNumber("Heading", self.pose.angle)
-        # Dash.putNumber("Gyro 2 Yaw", self.gyro2.getYawPitchRoll()[0])
+        Dash.putNumber(
+            "Left Encoder Inches", self.drive.getDistanceInchesLeft())
+        Dash.putNumber(
+            "Right Encoder Inches", self.drive.getDistanceInchesRight())
+
+        Dash.putNumber("Pos X", self.pose.pos.x)
+        Dash.putNumber("Pos Y", self.pose.pos.y)
+        Dash.putNumber("Angle", self.getAngle())
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
@@ -54,15 +71,21 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getDistanceDelta(self):
         """Use encoders to return the distance change in inches."""
-        return (((self.last_left_encoder_distance-self.drive.getDistanceInchesLeft()) + (self.last_right_encoder_distance-self.drive.getDistanceInchesRight())) / 2.0)
+        return (((self.drive.getDistanceInchesLeft()-self.last_left_encoder_distance) + (self.drive.getDistanceInchesRight()-self.last_right_encoder_distance)) / 2.0)
 
     def getVelocity(self):
         """Use the distance delta to return the velocity in inches/sec."""
-        return self.getDistanceDelta()/(self.timestamp-self.last_timestamp)
+        if self.dt != 0:
+            return self.getDistanceDelta()/self.dt
+        else:
+            return 0
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
-        return math.radians(self.gyro.getAngle())
+        if hal.isSimulation():
+            return -units.degreesToRadians(self.gyro.getAngle())
+        else:
+            return -units.degreesToRadians(self.gyro.getYawPitchRoll()[0])
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
@@ -71,11 +94,12 @@ class Odemetry(metaclass=singleton.Singleton):
     def updateState(self, timestamp):
         """Use odemetry to update the robot state."""
         self.timestamp = timestamp
+        self.dt = self.timestamp-self.last_timestamp
         # update angle
         self.pose.angle = self.getAngle()
         # update x and y positions
-        self.pose.x += self.getDistanceDelta()*math.cos(self.pose.angle)
-        self.pose.y += self.getDistanceDelta()*math.sin(self.pose.angle)
+        self.pose.pos.x += self.getDistanceDelta() * math.cos(self.pose.angle)
+        self.pose.pos.y += self.getDistanceDelta() * math.sin(self.pose.angle)
         # update last distances for next periodic
         self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
         self.last_right_encoder_distance = self.drive.getDistanceInchesRight()
@@ -84,5 +108,5 @@ class Odemetry(metaclass=singleton.Singleton):
         self.last_timestamp = self.timestamp
 
     def getState(self):
-        """Return the robot pose (position and orientation)."""
+        """Return the robot pose (position [inches] and orientation [radians])."""
         return self.pose

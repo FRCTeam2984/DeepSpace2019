@@ -3,8 +3,9 @@ import json
 import math
 import os.path
 
-from utils import hermitecurve as hc
-from utils import pose, vector2d
+from splines import hermitecurve as hc
+from utils import pose, vector2d, log
+from paths import jsonfinder
 
 
 class HermiteSpline:
@@ -53,17 +54,29 @@ class HermiteSpline:
         """Interpolate a point along the spline where 0 <= t <= 1."""
         if len(self.curves) == 0:
             return None
-        ret = self.curves[self._getT(t)[1]].interpolatePoint(
+        return self.curves[self._getT(t)[1]].interpolatePoint(
             self._getT(t)[0])
-        return ret
 
     def interpolateDerivative(self, t):
         """Interpolate a derivative along the spline where 0 <= t <= 1."""
         if len(self.curves) == 0:
             return None
-        ret = self.curves[self._getT(t)[1]].interpolateDerivative(
+        return self.curves[self._getT(t)[1]].interpolateDerivative(
             self._getT(t)[0])
-        return ret
+
+    def interpolate2ndDerivative(self, t):
+        """Interpolate a 2nd derivative along the spline where 0 <= t <= 1."""
+        if len(self.curves) == 0:
+            return None
+        return self.curves[self._getT(t)[1]].interpolate2ndDerivative(
+            self._getT(t)[0])
+
+    def interpolateCurvature(self, t):
+        """Interpolate the curvature along the spline where 0 <= t <= 1."""
+        if len(self.curves) == 0:
+            return None
+        return self.curves[self._getT(t)[1]].interpolateCurvature(
+            self._getT(t)[0])
 
     def getPoints(self):
         """Interpolate a list of points that is self.res long."""
@@ -71,25 +84,35 @@ class HermiteSpline:
 
     def getDerivatives(self):
         """Interpolate a list of derivatives that is self.res long."""
-
         return [self.interpolateDerivative(i/self.res) for i in range(0, self.res+1)]
+
+    def get2ndDerivatives(self):
+        """Interpolate a list of 2nd derivatives that is self.res long."""
+        return [self.interpolate2ndDerivative(i/self.res) for i in range(0, self.res+1)]
+
+    def getCurvatures(self):
+        """Interpolate a list of curvatures that is self.res long."""
+        return [self.interpolateCurvature(i/self.res) for i in range(0, self.res+1)]
 
     def load(self, filename):
         """Load a json path file into a spline. The paths folder is searched by default."""
-        if os.path.exists("paths/{}".format(filename)) and not os.path.exists(filename):
-            filename = "paths/{}".format(filename)
-        with open(filename) as path_data:
-            path_json = json.load(path_data)
-            for point_data in path_json:
-                try:
-                    pose_data = point_data["pose"]
-                    pose0 = pose.Pose(
-                        pose_data["x"], pose_data["y"], pose_data["heading"])
-                    self.addPose(pose0)
-                except KeyError:
-                    print("Json is invalid")
-                    return
-        self.updateCurves()
+        path = jsonfinder.getPath(filename)
+        try:
+            with open(path) as path_data:
+                path_json = json.load(path_data)
+                for point_data in path_json:
+                    try:
+                        pose_data = point_data["pose"]
+                        pose0 = pose.Pose(
+                            pose_data["x"], pose_data["y"], pose_data["heading"])
+                        self.addPose(pose0)
+                    except KeyError:
+                        # TODO Make error reporting more obvious to operator
+                        log.printerr("Json is invalid")
+                        return
+            self.updateCurves()
+        except FileNotFoundError:
+            log.printerr("{} not found".format(filename))
 
     def __str__(self):
         return "[{}]".format(", ".join(str(p) for p in self.poses))
