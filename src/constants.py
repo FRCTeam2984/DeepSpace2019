@@ -1,6 +1,6 @@
 import json
 import math
-
+from utils import log
 
 class Constants:
     """Global constants that are accesed throughout the project."""
@@ -89,5 +89,5 @@ class Constants:
                 with open(Constants.CONSTANTS_JSON_PATH, "w") as json_file:
                     json.dump(class_dict, json_file, indent=4)
             except FileNotFoundError:
-                print("Failed to dump constants json, probably unit testing")
+                log.printerr("Failed to dump constants json, probably unit testing")
                 return
