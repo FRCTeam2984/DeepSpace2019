@@ -33,6 +33,18 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.rm_motor.configSelectedFeedbackSensor(
             ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
 
+        self.lm_motor.setSensorPhase(True)
+
+        self.lm_motor.configNominalOutputForward(0, 5)
+        self.lm_motor.configNominalOutputReverse(0, 5)
+        self.lm_motor.configPeakOutputForward(1, 5)
+        self.lm_motor.configPeakOutputReverse(-1, 5)
+
+        self.rm_motor.configNominalOutputForward(0, 5)
+        self.rm_motor.configNominalOutputReverse(0, 5)
+        self.rm_motor.configPeakOutputForward(1, 5)
+        self.rm_motor.configPeakOutputReverse(-1, 5)
+
     def zeroSensors(self):
         """Set the encoder positions to 0."""
         self.lm_motor.setSelectedSensorPosition(0, 0, 0)
@@ -48,11 +60,8 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         Dash.putNumber("Right Slave Voltage",
                        self.getVoltageRightSlave())
 
-    def setPercentOutput(self, left_signal=0, right_signal=0, vector=None):
+    def setPercentOutput(self, left_signal, right_signal):
         """Set the percent output of the left and right motors."""
-        if vector != None:
-            left_signal = vector.x
-            right_signal = vector.y
         left_signal = min(max(left_signal, -1), 1)
         right_signal = min(max(right_signal, -1), 1)
         self.lm_motor.set(
