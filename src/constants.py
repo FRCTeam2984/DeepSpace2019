@@ -5,7 +5,7 @@ import math
 class Constants:
     """Global constants that are accesed throughout the project."""
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
-    
+
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
 
@@ -16,10 +16,10 @@ class Constants:
     GYRO_ID = 6
 
     # Drive motors
-    LS_MOTOR_ID = 1
-    LM_MOTOR_ID = 3
-    RS_MOTOR_ID = 5
-    RM_MOTOR_ID = 2
+    FL_MOTOR_ID = 1
+    FR_MOTOR_ID = 3
+    BL_MOTOR_ID = 5
+    BR_MOTOR_ID = 2
 
     # Intake motors
     IR_MOTOR_ID = 6
@@ -29,7 +29,8 @@ class Constants:
     WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
     # inches (distance between front and back wheels) TODO update
-    WHEEL_BASE = 27.75
+    X_WHEEL_BASE = 27.75
+    Y_WHEEL_BASE = 27.75
     # inches (distance between left and right wheels) TODO update
     TRACK_WIDTH = 27.75
 
@@ -38,10 +39,10 @@ class Constants:
     DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440  # TODO update
 
     # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.01
+    TURN_TO_ANGLE_KP = 0.1
     TURN_TO_ANGLE_KI = 0
     TURN_TO_ANGLE_KD = 0
-    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_TIMEOUT = 10
 
     TURN_TO_ANGLE_TOLERANCE = 0.0873
 

@@ -19,103 +19,76 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def init(self):
         """Initialize the drive motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
-        self.ls_motor = ctre.WPI_TalonSRX(Constants.LS_MOTOR_ID)
-        self.lm_motor = ctre.WPI_TalonSRX(Constants.LM_MOTOR_ID)
-        self.rs_motor = ctre.WPI_TalonSRX(Constants.RS_MOTOR_ID)
-        self.rm_motor = ctre.WPI_TalonSRX(Constants.RM_MOTOR_ID)
+        self.fl_motor = ctre.WPI_TalonSRX(Constants.FL_MOTOR_ID)
+        self.fr_motor = ctre.WPI_TalonSRX(Constants.FR_MOTOR_ID)
+        self.bl_motor = ctre.WPI_TalonSRX(Constants.BL_MOTOR_ID)
+        self.br_motor = ctre.WPI_TalonSRX(Constants.BR_MOTOR_ID)
 
-        # Set up motors in slave-master config
-        self.rs_motor.follow(self.rm_motor)
-        self.ls_motor.follow(self.lm_motor)
+        self.motors = [self. fl_motor, self.fr_motor,
+                       self.bl_motor, self.br_motor]
 
-        self.lm_motor.configSelectedFeedbackSensor(
-            ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
-        self.rm_motor.configSelectedFeedbackSensor(
-            ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
-
-        self.lm_motor.setSensorPhase(True)
-
-        self.lm_motor.configNominalOutputForward(0, 5)
-        self.lm_motor.configNominalOutputReverse(0, 5)
-        self.lm_motor.configPeakOutputForward(1, 5)
-        self.lm_motor.configPeakOutputReverse(-1, 5)
-
-        self.rm_motor.configNominalOutputForward(0, 5)
-        self.rm_motor.configNominalOutputReverse(0, 5)
-        self.rm_motor.configPeakOutputForward(1, 5)
-        self.rm_motor.configPeakOutputReverse(-1, 5)
+        for motor in self.motors:
+            motor.configSelectedFeedbackSensor(
+                ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
+            motor.configNominalOutputForward(0, 5)
+            motor.configNominalOutputReverse(0, 5)
+            motor.configPeakOutputForward(1, 5)
+            motor.configPeakOutputReverse(-1, 5)
 
     def zeroSensors(self):
         """Set the encoder positions to 0."""
-        self.lm_motor.setSelectedSensorPosition(0, 0, 0)
-        self.rm_motor.setSelectedSensorPosition(0, 0, 0)
+        for motor in self.motors:
+            motor.setSelectedSensorPosition(0, 0, 0)
 
     def outputToSmartDashboard(self):
-        Dash.putNumber("Left Master Voltage",
-                       self.getVoltageLeftMaster())
-        Dash.putNumber("Right Master Voltage",
-                       self.getVoltageRightMaster())
-        Dash.putNumber("Left Slave Voltage",
-                       self.getVoltageLeftSlave())
-        Dash.putNumber("Right Slave Voltage",
-                       self.getVoltageRightSlave())
+        Dash.putNumber("Front Left Voltage",
+                       self.getVoltageFrontLeft())
+        Dash.putNumber("Front Right Voltage",
+                       self.getVoltageFrontRight())
+        Dash.putNumber("Back Left Voltage",
+                       self.getVoltageBackLeft())
+        Dash.putNumber("Back Right Voltage",
+                       self.getVoltageBackRight())
 
-    def setPercentOutput(self, left_signal, right_signal):
+    def setPercentOutput(self, fl_signal, fr_signal, bl_signal, br_signal):
         """Set the percent output of the left and right motors."""
-        left_signal = min(max(left_signal, -1), 1)
-        right_signal = min(max(right_signal, -1), 1)
-        self.lm_motor.set(
-            ctre.WPI_TalonSRX.ControlMode.PercentOutput, left_signal)
-        self.rm_motor.set(
-            ctre.WPI_TalonSRX.ControlMode.PercentOutput, right_signal)
+        fl_signal = min(max(fl_signal, -1), 1)
+        fr_signal = min(max(fr_signal, -1), 1)
+        bl_signal = min(max(bl_signal, -1), 1)
+        br_signal = min(max(br_signal, -1), 1)
 
-    def getVoltageLeftMaster(self):
+        self.fl_motor.set(
+            ctre.WPI_TalonSRX.ControlMode.PercentOutput, fl_signal)
+        self.fr_motor.set(
+            ctre.WPI_TalonSRX.ControlMode.PercentOutput, fr_signal)
+        self.bl_motor.set(
+            ctre.WPI_TalonSRX.ControlMode.PercentOutput, bl_signal)
+        self.br_motor.set(
+            ctre.WPI_TalonSRX.ControlMode.PercentOutput, br_signal)
+
+    def setDirectionOutput(self, x_signal, y_signal, rotation):
+        """Set the percent output of the left and right motors."""
+        fl_signal = x_signal + y_signal + rotation
+        fr_signal = x_signal - y_signal - rotation
+        bl_signal = x_signal - y_signal + rotation
+        br_signal = x_signal + y_signal - rotation
+        self.setPercentOutput(fl_signal, fr_signal, bl_signal, br_signal)
+
+    def getVoltageFrontLeft(self):
         """Return the voltage of the left master motor."""
-        return self.lm_motor.getBusVoltage()
+        return self.fl_motor.getBusVoltage()
 
-    def getVoltageRightMaster(self):
-        """Returns the voltage for the right master motor."""
-        return self.rm_motor.getBusVoltage()
+    def getVoltageFrontRight(self):
+        """Return the voltage of the left master motor."""
+        return self.fr_motor.getBusVoltage()
 
-    def getVoltageLeftSlave(self):
-        """Returns the voltage for the left slave motor."""
-        return self.ls_motor.getBusVoltage()
+    def getVoltageBackLeft(self):
+        """Return the voltage of the left master motor."""
+        return self.bl_motor.getBusVoltage()
 
-    def getVoltageRightSlave(self):
-        """Returns the voltage for the right slave motor."""
-        return self.rs_motor.getBusVoltage()
-
-    def getDistanceTicksLeft(self):
-        """Return the distance (in ticks) of the left encoder."""
-        return self.lm_motor.getSelectedSensorPosition(0)
-
-    def getDistanceTicksRight(self):
-        """Return the distance (in ticks) of the right encoder."""
-        return self.rm_motor.getSelectedSensorPosition(0)
-
-    def getVelocityTicksLeft(self):
-        """Return the velocity (in ticks/sec) of the left encoder."""
-        return self.lm_motor.getSelectedSensorVelocity(0)
-
-    def getVelocityTicksRight(self):
-        """Return the velocity (in ticks/sec) of the right encoder."""
-        return self.rm_motor.getSelectedSensorVelocity(0)
-
-    def getDistanceInchesLeft(self):
-        """Return the distance (in inches) of the left encoder."""
-        return units.ticksToInchesLeft(self.getDistanceTicksLeft())
-
-    def getDistanceInchesRight(self):
-        """Return the distance (in inches) of the right encoder."""
-        return units.ticksToInchesRight(self.getDistanceTicksRight())
-
-    def getVelocityInchesLeft(self):
-        """Return the velocity (in inches/sec) of the right encoder."""
-        return units.ticksToInchesLeft(self.getVelocityTicksLeft())
-
-    def getVelocityInchesRight(self):
-        """Return the velocity (in inches/sec) of the right encoder."""
-        return units.ticksToInchesRight(self.getVelocityTicksRight())
+    def getVoltageBackRight(self):
+        """Return the voltage of the left master motor."""
+        return self.br_motor.getBusVoltage()
 
     def initDefaultCommand(self):
         return self.setDefaultCommand(tankdrive.TankDrive())

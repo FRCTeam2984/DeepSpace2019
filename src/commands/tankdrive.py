@@ -21,14 +21,13 @@ class TankDrive(Command):
         return
 
     def execute(self):
-        power = math.pow(oi.OI().getDriver().getY(),
-                         Constants.TANK_DRIVE_EXPONENT)
-        rotation = oi.OI().getDriver().getZ()
-        rotation = rotation if abs(
-            rotation) > Constants.JOYSTICK_DEADZONE else 0
-        left = power - rotation
-        right = power + rotation
-        self.drive.setPercentOutput(left, right)
+        x_speed = math.pow(oi.OI().getDriver().getY(),
+                           Constants.TANK_DRIVE_EXPONENT)
+        y_speed = math.pow(oi.OI().getDriver().getX(),
+                           Constants.TANK_DRIVE_EXPONENT)
+        rotation = math.pow(oi.OI().getDriver().getZ(),
+                            Constants.TANK_DRIVE_EXPONENT)
+        self.drive.setDirectionOutput(x_speed, y_speed, rotation)
 
     def isFinished(self):
         return False
