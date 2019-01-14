@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import drivetimed
+from commands import drivetimed, drivetilldistance
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -7,4 +7,5 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(drivetimed.DriveTimed(1, 1, 1000))
+        self.addSequential(drivetilldistance.DriveTillDistanceAway())
+        # self.addSequential(drivetimed.DriveTimed(1, 1, 1000))

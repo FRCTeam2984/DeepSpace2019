@@ -29,6 +29,11 @@ class Constants:
     TANK_DRIVE_EXPONENT = 3
     JOYSTICK_DEADZONE = 0.05
 
+    DISTANCE_SENSOR_PORT = 0
+    DISTANCE_SENSOR_THRESHOLD = 15 # inches
+    CM_TO_IN_MULTIPLYER = 2.54
+
+
     @staticmethod
     def updateConstants():
         try:

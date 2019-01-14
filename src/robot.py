@@ -34,7 +34,7 @@ class Robot(CommandBasedRobot):
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
         # Start the camera sever
-        CameraServer.launch()
+        # CameraServer.launch()
 
     def globalInit(self):
         """Run on every init."""
