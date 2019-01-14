@@ -5,7 +5,7 @@ import math
 class Constants:
     """Global constants that are accesed throughout the project."""
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
-
+    
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
 
@@ -34,15 +34,16 @@ class Constants:
     TRACK_WIDTH = 27.75
 
     # Encoder measurements
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 360  # TODO update
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 360  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440  # TODO update
 
     # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.34
-    TURN_TO_ANGLE_KI = 0.57
-    TURN_TO_ANGLE_KD = 0.0057
+    TURN_TO_ANGLE_KP = 0.01
+    TURN_TO_ANGLE_KI = 0
+    TURN_TO_ANGLE_KD = 0
+    TURN_TO_ANGLE_TIMEOUT = 1000
 
-    TURN_TO_ANGLE_TOLERANCE =  0.0873
+    TURN_TO_ANGLE_TOLERANCE = 0.0873
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -86,7 +87,7 @@ class Constants:
                 ) if not key.startswith("__")}
                 class_dict.pop('updateConstants', None)
                 with open(Constants.CONSTANTS_JSON_PATH, "w") as json_file:
-                    json.dump(class_dict, json_file)
+                    json.dump(class_dict, json_file, indent=4)
             except FileNotFoundError:
                 print("Failed to dump constants json, probably unit testing")
                 return
