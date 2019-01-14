@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import pathchooser, turntoangle, moveright, driveatcurvature, drivetimed
+from commands import pathchooser, turntoangle, movehorizontal, driveatcurvature, drivetimed
 
 
 class AutonomousCommandGroup(CommandGroup):
