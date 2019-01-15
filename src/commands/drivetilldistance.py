@@ -11,16 +11,17 @@ class DriveTillDistanceAway(Command):
         super().__init__()
         self.drive = drive.Drive()
         self.distance = distance.DistanceSensor()
+        self.distance.init()
         self.requires(self.drive)
         self.requires(self.distance)
 
 
     def initialize(self):
         print("INIT")
-        self.drive.setPercentOutput(0.5, 0.5)
+        self.drive.setPercentOutput(0.1, 0.1)
 
     def execute(self):
-        print("RUNNING")
+        print("RUNNING - {}".format( self.distance.distanceInches() ))
         pass
 
     def isFinished(self):
