@@ -1,5 +1,7 @@
 from utils import joystick, singleton
 from constants import Constants
+from wpilib.buttons.joystickbutton import JoystickButton
+from commands import togglehatchlatch
 
 
 class OI(metaclass=singleton.Singleton):
@@ -11,3 +13,5 @@ class OI(metaclass=singleton.Singleton):
             Constants.DRIVER_PORT, Constants.DRIVER_X_MOD, Constants.DRIVER_Y_MOD, Constants.DRIVER_Z_MOD)
         self.operator = joystick.Joystick(
             Constants.OPERATOR_PORT, Constants.OPERATOR_X_MOD, Constants.OPERATOR_Y_MOD, Constants.OPERATOR_Z_MOD)
+        self.hatchbutton = JoystickButton(self.driver, 1)
+        self.hatchbutton.whenPressed(togglehatchlatch.ToggleHatchLatch())
