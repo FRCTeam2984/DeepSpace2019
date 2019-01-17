@@ -21,6 +21,7 @@ class Constants:
     LM_MOTOR_ID = 3
     RS_MOTOR_ID = 5
     RM_MOTOR_ID = 2
+    MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
     IR_MOTOR_ID = 6

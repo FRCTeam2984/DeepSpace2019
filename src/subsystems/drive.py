@@ -63,14 +63,14 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.rm_motor.setSelectedSensorPosition(0, 0, 0)
 
     def outputToSmartDashboard(self):
-        # Dash.putNumber("Left Master Voltage",
-        #                self.getVoltageLeftMaster())
-        # Dash.putNumber("Right Master Voltage",
-        #                self.getVoltageRightMaster())
-        # Dash.putNumber("Left Slave Voltage",
-        #                self.getVoltageLeftSlave())
-        # Dash.putNumber("Right Slave Voltage",
-        #                self.getVoltageRightSlave())
+        Dash.putNumber("Left Master Voltage",
+                       self.getVoltageLeftMaster())
+        Dash.putNumber("Right Master Voltage",
+                       self.getVoltageRightMaster())
+        Dash.putNumber("Left Slave Voltage",
+                       self.getVoltageLeftSlave())
+        Dash.putNumber("Right Slave Voltage",
+                       self.getVoltageRightSlave())
         Dash.putNumber("Left Ticks Velocity", self.getVelocityTicksLeft())
         Dash.putNumber("Right Ticks Velocity", self.getVelocityTicksRight())
         Dash.putNumber("Left Inches Velocity", self.getVelocityInchesLeft())
@@ -80,20 +80,21 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent output of the left and right motors."""
-        val = 0.8
-        left_signal = min(max(left_signal, -val), val)
-        right_signal = min(max(right_signal, -val), val)
+        left_signal = min(max(left_signal, -Constants.MAX_DRIVE_OUTPUT), Constants.MAX_DRIVE_OUTPUT)
+        right_signal = min(max(right_signal, -Constants.MAX_DRIVE_OUTPUT), Constants.MAX_DRIVE_OUTPUT)
         self.lm_motor.set(
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, left_signal)
         self.rm_motor.set(
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, right_signal)
 
     def setVelocitySetpoint(self, left_velocity, right_velocity):
-        """Set the percent output of the left and right motors."""
+        """Set the velocity setpoint (inches/sec) of the left and right motors."""
+        native_left = units.inchesPerSecToTicksPer100msLeft(left_velocity)
+        native_right = units.inchesPerSecToTicksPer100msLeft(right_velocity)
         self.lm_motor.set(
-            ctre.WPI_TalonSRX.ControlMode.Velocity, left_velocity)
+            ctre.WPI_TalonSRX.ControlMode.Velocity, native_left)
         self.rm_motor.set(
-            ctre.WPI_TalonSRX.ControlMode.Velocity, right_velocity)
+            ctre.WPI_TalonSRX.ControlMode.Velocity, native_right)
 
     def getVoltageLeftMaster(self):
         """Return the voltage of the left master motor."""
@@ -120,11 +121,11 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         return self.rm_motor.getSelectedSensorPosition(0)
 
     def getVelocityTicksLeft(self):
-        """Return the velocity (in ticks/sec) of the left encoder."""
+        """Return the velocity (in ticks/100ms) of the left encoder."""
         return self.lm_motor.getSelectedSensorVelocity(0)
 
     def getVelocityTicksRight(self):
-        """Return the velocity (in ticks/sec) of the right encoder."""
+        """Return the velocity (in ticks/100ms) of the right encoder."""
         return self.rm_motor.getSelectedSensorVelocity(0)
 
     def getDistanceInchesLeft(self):

@@ -15,10 +15,8 @@ class DriveTimed(Command):
         self.timer = wpilib.Timer()
         self.timeout = timeout
 
-        self.left_velocity = units.inchesPerSecToTicksPer100msLeft(
-            left_velocity)
-        self.right_velocity = units.inchesPerSecToTicksPer100msRight(
-            right_velocity)
+        self.left_velocity = left_velocity
+        self.right_velocity = right_velocity
 
     def initialize(self):
         self.timer.start()
