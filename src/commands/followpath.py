@@ -28,7 +28,7 @@ class FollowPath(Command):
         self.follower.update(state)
         self.follower.outputToSmartDashboard()
         velocities = self.follower.target_velocities
-        self.drive.setPercentOutput(vector=velocities)
+        self.drive.setPercentOutput(velocities.x, velocities.y)
 
     def isFinished(self):
         return self.follower.isDone()
