@@ -42,12 +42,12 @@ def inchesPerSecToMetersPer100ms(inches_per_sec):
     return inchesToMeters(inches_per_sec/10)
 
 
-def inchesToTickLeft(inches):
+def inchesToTicksLeft(inches):
     """Convert inches to ticks for the left encoder."""
     return (inches*Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)/Constants.WHEEL_CIRCUMFERENCE
 
 
-def inchesToTickRight(inches):
+def inchesToTicksRight(inches):
     """Convert inches to ticks for the right encoder."""
     return (inches*Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)/Constants.WHEEL_CIRCUMFERENCE
 
@@ -60,3 +60,23 @@ def ticksToInchesLeft(ticks):
 def ticksToInchesRight(ticks):
     """Convert ticks to inches for the right encoder."""
     return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)*Constants.WHEEL_CIRCUMFERENCE
+
+
+def inchesPerSecToTicksPer100msLeft(inches_per_sec):
+    """Convert ticks per 100ms to inches per sec for the left encoder (ctre uses ticks/100ms)."""
+    return inchesToTicksLeft(inches_per_sec)/10
+
+
+def inchesPerSecToTicksPer100msRight(inches_per_sec):
+    """Convert ticks per 100ms to inches per sec for the right encoder (ctre uses ticks/100ms)."""
+    return inchesToTicksRight(inches_per_sec)/10
+
+
+def ticksPer100msToInchesPerSecLeft(ticks_per_100ms):
+    """Convert inches per sec to ticks per 100ms for the left encoder (ctre uses ticks/100ms)."""
+    return ticksToInchesLeft(ticks_per_100ms)*10
+
+
+def ticksPer100msToInchesPerSecRight(ticks_per_100ms):
+    """Convert inches per sec to ticks per 100ms for the right encoder (ctre uses ticks/100ms)."""
+    return ticksToInchesRight(ticks_per_100ms)*10

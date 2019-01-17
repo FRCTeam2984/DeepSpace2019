@@ -2,10 +2,11 @@ import json
 import math
 from utils import log
 
+
 class Constants:
     """Global constants that are accesed throughout the project."""
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
-    
+
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
 
@@ -36,6 +37,11 @@ class Constants:
     # Encoder measurements
     DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440  # TODO update
     DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440  # TODO update
+
+    DRIVE_MOTOR_KP = 0
+    DRIVE_MOTOR_KI = 0
+    DRIVE_MOTOR_KD = 0
+    DRIVE_MOTOR_KF = 1.2
 
     # Turn to angle pid values
     TURN_TO_ANGLE_KP = 0.01
@@ -72,6 +78,10 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 3
 
+    # Hatch latch
+    HATCH_LATCH_OPENED = 180
+    HATCH_LATCH_CLOSED = 0
+
     @staticmethod
     def updateConstants():
         try:
@@ -89,5 +99,6 @@ class Constants:
                 with open(Constants.CONSTANTS_JSON_PATH, "w") as json_file:
                     json.dump(class_dict, json_file, indent=4)
             except FileNotFoundError:
-                log.printerr("Failed to dump constants json, probably unit testing")
+                log.printerr(
+                    "Failed to dump constants json, probably unit testing")
                 return
