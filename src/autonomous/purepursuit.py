@@ -143,7 +143,7 @@ class PurePursuit():
         #print("Curvature - {}".format(self.cur_curvature))
         #print("Closes Point - {}".format(closest))
         #print("Target Velocities - {}".format(self.target_velocities))
-        #print("------------------------------")
+        # print("------------------------------")
 
     def isDone(self):
         """Check if the path is done being followed."""
