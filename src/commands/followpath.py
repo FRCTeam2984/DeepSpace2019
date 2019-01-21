@@ -7,7 +7,7 @@ from autonomous import purepursuit
 from constants import Constants
 from splines import hermitespline as hs
 from subsystems import drive
-from utils import pid, vector2d
+from utils import pidf, vector2d
 
 
 class FollowPath(Command):

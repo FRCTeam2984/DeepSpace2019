@@ -1,2 +1,2 @@
 """Useful utilities."""
-__all__ = ["joystick", "pid", "pose", "singleton", "units", "vector2d", "log"]
+__all__ = ["joystick", "pidf", "pose", "singleton", "units", "vector2d", "log"]
