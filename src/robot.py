@@ -23,6 +23,8 @@ class Robot(CommandBasedRobot):
         # Update constants from json file on robot
         if self.isReal():
             Constants.updateConstants()
+        # Update constants for dashboard editing
+        Constants.initSmartDashboard()
         # Initialize drive objects
         drive.Drive().init()
         # The PDP

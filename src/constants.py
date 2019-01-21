@@ -1,6 +1,7 @@
 import json
 import math
 from utils import log
+from networktables import NetworkTables
 
 
 class Constants:
@@ -82,6 +83,7 @@ class Constants:
     # Hatch latch
     HATCH_LATCH_OPENED = 180
     HATCH_LATCH_CLOSED = 0
+    ADRIVE_SPEED = 0
 
     @staticmethod
     def updateConstants():
@@ -103,3 +105,22 @@ class Constants:
                 log.printerr(
                     "Failed to dump constants json, probably unit testing")
                 return
+
+    @staticmethod
+    def initSmartDashboard():
+        constants_table = NetworkTables.getTable(
+            "SmartDashboard").getSubTable("CONSTANTS")
+        constants_table.addEntryListener(Constants._valueChanged)
+        for key, value in Constants.__dict__.items():
+            if not key.startswith("__"):
+                if isinstance(value, (int, float)):
+                    constants_table.putNumber(key, value)
+                elif isinstance(value, str):
+                    constants_table.putString(key, value)
+                elif isinstance(value, bool):
+                    constants_table.putBoolean(key, value)
+
+    @staticmethod
+    def _valueChanged(table, key, value, isNew):
+        if hasattr(Constants, key):
+            setattr(Constants, key, value)
