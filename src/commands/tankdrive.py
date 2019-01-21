@@ -8,14 +8,18 @@ from wpilib.smartdashboard import SmartDashboard
 import oi
 from constants import Constants
 from subsystems import drive
+import odemetry
+from utils import vector2d
 
 
 class TankDrive(Command):
-    def __init__(self):
+    def __init__(self, fieldcentric=False):
         super().__init__()
+        self.fieldcentric = fieldcentric
         self.drive = drive.Drive()
         self.requires(self.drive)
         self.drive.zeroSensors()
+        self.odemetry = odemetry.Odemetry()
 
     def initialize(self):
         return
@@ -27,6 +31,9 @@ class TankDrive(Command):
                            Constants.TANK_DRIVE_EXPONENT)
         rotation = math.pow(oi.OI().getDriver().getZ(),
                             Constants.TANK_DRIVE_EXPONENT)
+        if self.fieldcentric:
+            speed = vector2d.Vector2D(x_speed, y_speed).getRotated(-self.odemetry.getAngle())
+            x_speed, y_speed = speed.getValues()
         self.drive.setDirectionOutput(x_speed, y_speed, rotation)
 
     def isFinished(self):
