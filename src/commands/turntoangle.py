@@ -4,7 +4,7 @@ from wpilib.command import Command
 
 from constants import Constants
 from subsystems import drive
-from utils import pid, units
+from utils import pidf, units
 import odemetry
 import wpilib
 
@@ -16,36 +16,38 @@ class TurnToAngle(Command):
         self.odemetry = odemetry.Odemetry()
         self.requires(self.drive)
         self.setpoint = units.degreesToRadians(setpoint)
-        self.kp = Constants.TURN_TO_ANGLE_KP
-        self.ki = Constants.TURN_TO_ANGLE_KI
-        self.kd = Constants.TURN_TO_ANGLE_KD
-        self.error_tolerance = Constants.TURN_TO_ANGLE_TOLERANCE
-        self.timeout = Constants.TURN_TO_ANGLE_TIMEOUT
-        self.controller = pid.PID(
-            self.setpoint, self.kp, self.ki, self.kd, True, -180, 180)
+        self.relative = relative
+        self.timer = wpilib.Timer()
         self.timestamp = 0
         self.last_timestamp = 0
         self.cur_error = 0
-        self.relative = relative
-
-        self.timer = wpilib.Timer()
-        self.timeout = 1000
 
     def initialize(self):
+        self.kp = Constants.TURN_TO_ANGLE_KP
+        self.ki = Constants.TURN_TO_ANGLE_KI
+        self.kd = Constants.TURN_TO_ANGLE_KD
+        self.kf = Constants.TURN_TO_ANGLE_KF
+        self.error_tolerance = units.degreesToRadians(
+            Constants.TURN_TO_ANGLE_TOLERANCE)
+        self.timeout = Constants.TURN_TO_ANGLE_TIMEOUT
+        self.controller = pidf.PIDF(
+            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -180, 180)
         if self.relative:
             self.setpoint += units.degreesToRadians(self.odemetry.getAngle())
             self.controller.setpoint = self.setpoint
+        self.timer.reset()
 
     def execute(self):
         self.timestamp = self.timeSinceInitialized()
         dt = self.timestamp - self.last_timestamp
         self.last_timestamp = self.timestamp
         output = self.controller.update(self.odemetry.getAngle(), dt)
-        # print("Output: {}, Error: {}".format(
-        #    output, units.radiansToDegrees(self.controller.cur_error)))
+        if output < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
+            output = Constants.TURN_TO_ANGLE_MIN_OUTPUT
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
+
         self.drive.setPercentOutput(-output, output)
 
     def isFinished(self):
@@ -54,6 +56,4 @@ class TurnToAngle(Command):
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):
-        self.timer.reset()
         self.drive.setPercentOutput(0, 0)
-        return

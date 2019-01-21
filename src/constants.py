@@ -45,13 +45,15 @@ class Constants:
     DRIVE_MOTOR_KD = 0
     DRIVE_MOTOR_KF = 1.2
 
-    # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.01
-    TURN_TO_ANGLE_KI = 0
+    # Turn to angle pidf values
+    TURN_TO_ANGLE_KP = 0.4
+    TURN_TO_ANGLE_KI = 0.01
     TURN_TO_ANGLE_KD = 0
-    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_KF = 0
 
-    TURN_TO_ANGLE_TOLERANCE = 0.0873
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.1
+    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_TOLERANCE = 5
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -83,7 +85,6 @@ class Constants:
     # Hatch latch
     HATCH_LATCH_OPENED = 180
     HATCH_LATCH_CLOSED = 0
-    ADRIVE_SPEED = 0
 
     @staticmethod
     def updateConstants():

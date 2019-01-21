@@ -139,11 +139,6 @@ class PurePursuit():
         Dash.putNumberArray("Closes Point", [closest.x, closest.y])
         Dash.putNumberArray("Target Velocities", [
             self.target_velocities.x, self.target_velocities.y])
-        #print("Lookahead Point - {}".format(lookahead))
-        #print("Curvature - {}".format(self.cur_curvature))
-        #print("Closes Point - {}".format(closest))
-        #print("Target Velocities - {}".format(self.target_velocities))
-        # print("------------------------------")
 
     def isDone(self):
         """Check if the path is done being followed."""
