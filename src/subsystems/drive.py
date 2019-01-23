@@ -80,8 +80,10 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def setPercentOutput(self, left_signal, right_signal):
         """Set the percent output of the left and right motors."""
-        left_signal = min(max(left_signal, -Constants.MAX_DRIVE_OUTPUT), Constants.MAX_DRIVE_OUTPUT)
-        right_signal = min(max(right_signal, -Constants.MAX_DRIVE_OUTPUT), Constants.MAX_DRIVE_OUTPUT)
+        left_signal = min(
+            max(left_signal, -Constants.MAX_DRIVE_OUTPUT), Constants.MAX_DRIVE_OUTPUT)
+        right_signal = min(
+            max(right_signal, -Constants.MAX_DRIVE_OUTPUT), Constants.MAX_DRIVE_OUTPUT)
         self.lm_motor.set(
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, left_signal)
         self.rm_motor.set(

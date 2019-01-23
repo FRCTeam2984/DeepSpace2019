@@ -30,11 +30,10 @@ class TurnToAngle(Command):
         self.error_tolerance = units.degreesToRadians(
             Constants.TURN_TO_ANGLE_TOLERANCE)
         self.timeout = Constants.TURN_TO_ANGLE_TIMEOUT
-        self.controller = pidf.PIDF(
-            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -180, 180)
         if self.relative:
             self.setpoint += units.degreesToRadians(self.odemetry.getAngle())
-            self.controller.setpoint = self.setpoint
+        self.controller = pidf.PIDF(
+            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -180, 180)
         self.timer.reset()
 
     def execute(self):
@@ -42,17 +41,20 @@ class TurnToAngle(Command):
         dt = self.timestamp - self.last_timestamp
         self.last_timestamp = self.timestamp
         output = self.controller.update(self.odemetry.getAngle(), dt)
-        if output < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
-            output = Constants.TURN_TO_ANGLE_MIN_OUTPUT
+        if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
+            output = math.copysign(output, Constants.TURN_TO_ANGLE_MIN_OUTPUT)
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
-
         self.drive.setPercentOutput(-output, output)
 
     def isFinished(self):
-        if abs(self.controller.cur_error) < self.error_tolerance:
+        print(self.controller.cur_error)
+        if abs(self.controller.cur_error) <= self.error_tolerance and not self.timer.running:
             self.timer.start()
+        if abs(self.controller.cur_error) > self.error_tolerance and self.timer.running:
+            self.timer.stop()
+            self.timer.reset()
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):

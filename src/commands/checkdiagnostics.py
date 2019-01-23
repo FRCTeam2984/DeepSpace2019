@@ -15,7 +15,7 @@ class CheckDiagnostics(Command):
 
     def execute(self):
         self.diagnostic.update()
-        if not hal.isSimulation(): #TODO no output on update
+        if not hal.isSimulation():  # TODO no output on update
             self.diagnostic.log()
         self.diagnostic.outputToSmartDashboard()
 

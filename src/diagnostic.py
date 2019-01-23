@@ -57,7 +57,8 @@ class Diagnostic:
             self.pdp_logfile.writerow(
                 ["FPGATime"] + list(self.data["PDP"].keys()))
         if self.roborio_logfile == None:
-            self.roborio_logfile = csv.writer(open("/home/lvuser/roborio.csv", 'w'))
+            self.roborio_logfile = csv.writer(
+                open("/home/lvuser/roborio.csv", 'w'))
             self.roborio_logfile.writerow(
                 ["FPGATime"] + list(self.data["roboRIO"].keys()))
 
