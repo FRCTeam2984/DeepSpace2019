@@ -1,6 +1,8 @@
 import json
 import math
 from utils import log
+from networktables import NetworkTables
+
 
 class Constants:
     """Global constants that are accesed throughout the project."""
@@ -20,6 +22,7 @@ class Constants:
     LM_MOTOR_ID = 3
     RS_MOTOR_ID = 5
     RM_MOTOR_ID = 2
+    MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
     IR_MOTOR_ID = 6
@@ -34,15 +37,23 @@ class Constants:
     TRACK_WIDTH = 27.75
 
     # Encoder measurements
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 360  # TODO update
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 360  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440
 
-    # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.34
-    TURN_TO_ANGLE_KI = 0.57
-    TURN_TO_ANGLE_KD = 0.0057
+    DRIVE_MOTOR_KP = 0
+    DRIVE_MOTOR_KI = 0
+    DRIVE_MOTOR_KD = 0
+    DRIVE_MOTOR_KF = 1.2
 
-    TURN_TO_ANGLE_TOLERANCE =  0.0873
+    # Turn to angle pidf values
+    TURN_TO_ANGLE_KP = 0.4
+    TURN_TO_ANGLE_KI = 0.01
+    TURN_TO_ANGLE_KD = 0
+    TURN_TO_ANGLE_KF = 0
+
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.1
+    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_TOLERANCE = 5
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -76,6 +87,10 @@ class Constants:
     CM_TO_IN_MULTIPLYER = 2.54
 
 
+    # Hatch latch
+    HATCH_LATCH_OPENED = 180
+    HATCH_LATCH_CLOSED = 0
+
     @staticmethod
     def updateConstants():
         try:
@@ -91,7 +106,27 @@ class Constants:
                 ) if not key.startswith("__")}
                 class_dict.pop('updateConstants', None)
                 with open(Constants.CONSTANTS_JSON_PATH, "w") as json_file:
-                    json.dump(class_dict, json_file)
+                    json.dump(class_dict, json_file, indent=4)
             except FileNotFoundError:
-                log.printerr("Failed to dump constants json, probably unit testing")
+                log.printerr(
+                    "Failed to dump constants json, probably unit testing")
                 return
+
+    @staticmethod
+    def initSmartDashboard():
+        constants_table = NetworkTables.getTable(
+            "SmartDashboard").getSubTable("CONSTANTS")
+        constants_table.addEntryListener(Constants._valueChanged)
+        for key, value in Constants.__dict__.items():
+            if not key.startswith("__"):
+                if isinstance(value, (int, float)):
+                    constants_table.putNumber(key, value)
+                elif isinstance(value, str):
+                    constants_table.putString(key, value)
+                elif isinstance(value, bool):
+                    constants_table.putBoolean(key, value)
+
+    @staticmethod
+    def _valueChanged(table, key, value, isNew):
+        if hasattr(Constants, key):
+            setattr(Constants, key, value)

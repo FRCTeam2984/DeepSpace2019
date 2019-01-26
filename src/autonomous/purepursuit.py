@@ -27,10 +27,10 @@ class PurePursuit():
                 velocity = min(Constants.MAX_VELOCITY,
                                Constants.CURVE_VELOCITY/ppoint.curvature)
             ppoint.velocity = velocity
-        #print(self.pursuit_points[0].velocity)
         # Limit the acceleration of the velocities
         for i in reversed(range(0, len(self.pursuit_points)-1)):
-            distance = self.pursuit_points[i].point.getDistance(self.pursuit_points[i+1].point)
+            distance = self.pursuit_points[i].point.getDistance(
+                self.pursuit_points[i+1].point)
             new_velocity = math.sqrt(
                 self.pursuit_points[i+1].velocity**2 + (2 * Constants.MAX_ACCELERATION * distance))
             new_velocity = min(self.pursuit_points[i].velocity, new_velocity)
@@ -115,13 +115,17 @@ class PurePursuit():
         r_velocity = robot_velocity * \
             (2 - self.cur_curvature * Constants.TRACK_WIDTH) / \
             2 / Constants.PURE_PURSUIT_KV
+        scale = max(abs(l_velocity), abs(r_velocity))
+        if scale > 1:
+            l_velocity /= scale
+            r_velocity /= scale
         self.target_velocities = vector2d.Vector2D(l_velocity, r_velocity)
 
     def update(self, state):
         """Update the pure pursuit follower(runs all update functions)."""
         # TODO which lookahead function to use
-        # self.updateLookaheadPointIndex(state.pos)
-        self.updateLookaheadPointIndex2(state.pos)
+        self.updateLookaheadPointIndex(state.pos)
+        # self.updateLookaheadPointIndex2(state.pos)
         self.updateCurvature(state)
         self.updateClosestPointIndex(state.pos)
         self.updateTargetVelocities(state.pos)
@@ -135,11 +139,6 @@ class PurePursuit():
         Dash.putNumberArray("Closes Point", [closest.x, closest.y])
         Dash.putNumberArray("Target Velocities", [
             self.target_velocities.x, self.target_velocities.y])
-        #print("Lookahead Point - {}".format(lookahead))
-        #print("Curvature - {}".format(self.cur_curvature))
-        #print("Closes Point - {}".format(closest))
-        #print("Target Velocities - {}".format(self.target_velocities))
-        #print("------------------------------")
 
     def isDone(self):
         """Check if the path is done being followed."""

@@ -7,7 +7,7 @@ from autonomous import purepursuit
 from constants import Constants
 from splines import hermitespline as hs
 from subsystems import drive
-from utils import pid, vector2d
+from utils import pidf, vector2d
 
 
 class FollowPath(Command):
@@ -28,7 +28,7 @@ class FollowPath(Command):
         self.follower.update(state)
         self.follower.outputToSmartDashboard()
         velocities = self.follower.target_velocities
-        self.drive.setPercentOutput(vector=velocities)
+        self.drive.setPercentOutput(velocities.x, velocities.y)
 
     def isFinished(self):
         return self.follower.isDone()

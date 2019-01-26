@@ -24,8 +24,6 @@ class TankDrive(Command):
         power = math.pow(oi.OI().driver.getY(),
                          Constants.TANK_DRIVE_EXPONENT)
         rotation = oi.OI().driver.getZ()
-        rotation = rotation if abs(
-            rotation) > Constants.JOYSTICK_DEADZONE else 0
         left = power - rotation
         right = power + rotation
         self.drive.setPercentOutput(left, right)

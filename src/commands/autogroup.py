@@ -1,6 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import drivetimed, drivetilldistance
-from commands import pathchooser
+from commands import drivetimed, drivetilldistance, pathchooser, visiontest, turntoangle
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -8,6 +7,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        # self.addSequential(pathchooser.PathChooser())
-        self.addSequential(drivetilldistance.DriveTillDistanceAway())
-
+        self.addSequential(turntoangle.TurnToAngle(90, relative=True))
