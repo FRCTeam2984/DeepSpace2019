@@ -1,6 +1,7 @@
 import json
 import math
 from utils import log
+from networktables import NetworkTables
 
 
 class Constants:
@@ -44,13 +45,15 @@ class Constants:
     DRIVE_MOTOR_KD = 0
     DRIVE_MOTOR_KF = 1.2
 
-    # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.01
-    TURN_TO_ANGLE_KI = 0
+    # Turn to angle pidf values
+    TURN_TO_ANGLE_KP = 0.4
+    TURN_TO_ANGLE_KI = 0.01
     TURN_TO_ANGLE_KD = 0
-    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_KF = 0
 
-    TURN_TO_ANGLE_TOLERANCE = 0.0873
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.1
+    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_TOLERANCE = 5
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -103,3 +106,22 @@ class Constants:
                 log.printerr(
                     "Failed to dump constants json, probably unit testing")
                 return
+
+    @staticmethod
+    def initSmartDashboard():
+        constants_table = NetworkTables.getTable(
+            "SmartDashboard").getSubTable("CONSTANTS")
+        constants_table.addEntryListener(Constants._valueChanged)
+        for key, value in Constants.__dict__.items():
+            if not key.startswith("__"):
+                if isinstance(value, (int, float)):
+                    constants_table.putNumber(key, value)
+                elif isinstance(value, str):
+                    constants_table.putString(key, value)
+                elif isinstance(value, bool):
+                    constants_table.putBoolean(key, value)
+
+    @staticmethod
+    def _valueChanged(table, key, value, isNew):
+        if hasattr(Constants, key):
+            setattr(Constants, key, value)

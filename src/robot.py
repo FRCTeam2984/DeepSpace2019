@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-from commands import (autogroup, disabledgroup, teleopgroup, testgroup,
-                      updateodemetry)
+from commands import (autogroup, disabledgroup,
+                      teleopgroup, testgroup, globalgroup)
 
 import ctre
 import wpilib as wpi
 from commandbased import CommandBasedRobot
 from wpilib import PowerDistributionPanel as PDP
 from wpilib import SmartDashboard as Dash
+
 from wpilib.cameraserver import CameraServer
 from wpilib.command import Command
 
@@ -23,24 +24,28 @@ class Robot(CommandBasedRobot):
         # Update constants from json file on robot
         if self.isReal():
             Constants.updateConstants()
+        # Update constants for dashboard editing
+        Constants.initSmartDashboard()
         # Initialize drive objects
         drive.Drive().init()
         # The PDP
         self.pdp = PDP(Constants.PDP_ID)
-        # Robot odemetry command
-        self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
         self.autonomous = autogroup.AutonomousCommandGroup()
         self.disabled = disabledgroup.DisabledCommandGroup()
         self.disabled.setRunWhenDisabled(True)
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
+        self.global_ = globalgroup.GlobalCommandGroup()
+        self.global_.setRunWhenDisabled(True)
+
         # Start the camera sever
         CameraServer.launch()
+        self.globalInit()
 
     def globalInit(self):
         """Run on every init."""
-        self.updateodemetry.start()
+        self.global_.start()
 
     def disabledInit(self):
         """Run when robot enters disabled mode."""
@@ -61,12 +66,6 @@ class Robot(CommandBasedRobot):
         """Run when the robot enters test mode."""
         self.globalInit()
         self.test.start()
-
-    def outputToSmartDashboard(self):
-        Dash.putNumber("Total Current", self.pdp.getTotalCurrent())
-        for i in range(16):
-            Dash.putNumber("Channel {} Current".format(i),
-                           self.pdp.getCurrent(i))
 
 
 # defining main function

@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import visiontest
+from commands import visiontest, turntoangle
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -7,4 +7,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(visiontest.VisionTest())
+        self.addSequential(turntoangle.TurnToAngle(90, relative=True))
