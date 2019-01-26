@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import visiontest, turntoangle
+from commands import drivetimed, drivetilldistance, pathchooser, visiontest, turntoangle
 
 
 class AutonomousCommandGroup(CommandGroup):
