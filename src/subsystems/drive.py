@@ -23,6 +23,8 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.fr_motor = ctre.WPI_TalonSRX(Constants.FR_MOTOR_ID)
         self.bl_motor = ctre.WPI_TalonSRX(Constants.BL_MOTOR_ID)
         self.br_motor = ctre.WPI_TalonSRX(Constants.BR_MOTOR_ID)
+        self.br_motor.setInverted(True)
+        self.fr_motor.setInverted(True)
 
         self.motors = [self. fl_motor, self.fr_motor,
                        self.bl_motor, self.br_motor]
@@ -56,7 +58,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         fr_signal = min(max(fr_signal, -1), 1)
         bl_signal = min(max(bl_signal, -1), 1)
         br_signal = min(max(br_signal, -1), 1)
-
         self.fl_motor.set(
             ctre.WPI_TalonSRX.ControlMode.PercentOutput, fl_signal)
         self.fr_motor.set(

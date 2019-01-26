@@ -26,7 +26,7 @@ class Robot(CommandBasedRobot):
         # Initialize drive objects
         drive.Drive().init()
         # The PDP
-        self.pdp = PDP(Constants.PDP_ID)
+        # self.pdp = PDP(7)
         # Robot odemetry command
         self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
@@ -63,10 +63,11 @@ class Robot(CommandBasedRobot):
         self.test.start()
 
     def outputToSmartDashboard(self):
-        Dash.putNumber("Total Current", self.pdp.getTotalCurrent())
-        for i in range(16):
-            Dash.putNumber("Channel {} Current".format(i),
-                           self.pdp.getCurrent(i))
+        pass
+        # Dash.putNumber("Total Current", self.pdp.getTotalCurrent())
+        # for i in range(16):
+        #     Dash.putNumber("Channel {} Current".format(i),
+        #                    self.pdp.getCurrent(i))
 
 
 # defining main function

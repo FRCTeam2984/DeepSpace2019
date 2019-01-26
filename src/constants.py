@@ -10,20 +10,20 @@ class Constants:
     THEORETICAL_MAX_VELOCITY = 60
 
     # PDP
-    PDP_ID = 60
+    PDP_ID = 7
 
     # Gyro
     GYRO_ID = 6
 
     # Drive motors
-    FL_MOTOR_ID = 1
-    FR_MOTOR_ID = 3
-    BL_MOTOR_ID = 5
+    BL_MOTOR_ID = 1
     BR_MOTOR_ID = 2
+    FL_MOTOR_ID = 3
+    FR_MOTOR_ID = 4
 
     # Intake motors
+    IL_MOTOR_ID = 5
     IR_MOTOR_ID = 6
-    IL_MOTOR_ID = 4
 
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
