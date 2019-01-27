@@ -6,6 +6,8 @@ import csv
 
 
 class Diagnostic:
+    """Logs and outputs diagnostic data for debugging."""
+
     def __init__(self):
         self.pdp = PDP(Constants.PDP_ID)
         self.diagnostic_table = NetworkTables.getTable(
@@ -17,15 +19,18 @@ class Diagnostic:
         self.roborio_logfile = None
 
     def log(self):
+        """Log all data to a csv."""
         timestamp = RC.getFPGATime()
         self.logPDP(timestamp)
         self.logroboRIO(timestamp)
 
     def logPDP(self, timestamp):
+        """Log PDP data to a csv."""
         self.pdp_logfile.writerow(
             [timestamp] + list(self.data["PDP"].values()))
 
     def logroboRIO(self, timestamp):
+        """Log roboRIO data to a csv."""
         self.roborio_logfile.writerow(
             [timestamp] + list(self.data["roboRIO"].values()))
 
@@ -34,14 +39,17 @@ class Diagnostic:
         self.outputroboRIO()
 
     def outputPDP(self):
+        """Output PDP data to the dashboard."""
         for key, value in self.data["PDP"].items():
             self._putData(self.pdp_table, key, value)
 
     def outputroboRIO(self):
+        """Output roboRIO data to the dashboard."""
         for key, value in self.data["roboRIO"].items():
             self._putData(self.roborio_table, key, value)
 
     def _putData(self, table, key, value):
+        """Put various data to the dashboard."""
         if isinstance(value, (int, float)):
             self.roborio_table.putNumber(key, value)
         elif isinstance(value, str):
@@ -50,6 +58,7 @@ class Diagnostic:
             self.roborio_table.putBoolean(key, value)
 
     def update(self):
+        """Get all diagnostic data."""
         self.updatePDP()
         self.updateroboRIO()
         if self.pdp_logfile == None:
@@ -63,6 +72,7 @@ class Diagnostic:
                 ["FPGATime"] + list(self.data["roboRIO"].keys()))
 
     def updatePDP(self):
+        """Get PDP diagnostic data."""
         self.data["PDP"] = {}
         self.data["PDP"]["Total Current"] = self.pdp.getTotalCurrent()
         for i in range(16):
@@ -70,6 +80,7 @@ class Diagnostic:
         self.data["PDP"]["Input Voltage"] = self.pdp.getVoltage()
 
     def updateroboRIO(self):
+        """Get roboRIO diagnostic data."""
         self.data["roboRIO"] = {}
         self.data["roboRIO"]["Battery Voltage"] = RC.getBatteryVoltage()
         self.data["roboRIO"]["Current 3.3V Rail"] = RC.getCurrent3V3()
