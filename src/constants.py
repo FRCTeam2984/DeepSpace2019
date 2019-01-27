@@ -86,6 +86,12 @@ class Constants:
     HATCH_LATCH_OPENED = 180
     HATCH_LATCH_CLOSED = 0
 
+    # Vision
+    VISION_MOVEMENT_KP_X = 1
+    VISION_MOVEMENT_KP_Y = -1/40
+    VISION_ERROR_THRESH_X = 0.1
+    VISION_ERROR_THRESH_Y = 0.1
+
     @staticmethod
     def updateConstants():
         try:
