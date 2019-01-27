@@ -15,12 +15,16 @@ import oi
 from constants import Constants
 from subsystems import drive
 
+import logging
+import coloredlogs
+
 
 class Robot(CommandBasedRobot):
 
     def robotInit(self):
-        Command.getRobot = lambda x=0: self
         """Run when the robot turns on."""
+        coloredlogs.install()  # install to created handler
+        Command.getRobot = lambda x=0: self
         # Update constants from json file on robot
         if self.isReal():
             Constants.updateConstants()

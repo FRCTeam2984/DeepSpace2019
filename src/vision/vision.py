@@ -2,8 +2,6 @@ from networktables import NetworkTables
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
-
 
 class Vision():
     """A network table interface bewteen the robot 
@@ -15,4 +13,4 @@ class Vision():
 
     def _connectionListener(self, connected, info):
         """Outputs connection data."""
-        print(info, "; Connected=%s" % connected)
+        logging.info("{}; Connected={}".format(info, connected))
