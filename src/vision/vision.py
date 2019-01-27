@@ -4,7 +4,7 @@ import logging
 
 
 class Vision():
-    """A network table interface bewteen the robot 
+    """A network table interface between the robot 
        and the raspberry pi for vision tracking."""
 
     def __init__(self):
