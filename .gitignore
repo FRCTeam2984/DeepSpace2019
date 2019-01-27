@@ -1,3 +1,6 @@
+# Cache files while installing on robot
+opkg_cache/
+pip_cache/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
