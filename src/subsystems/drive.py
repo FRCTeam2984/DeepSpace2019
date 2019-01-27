@@ -42,7 +42,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         Dash.putNumber("Back Right Voltage", self.br_motor.getBusVoltage())
 
     def setPercentOutput(self, fl_signal, fr_signal, bl_signal, br_signal):
-        """Set the percent output of the left and right motors."""
+        """Set the percent output of the 4 motors."""
         self.bl_motor.setPercentOutput(
             bl_signal, max_signal=Constants.MAX_DRIVE_OUTPUT)
         self.br_motor.setPercentOutput(
@@ -53,7 +53,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             fr_signal, max_signal=Constants.MAX_DRIVE_OUTPUT)
 
     def setDirectionOutput(self, x_signal, y_signal, rotation):
-        """Set the percent output of the left and right motors."""
+        """Set percent output of the 4 motors given an x, y, and rotation inputs."""
         fl_signal = x_signal + y_signal + rotation
         fr_signal = x_signal - y_signal - rotation
         bl_signal = x_signal - y_signal + rotation
