@@ -22,7 +22,7 @@ class Constants:
     BR_MOTOR_ID = 2
     FL_MOTOR_ID = 3
     FR_MOTOR_ID = 4
-    MAX_DRIVE_OUTPUT = 0.3
+    MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
     IL_MOTOR_ID = 5
