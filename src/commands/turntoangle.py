@@ -47,7 +47,7 @@ class TurnToAngle(Command):
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
-        # self.drive.setPercentOutput(-output, output, -output, output)
+        self.drive.setPercentOutput(-output, output, -output, output)
 
     def isFinished(self):
         if abs(self.controller.cur_error) <= self.error_tolerance and not self.timer.running:

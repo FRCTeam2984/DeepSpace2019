@@ -54,13 +54,13 @@ class Constants:
 
     # Turn to angle pidf values
     TURN_TO_ANGLE_KP = 0.4
-    TURN_TO_ANGLE_KI = 0.01
+    TURN_TO_ANGLE_KI = 0.02
     TURN_TO_ANGLE_KD = 0
     TURN_TO_ANGLE_KF = 0
 
     TURN_TO_ANGLE_MIN_OUTPUT = 0.1
     TURN_TO_ANGLE_TIMEOUT = 1000
-    TURN_TO_ANGLE_TOLERANCE = math.radians(5)
+    TURN_TO_ANGLE_TOLERANCE = math.radians(1)
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
