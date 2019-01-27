@@ -1,4 +1,5 @@
 import math
+import logging
 from wpilib import SmartDashboard as Dash
 from wpilib.command import Command
 
@@ -49,7 +50,7 @@ class TurnToAngle(Command):
         self.drive.setPercentOutput(-output, output)
 
     def isFinished(self):
-        print(self.controller.cur_error)
+        logging.info("Cur Error: {}".format(self.controller.cur_error))
         if abs(self.controller.cur_error) <= self.error_tolerance and not self.timer.running:
             self.timer.start()
         if abs(self.controller.cur_error) > self.error_tolerance and self.timer.running:

@@ -5,6 +5,7 @@ from subsystems import drive
 from vision import vision
 import odemetry
 import wpilib
+import logging
 
 
 class VisionAlign(Command):
@@ -18,9 +19,8 @@ class VisionAlign(Command):
         pass
 
     def execute(self):
-        self.vision.update()
-        movement = self.vision.movement
-        self.drive.setPercentOutput(movement[0], movement[1])
+        logging.info("Vision Number Array: {}".format(
+            self.vision.table.getNumberArray("VISION DATA", [])))
 
     def isFinished(self):
         return self.vision.isAligned()

@@ -19,12 +19,12 @@ Ensure that you are in a virtual environment before running this
 1. Run `[pip executable] install robotpy-installer`
 2. While connected to the internet, run the following commands
 * `robotpy-installer download-robotpy`
-* `robotpy-installer download-opkg python36-robotpy-cscore`
-* `robotpy-installer download-opkg python36-robotpy-ctre`
-3. Connect back to the robot and run the following commands
+* `robotpy-installer download-opkg python37-robotpy-cscore python37-robotpy-ctre`
+* `robotpy-installer download-pip coloredlogs`
+1. Connect back to the robot and run the following commands
 * `robotpy-installer install-robotpy`
-* `robotpy-installer install-opkg python36-robotpy-cscore`
-* `robotpy-installer install-opkg python36-robotpy-ctre`
+* `robotpy-installer install-opkg python37-robotpy-cscore python37-robotpy-ctre`
+* `robotpy-installer install-pip coloredlogs`
 
 # Deploy to robot
 1. Run `[python executable] robot.py deploy`

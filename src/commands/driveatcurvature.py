@@ -3,6 +3,7 @@ from wpilib.command import Command
 from constants import Constants
 from subsystems import drive
 import wpilib
+import logging
 
 
 class DriveAtCurvature(Command):
@@ -25,7 +26,8 @@ class DriveAtCurvature(Command):
         l_velocity *= scale
         r_velocity *= scale
 
-        print("VELOCITY: {} - {}".format(l_velocity, r_velocity))
+        logging.info(
+            "Drive Curvature Velocity: {} - {}".format(l_velocity, r_velocity))
         self.drive.setPercentOutput(l_velocity, r_velocity)
 
     def isFinished(self):
