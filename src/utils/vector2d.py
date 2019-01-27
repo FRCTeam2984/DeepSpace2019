@@ -10,8 +10,7 @@ class Vector2D:
 
     def getDistance(self, other):
         """Compute the distance between 2 vectors."""
-        other = self - other
-        return other.getMagnitude()
+        return (self - other).getMagnitude()
 
     def getMagnitude(self):
         """Get the magnitude (distance to origin) of the vector."""

@@ -3,6 +3,7 @@ from wpilib.command import Command
 from constants import Constants
 from subsystems import drive
 import wpilib
+from utils import units
 
 
 class DriveTimed(Command):
@@ -28,4 +29,4 @@ class DriveTimed(Command):
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):
-        self.drive.setPercentOutput(0, 0)
+        self.drive.setPercentOutput(0, 0,0,0)

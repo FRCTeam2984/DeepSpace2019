@@ -1,5 +1,7 @@
 import json
 import math
+from utils import log
+from networktables import NetworkTables
 
 
 class Constants:
@@ -20,10 +22,17 @@ class Constants:
     BR_MOTOR_ID = 2
     FL_MOTOR_ID = 3
     FR_MOTOR_ID = 4
+    MAX_DRIVE_OUTPUT = 0.3
 
     # Intake motors
     IL_MOTOR_ID = 5
     IR_MOTOR_ID = 6
+
+    # Arm motors
+    BS_MOTOR_ID = 7
+    BM_MOTOR_ID = 8
+    FS_MOTOR_ID = 9
+    FM_MOTOR_ID = 10
 
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
@@ -35,16 +44,23 @@ class Constants:
     TRACK_WIDTH = 27.75
 
     # Encoder measurements
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440  # TODO update
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440  # TODO update
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440
+    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440
 
-    # Turn to angle pid values
-    TURN_TO_ANGLE_KP = 0.1
-    TURN_TO_ANGLE_KI = 0
+    DRIVE_MOTOR_KP = 0
+    DRIVE_MOTOR_KI = 0
+    DRIVE_MOTOR_KD = 0
+    DRIVE_MOTOR_KF = 1.2
+
+    # Turn to angle pidf values
+    TURN_TO_ANGLE_KP = 0.4
+    TURN_TO_ANGLE_KI = 0.01
     TURN_TO_ANGLE_KD = 0
-    TURN_TO_ANGLE_TIMEOUT = 10
+    TURN_TO_ANGLE_KF = 0
 
-    TURN_TO_ANGLE_TOLERANCE = 0.0873
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.1
+    TURN_TO_ANGLE_TIMEOUT = 1000
+    TURN_TO_ANGLE_TOLERANCE = math.radians(5)
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -73,6 +89,28 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 3
 
+    # Hatch latch
+    HATCH_LATCH_OPENED = 180
+    HATCH_LATCH_CLOSED = 0
+
+    # Front arm
+    FRONT_ARM_KP = 0
+    FRONT_ARM_KI = 0
+    FRONT_ARM_KD = 0
+    FRONT_ARM_KF = 0
+
+    BACK_ARM_KP = 0
+    BACK_ARM_KI = 0
+    BACK_ARM_KD = 0
+    BACK_ARM_KF = 0
+
+    # Game modes (front arm, intake, back arm)
+    GAME_MODE_STOW = [25,  0,  -90]
+    GAME_MODE_PLAY = [25,  -90,  0]
+    GAME_MODE_START_CLIMB = [0,  0,  0]
+    GAME_MODE_END_CLIMB = [-90,  0,  90]
+    GAME_MODE_END_GAME = [0,  0,  0]
+
     @staticmethod
     def updateConstants():
         try:
@@ -90,5 +128,25 @@ class Constants:
                 with open(Constants.CONSTANTS_JSON_PATH, "w") as json_file:
                     json.dump(class_dict, json_file, indent=4)
             except FileNotFoundError:
-                print("Failed to dump constants json, probably unit testing")
+                log.printerr(
+                    "Failed to dump constants json, probably unit testing")
                 return
+
+    @staticmethod
+    def initSmartDashboard():
+        constants_table = NetworkTables.getTable(
+            "SmartDashboard").getSubTable("CONSTANTS")
+        constants_table.addEntryListener(Constants._valueChanged)
+        for key, value in Constants.__dict__.items():
+            if not key.startswith("__"):
+                if isinstance(value, (int, float)):
+                    constants_table.putNumber(key, value)
+                elif isinstance(value, str):
+                    constants_table.putString(key, value)
+                elif isinstance(value, bool):
+                    constants_table.putBoolean(key, value)
+
+    @staticmethod
+    def _valueChanged(table, key, value, isNew):
+        if hasattr(Constants, key):
+            setattr(Constants, key, value)

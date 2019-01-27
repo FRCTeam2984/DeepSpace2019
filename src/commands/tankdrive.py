@@ -25,11 +25,11 @@ class TankDrive(Command):
         return
 
     def execute(self):
-        x_speed = math.pow(oi.OI().getDriver().getY(),
+        x_speed = math.pow(oi.OI().driver.getY(),
                            Constants.TANK_DRIVE_EXPONENT)
-        y_speed = math.pow(oi.OI().getDriver().getX(),
+        y_speed = math.pow(oi.OI().driver.getX(),
                            Constants.TANK_DRIVE_EXPONENT)
-        rotation = math.pow(oi.OI().getDriver().getZ(),
+        rotation = math.pow(oi.OI().driver.getZ(),
                             Constants.TANK_DRIVE_EXPONENT)
         if self.allocentric:
             speed = vector2d.Vector2D(

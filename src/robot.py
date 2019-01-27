@@ -1,18 +1,20 @@
 #!/usr/bin/env python
-from commands import (autogroup, disabledgroup, teleopgroup, testgroup,
-                      updateodemetry)
+from commands import (autogroup, disabledgroup,
+                      teleopgroup, testgroup, globalgroup)
 
 import ctre
 import wpilib as wpi
 from commandbased import CommandBasedRobot
 from wpilib import PowerDistributionPanel as PDP
 from wpilib import SmartDashboard as Dash
+
 from wpilib.cameraserver import CameraServer
 from wpilib.command import Command
 
 import oi
 from constants import Constants
 from subsystems import drive
+from wpilib import watchdog
 
 
 class Robot(CommandBasedRobot):
@@ -21,26 +23,34 @@ class Robot(CommandBasedRobot):
         Command.getRobot = lambda x=0: self
         """Run when the robot turns on."""
         # Update constants from json file on robot
-        if self.isReal():
-            Constants.updateConstants()
+        # if self.isReal():
+        #     Constants.updateConstants()
+        # Update constants for dashboard editing
+        Constants.initSmartDashboard()
         # Initialize drive objects
         drive.Drive().init()
         # The PDP
         # self.pdp = PDP(7)
-        # Robot odemetry command
-        self.updateodemetry = updateodemetry.UpdateOdemetry()
         # Set command group member variables
         self.autonomous = autogroup.AutonomousCommandGroup()
         self.disabled = disabledgroup.DisabledCommandGroup()
         self.disabled.setRunWhenDisabled(True)
         self.teleop = teleopgroup.TeleopCommandGroup()
         self.test = testgroup.TestCommandGroup()
+        self.global_ = globalgroup.GlobalCommandGroup()
+        self.global_.setRunWhenDisabled(True)
         # Start the camera sever
         CameraServer.launch()
+        self.watchdog = watchdog.Watchdog(0.05, self._watchdogTimeout)
+        self.globalInit()
+
+    def _watchdogTimeout(self):
+        print("WARNING: WATCHDOG TIMEOUT")
 
     def globalInit(self):
         """Run on every init."""
-        self.updateodemetry.start()
+        self.watchdog.enable()
+        self.global_.start()
 
     def disabledInit(self):
         """Run when robot enters disabled mode."""

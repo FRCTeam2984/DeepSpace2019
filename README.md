@@ -10,12 +10,10 @@ Vikings Robotics's code for DeepSpace 2019
 6. While in that directory, run `git remote add upstream https://github.com/FRCTeam2984/DeepSpace2019.git`
 
 # Install dev environment
-1. `[pip executable] install pyfrc`
-2. `[pip executable] install pynetworktables`
-3. `[pip executable] install -U robotpy-ctre`
-4. Install vscode
-5. Open vscode and install Python extension
-6. Run `code .`
+Ensure that you are in a virtual environment before running this
+1. `[pip executable] install -r requirements.txt`
+2. Open vscode and install Python extension
+3. Run `code .`
 
 # Install on robot
 1. Run `[pip executable] install robotpy-installer`
