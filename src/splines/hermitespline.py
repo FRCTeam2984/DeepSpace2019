@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import json
 import math
+import logging
 import os.path
 
 from splines import hermitecurve as hc
-from utils import pose, vector2d, log
+from utils import pose, vector2d
 from paths import jsonfinder
 
 
@@ -21,7 +22,8 @@ class HermiteSpline:
         elif poses != None and filename == None:
             self.poses = poses
         elif poses != None and filename != None:
-            print("Both poses and filename provided, defaulting to poses")
+            logging.warning(
+                "Both poses and filename provided, defaulting to poses")
             self.poses = poses
         else:
             self.poses = []
@@ -107,12 +109,11 @@ class HermiteSpline:
                             pose_data["x"], pose_data["y"], pose_data["heading"])
                         self.addPose(pose0)
                     except KeyError:
-                        # TODO Make error reporting more obvious to operator
-                        log.printerr("Json is invalid")
+                        logging.error("Json {} is invalid".format(filename))
                         return
             self.updateCurves()
         except FileNotFoundError:
-            log.printerr("{} not found".format(filename))
+            logging.error("{} json file not found".format(filename))
 
     def __str__(self):
         return "[{}]".format(", ".join(str(p) for p in self.poses))
