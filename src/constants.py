@@ -89,6 +89,9 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 3
 
+    # Distance sensor
+    DISTANCE_SENSOR_PORT = 0
+
     # Hatch latch
     HATCH_LATCH_OPENED = 180
     HATCH_LATCH_CLOSED = 0
