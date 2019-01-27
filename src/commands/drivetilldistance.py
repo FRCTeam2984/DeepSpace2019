@@ -1,10 +1,12 @@
 import os
 import sys
 import time
+import logging
 
 from wpilib.command import Command
 from constants import Constants
 from subsystems import drive, distance
+
 
 class DriveTillDistanceAway(Command):
     def __init__(self):
@@ -15,13 +17,13 @@ class DriveTillDistanceAway(Command):
         self.requires(self.drive)
         self.requires(self.distance)
 
-
     def initialize(self):
-        print("INIT")
+        logging.info("Init")
         self.drive.setPercentOutput(0.1, 0.1)
 
     def execute(self):
-        print("RUNNING - {}".format( self.distance.distanceInches() ))
+        logging.info(
+            "Distance Left - {}".format(self.distance.distanceInches()))
         pass
 
     def isFinished(self):
