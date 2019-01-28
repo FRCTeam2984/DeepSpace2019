@@ -26,7 +26,7 @@ class Vision():
     def updateMovement(self):
         """Calculate the necessary movemnt from the errors."""
         if len(self.errors) != 2:
-            logging.warning(
+            logging.error(
                 "Expected 2 vison errors but only one was found, skipping updating movement")
             return
         self.movement[0] = self.errors[0] * Constants.VISION_MOVEMENT_KP_X
