@@ -17,6 +17,7 @@ class DriveTillDistanceAway(Command):
         self.requires(self.drive)
         self.requires(self.distance)
 
+
     def initialize(self):
         logging.info("Init")
         self.drive.setPercentOutput(0.1, 0.1)

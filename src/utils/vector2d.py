@@ -31,6 +31,9 @@ class Vector2D:
         y = -(self.x * st) + (self.y * ct)
         return Vector2D(x, y)
 
+    def getValues(self):
+        return self.x, self.y
+
     def __eq__(self, other):
         return isinstance(other, self.__class__) and (self.x == other.x) and (self.y == other.y)
 

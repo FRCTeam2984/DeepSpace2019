@@ -25,14 +25,21 @@ class Constants:
     MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
+    IL_MOTOR_ID = 5
     IR_MOTOR_ID = 6
-    IL_MOTOR_ID = 4
+
+    # Arm motors
+    BS_MOTOR_ID = 7
+    BM_MOTOR_ID = 8
+    FS_MOTOR_ID = 9
+    FM_MOTOR_ID = 10
 
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
     # inches (distance between front and back wheels) TODO update
-    WHEEL_BASE = 27.75
+    X_WHEEL_BASE = 27.75
+    Y_WHEEL_BASE = 27.75
     # inches (distance between left and right wheels) TODO update
     TRACK_WIDTH = 27.75
 
@@ -82,13 +89,33 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 3
 
+    # Distance sensor
     DISTANCE_SENSOR_PORT = 0
     DISTANCE_SENSOR_THRESHOLD = 24  # inches
     CM_TO_IN_MULTIPLYER = 2.54
 
+
     # Hatch latch
     HATCH_LATCH_OPENED = 180
     HATCH_LATCH_CLOSED = 0
+
+    # Front arm
+    FRONT_ARM_KP = 0
+    FRONT_ARM_KI = 0
+    FRONT_ARM_KD = 0
+    FRONT_ARM_KF = 0
+
+    BACK_ARM_KP = 0
+    BACK_ARM_KI = 0
+    BACK_ARM_KD = 0
+    BACK_ARM_KF = 0
+
+    # Game modes (front arm, intake, back arm)
+    GAME_MODE_STOW = [25,  0,  -90]
+    GAME_MODE_PLAY = [25,  -90,  0]
+    GAME_MODE_START_CLIMB = [0,  0,  0]
+    GAME_MODE_END_CLIMB = [-90,  0,  90]
+    GAME_MODE_END_GAME = [0,  0,  0]
 
     @staticmethod
     def updateConstants():
