@@ -121,6 +121,16 @@ class Constants:
     GAME_MODE_END_CLIMB = [-90,  0,  90]
     GAME_MODE_END_GAME = [0,  0,  0]
 
+    # Snap to angle angles
+    FIELD_FRONT = 0
+    FIELD_BACK = 180
+    FIELD_LEFT = 90
+    FIELD_RIGHT = 270
+    L_ROCKET_FRONT = 29
+    L_ROCKET_BACK = 151
+    R_ROCKET_FRONT = 331
+    R_ROCKET_BACK = 139
+
     @staticmethod
     def updateConstants():
         try:
