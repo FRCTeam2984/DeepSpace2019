@@ -52,7 +52,7 @@ class Robot(CommandBasedRobot):
         self.globalInit()
 
     def _watchdogTimeout(self):
-        print("WARNING: WATCHDOG TIMEOUT")
+        logging.warning("Watchdog timeout")
 
     def globalInit(self):
         """Run on every init."""

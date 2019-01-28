@@ -1,12 +1,13 @@
 import ctre
+import logging
 
 
 class TalonSRX(ctre.WPI_TalonSRX):
     """A wraper for the ctre.WPI_TalonSRX to simplfy configuration and getting/setting values."""
-    NO_ENCODER_ERR = "WARNING: No encoder connected"
 
     def __init__(self, id):
         super().__init__(id)
+        self.no_encoder_warning = f"WARNING: No encoder connected to TalonSRX ({id})"
 
     def initialize(self, inverted=False, encoder=False):
         """Initialize the motors (enable the encoder, set invert status, set voltage limits)."""
@@ -40,14 +41,14 @@ class TalonSRX(ctre.WPI_TalonSRX):
         if self.encoder:
             self.setSelectedSensorPosition(0, 0, 0)
         else:
-            print(self.NO_ENCODER_ERR)
+            logging.warning(self.no_encoder_warning)
 
     def getPosition(self):
         """Get the encoder position if it exists."""
         if self.encoder:
             return self.lm_motor.getSelectedSensorPosition(0)
         else:
-            print(self.NO_ENCODER_ERR)
+            logging.warning(self.no_encoder_warning)
             return 0
 
     def getVelocity(self):
@@ -55,5 +56,5 @@ class TalonSRX(ctre.WPI_TalonSRX):
         if self.encoder:
             return self.lm_motor.getSelectedSensorVelocity(0)
         else:
-            print(self.NO_ENCODER_ERR)
+            logging.warning(self.no_encoder_warning)
             return 0

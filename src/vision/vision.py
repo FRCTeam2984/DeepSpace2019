@@ -26,12 +26,11 @@ class Vision():
     def updateMovement(self):
         """Calculate the necessary movemnt from the errors."""
         if len(self.errors) != 2:
-            print(
-                "ERROR: Expected 2 vison errors but only one was found, skipping updating movement")
+            logging.warning(
+                "Expected 2 vison errors but only one was found, skipping updating movement")
             return
         self.movement[0] = self.errors[0] * Constants.VISION_MOVEMENT_KP_X
         self.movement[1] = self.errors[1] * Constants.VISION_MOVEMENT_KP_Y
-        print(self.movement)
 
     def isAligned(self):
         """Check if the robot is aligned with the reflective tape."""
