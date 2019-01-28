@@ -12,6 +12,7 @@ import wpilib
 
 class TurnToAngle(Command):
     def __init__(self, setpoint, relative=False):
+        """Turn to setpoint (degrees)."""
         super().__init__()
         self.drive = drive.Drive()
         self.odemetry = odemetry.Odemetry()
@@ -44,11 +45,10 @@ class TurnToAngle(Command):
         output = self.controller.update(self.odemetry.getAngle(), dt)
         if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
             output = math.copysign(output, Constants.TURN_TO_ANGLE_MIN_OUTPUT)
-        Dash.putNumber("Turn to Angle Angle",angle)
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
-        self.drive.setPercentOutput(-output, output)
+        self.drive.setPercentOutput(-output, output, -output, output)
 
     def isFinished(self):
         logging.info("Cur Error: {}".format(self.controller.cur_error))
@@ -60,4 +60,4 @@ class TurnToAngle(Command):
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):
-        self.drive.setPercentOutput(0, 0)
+        self.drive.setPercentOutput(0, 0, 0, 0)

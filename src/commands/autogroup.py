@@ -8,4 +8,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(turntoangle.TurnToAngle(math.pi/2))
+        self.addSequential(turntoangle.TurnToAngle(90))

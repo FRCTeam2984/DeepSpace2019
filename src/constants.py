@@ -18,10 +18,10 @@ class Constants:
     GYRO_ID = 6
 
     # Drive motors
-    LS_MOTOR_ID = 1
-    LM_MOTOR_ID = 3
-    RS_MOTOR_ID = 5
-    RM_MOTOR_ID = 2
+    BL_MOTOR_ID = 1
+    BR_MOTOR_ID = 2
+    FL_MOTOR_ID = 3
+    FR_MOTOR_ID = 4
     MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
@@ -93,7 +93,6 @@ class Constants:
     DISTANCE_SENSOR_PORT = 0
     DISTANCE_SENSOR_THRESHOLD = 24  # inches
     CM_TO_IN_MULTIPLYER = 2.54
-
 
     # Hatch latch
     HATCH_LATCH_OPENED = 180

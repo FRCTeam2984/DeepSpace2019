@@ -3,6 +3,7 @@ from networktables import NetworkTables
 import logging
 from constants import Constants
 
+
 class Vision():
     """A network table interface between the robot 
        and the raspberry pi for vision tracking."""

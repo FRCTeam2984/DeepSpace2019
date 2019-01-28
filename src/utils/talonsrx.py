@@ -20,6 +20,16 @@ class TalonSRX(ctre.WPI_TalonSRX):
         self.configPeakOutputForward(1, 5)
         self.configPeakOutputReverse(-1, 5)
 
+    def setVeloictyPIDF(self, kp, ki, kd, kf):
+        self.selectProfileSlot(0, 0)
+        self.config_kP(0, kp, 0)
+        self.config_kI(0, ki, 0)
+        self.config_kD(0, kd, 0)
+        self.config_kF(0, kf, 0)
+
+    def setVelocitySetpoint(self, velocity):
+        self.set(ctre.WPI_TalonSRX.ControlMode.Velocity, velocity)
+
     def setPercentOutput(self, signal, max_signal=1):
         """Set the percent output of the motor."""
         signal = min(max(signal, -max_signal), max_signal)

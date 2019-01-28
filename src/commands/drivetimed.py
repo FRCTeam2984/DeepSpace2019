@@ -29,4 +29,4 @@ class DriveTimed(Command):
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):
-        self.drive.setPercentOutput(0, 0,0,0)
+        self.drive.setPercentOutput2(0, 0, 0, 0)
