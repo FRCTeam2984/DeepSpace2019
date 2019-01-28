@@ -1,6 +1,6 @@
 import json
+import logging
 import math
-from utils import log
 from networktables import NetworkTables
 
 
@@ -12,16 +12,16 @@ class Constants:
     THEORETICAL_MAX_VELOCITY = 60
 
     # PDP
-    PDP_ID = 7
+    PDP_ID = 60
 
     # Gyro
     GYRO_ID = 6
 
     # Drive motors
-    BL_MOTOR_ID = 1
-    BR_MOTOR_ID = 2
-    FL_MOTOR_ID = 3
-    FR_MOTOR_ID = 4
+    LS_MOTOR_ID = 1
+    LM_MOTOR_ID = 3
+    RS_MOTOR_ID = 5
+    RM_MOTOR_ID = 2
     MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
@@ -60,7 +60,7 @@ class Constants:
 
     TURN_TO_ANGLE_MIN_OUTPUT = 0.1
     TURN_TO_ANGLE_TIMEOUT = 1000
-    TURN_TO_ANGLE_TOLERANCE = math.radians(5)
+    TURN_TO_ANGLE_TOLERANCE = 5
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -91,6 +91,9 @@ class Constants:
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
+    DISTANCE_SENSOR_THRESHOLD = 24  # inches
+    CM_TO_IN_MULTIPLYER = 2.54
+
 
     # Hatch latch
     HATCH_LATCH_OPENED = 180
@@ -130,10 +133,9 @@ class Constants:
                 class_dict.pop('updateConstants', None)
                 with open(Constants.CONSTANTS_JSON_PATH, "w") as json_file:
                     json.dump(class_dict, json_file, indent=4)
-            except FileNotFoundError:
-                log.printerr(
-                    "Failed to dump constants json, probably unit testing")
-                return
+            except FileNotFoundError as f:
+                logging.error(
+                    "Failed to dump constants json: {}".format(str(f)))
 
     @staticmethod
     def initSmartDashboard():

@@ -1,4 +1,5 @@
 import math
+import logging
 from wpilib import SmartDashboard as Dash
 from wpilib.command import Command
 
@@ -15,7 +16,7 @@ class TurnToAngle(Command):
         self.drive = drive.Drive()
         self.odemetry = odemetry.Odemetry()
         self.requires(self.drive)
-        self.setpoint = setpoint
+        self.setpoint = units.degreesToRadians(setpoint)
         self.relative = relative
         self.timer = wpilib.Timer()
         self.timestamp = 0
@@ -27,29 +28,30 @@ class TurnToAngle(Command):
         self.ki = Constants.TURN_TO_ANGLE_KI
         self.kd = Constants.TURN_TO_ANGLE_KD
         self.kf = Constants.TURN_TO_ANGLE_KF
-        self.error_tolerance = Constants.TURN_TO_ANGLE_TOLERANCE
+        self.error_tolerance = units.degreesToRadians(
+            Constants.TURN_TO_ANGLE_TOLERANCE)
         self.timeout = Constants.TURN_TO_ANGLE_TIMEOUT
         if self.relative:
-            self.setpoint += self.odemetry.getAngle()
+            self.setpoint += units.degreesToRadians(self.odemetry.getAngle())
         self.controller = pidf.PIDF(
-            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -math.pi, math.pi)
+            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -180, 180)
         self.timer.reset()
 
     def execute(self):
         self.timestamp = self.timeSinceInitialized()
         dt = self.timestamp - self.last_timestamp
         self.last_timestamp = self.timestamp
-        angle = math.fmod(self.odemetry.getAngle(), 2*math.pi)
-        output = self.controller.update(angle, dt)
+        output = self.controller.update(self.odemetry.getAngle(), dt)
         if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
             output = math.copysign(output, Constants.TURN_TO_ANGLE_MIN_OUTPUT)
         Dash.putNumber("Turn to Angle Angle",angle)
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
-        # self.drive.setPercentOutput(-output, output, -output, output)
+        self.drive.setPercentOutput(-output, output)
 
     def isFinished(self):
+        logging.info("Cur Error: {}".format(self.controller.cur_error))
         if abs(self.controller.cur_error) <= self.error_tolerance and not self.timer.running:
             self.timer.start()
         if abs(self.controller.cur_error) > self.error_tolerance and self.timer.running:
@@ -58,4 +60,4 @@ class TurnToAngle(Command):
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):
-        self.drive.setPercentOutput(0, 0, 0, 0)
+        self.drive.setPercentOutput(0, 0)

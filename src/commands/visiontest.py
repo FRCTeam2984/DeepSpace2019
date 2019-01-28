@@ -5,6 +5,7 @@ from subsystems import drive
 from vision import vision
 import odemetry
 import wpilib
+import logging
 
 
 class VisionTest(Command):
@@ -16,7 +17,7 @@ class VisionTest(Command):
         pass
 
     def execute(self):
-        print("NUMBER IS {}".format(
+        logging.info("Vision Number Array: {}".format(
             self.vision.table.getNumberArray("VISION DATA", [])))
 
     def isFinished(self):
