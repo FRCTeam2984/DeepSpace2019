@@ -52,14 +52,14 @@ class Odemetry(metaclass=singleton.Singleton):
             pass
 
     def outputToSmartDashboard(self):
-        Dash.putNumber(
-            "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
-        Dash.putNumber(
-            "Right Encoder Ticks", self.drive.getDistanceTicksRight())
-        Dash.putNumber(
-            "Left Encoder Inches", self.drive.getDistanceInchesLeft())
-        Dash.putNumber(
-            "Right Encoder Inches", self.drive.getDistanceInchesRight())
+        # Dash.putNumber(
+        #     "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
+        # Dash.putNumber(
+        #     "Right Encoder Ticks", self.drive.getDistanceTicksRight())
+        # Dash.putNumber(
+        #     "Left Encoder Inches", self.drive.getDistanceInchesLeft())
+        # Dash.putNumber(
+        #     "Right Encoder Inches", self.drive.getDistanceInchesRight())
 
         Dash.putNumber("Pos X", self.pose.pos.x)
         Dash.putNumber("Pos Y", self.pose.pos.y)
@@ -67,14 +67,17 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
+        return 0
         return (self.drive.getDistanceInchesLeft() + self.drive.getDistanceInchesRight()) / 2.0
 
     def getDistanceDelta(self):
         """Use encoders to return the distance change in inches."""
+        return 0
         return (((self.drive.getDistanceInchesLeft()-self.last_left_encoder_distance) + (self.drive.getDistanceInchesRight()-self.last_right_encoder_distance)) / 2.0)
 
     def getVelocity(self):
         """Use the distance delta to return the velocity in inches/sec."""
+        return 0
         if self.dt != 0:
             return self.getDistanceDelta()/self.dt
         else:
@@ -97,15 +100,15 @@ class Odemetry(metaclass=singleton.Singleton):
         self.dt = self.timestamp-self.last_timestamp
         # update angle
         self.pose.angle = self.getAngle()
-        # update x and y positions
-        self.pose.pos.x += self.getDistanceDelta() * math.cos(self.pose.angle)
-        self.pose.pos.y += self.getDistanceDelta() * math.sin(self.pose.angle)
-        # update last distances for next periodic
-        self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
-        self.last_right_encoder_distance = self.drive.getDistanceInchesRight()
-        # update last angle and timestamp for next periodic
-        self.last_angle = self.pose.angle
-        self.last_timestamp = self.timestamp
+        # # update x and y positions
+        # self.pose.pos.x += self.getDistanceDelta() * math.cos(self.pose.angle)
+        # self.pose.pos.y += self.getDistanceDelta() * math.sin(self.pose.angle)
+        # # update last distances for next periodic
+        # self.last_left_encoder_distance = self.drive.getDistanceInchesLeft()
+        # self.last_right_encoder_distance = self.drive.getDistanceInchesRight()
+        # # update last angle and timestamp for next periodic
+        # self.last_angle = self.pose.angle
+        # self.last_timestamp = self.timestamp
 
     def getState(self):
         """Return the robot pose (position [inches] and orientation [radians])."""

@@ -44,6 +44,7 @@ class TurnToAngle(Command):
         output = self.controller.update(self.odemetry.getAngle(), dt)
         if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
             output = math.copysign(output, Constants.TURN_TO_ANGLE_MIN_OUTPUT)
+        Dash.putNumber("Turn to Angle Angle",angle)
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
