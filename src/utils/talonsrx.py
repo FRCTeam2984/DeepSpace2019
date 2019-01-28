@@ -21,7 +21,8 @@ class TalonSRX(ctre.WPI_TalonSRX):
         self.configPeakOutputForward(1, 5)
         self.configPeakOutputReverse(-1, 5)
 
-    def setVeloictyPIDF(self, kp, ki, kd, kf):
+    def setVelocityPIDF(self, kp, ki, kd, kf):
+        """Initialize the PIDF controler for velocity control."""
         self.selectProfileSlot(0, 0)
         self.config_kP(0, kp, 0)
         self.config_kI(0, ki, 0)
@@ -29,7 +30,20 @@ class TalonSRX(ctre.WPI_TalonSRX):
         self.config_kF(0, kf, 0)
 
     def setVelocitySetpoint(self, velocity):
+        """Set the velocity setpoint for the PIDF controler."""
         self.set(ctre.WPI_TalonSRX.ControlMode.Velocity, velocity)
+
+    def setPositionPIDF(self, kp, ki, kd, kf):
+        """Initialize the PIDF controler for position control."""
+        self.selectProfileSlot(1, 0)
+        self.config_kP(1, kp, 0)
+        self.config_kI(1, ki, 0)
+        self.config_kD(1, kd, 0)
+        self.config_kF(1, kf, 0)
+
+    def setPositionSetpoint(self, position):
+        """Set the position setpoint for the PIDF controler."""
+        self.set(ctre.WPI_TalonSRX.ControlMode.Position, position)
 
     def setPercentOutput(self, signal, max_signal=1):
         """Set the percent output of the motor."""

@@ -17,23 +17,29 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def init(self):
         """Initialize the drive motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
-        self.fl_motor = talonsrx.TalonSRX(Constants.FL_MOTOR_ID)
-        self.fr_motor = talonsrx.TalonSRX(Constants.FR_MOTOR_ID)
         self.bl_motor = talonsrx.TalonSRX(Constants.BL_MOTOR_ID)
         self.br_motor = talonsrx.TalonSRX(Constants.BR_MOTOR_ID)
+        self.fl_motor = talonsrx.TalonSRX(Constants.FL_MOTOR_ID)
+        self.fr_motor = talonsrx.TalonSRX(Constants.FR_MOTOR_ID)
 
-        self.motors = [self. fl_motor, self.fr_motor,
-                       self.bl_motor, self.br_motor]
+        self.motors = [self.bl_motor, self.br_motor,
+                       self.fl_motor, self.fr_motor]
 
-        self.fl_motor.initialize(inverted=False, encoder=True)
-        self.fr_motor.initialize(inverted=True, encoder=True)
         self.bl_motor.initialize(inverted=False, encoder=True)
         self.br_motor.initialize(inverted=True, encoder=True)
+        self.fl_motor.initialize(inverted=False, encoder=True)
+        self.fr_motor.initialize(inverted=True, encoder=True)
+        self.initPIDF()
 
-        self.fl_motor.setVeloictyPIDF(0, 0, 0, 1)
-        self.fr_motor.setVeloictyPIDF(0, 0, 0, 1)
-        self.bl_motor.setVeloictyPIDF(0, 0, 0, 1)
-        self.br_motor.setVeloictyPIDF(0, 0, 0, 1)
+    def initPIDF(self):
+        self.bl_motor.setVelocityPIDF(
+            Constants.BL_VELOCITY_KP, Constants.BL_VELOCITY_KI, Constants.BL_VELOCITY_KD, Constants.BL_VELOCITY_KF)
+        self.br_motor.setVelocityPIDF(
+            Constants.BR_VELOCITY_KP, Constants.BR_VELOCITY_KI, Constants.BR_VELOCITY_KD, Constants.BR_VELOCITY_KF)
+        self.fl_motor.setVelocityPIDF(
+            Constants.FL_VELOCITY_KP, Constants.FL_VELOCITY_KI, Constants.FL_VELOCITY_KD, Constants.FL_VELOCITY_KF)
+        self.fr_motor.setVelocityPIDF(
+            Constants.FR_VELOCITY_KP, Constants.FR_VELOCITY_KI, Constants.FR_VELOCITY_KD, Constants.FR_VELOCITY_KF)
 
     def zeroSensors(self):
         """Set the encoder positions to 0."""
@@ -48,12 +54,12 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                        self.fl_motor.getClosedLoopError(0))
 
     def outputToSmartDashboard(self):
-        self._outputMotorToDashboard("Front Left", self.fl_motor)
-        self._outputMotorToDashboard("Front Right", self.fr_motor)
         self._outputMotorToDashboard("Back Left", self.bl_motor)
         self._outputMotorToDashboard("Back Right", self.br_motor)
+        self._outputMotorToDashboard("Front Left", self.fl_motor)
+        self._outputMotorToDashboard("Front Right", self.fr_motor)
 
-    def setPercentOutput(self, fl_signal, fr_signal, bl_signal, br_signal):
+    def setPercentOutput(self, bl_signal, br_signal, fl_signal, fr_signal):
         """Set the percent output of the 4 motors."""
         self.bl_motor.setPercentOutput(
             bl_signal, max_signal=Constants.MAX_DRIVE_OUTPUT)
@@ -66,13 +72,13 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def setDirectionOutput(self, x_signal, y_signal, rotation):
         """Set percent output of the 4 motors given an x, y, and rotation inputs."""
-        fl_signal = x_signal + y_signal + rotation
-        fr_signal = x_signal - y_signal - rotation
         bl_signal = x_signal - y_signal + rotation
         br_signal = x_signal + y_signal - rotation
-        self.setPercentOutput(fl_signal, fr_signal, bl_signal, br_signal)
+        fl_signal = x_signal + y_signal + rotation
+        fr_signal = x_signal - y_signal - rotation
+        self.setPercentOutput(bl_signal, br_signal, fl_signal, fr_signal)
 
-    def setVeloictyOutput(self, fl_velocity, fr_velocity, bl_velocity, br_velocity):
+    def setVelocityOutput(self, bl_velocity, br_velocity, fl_velocity, fr_velocity):
         self.bl_motor.setVelocitySetpoint(bl_velocity)
         self.br_motor.setVelocitySetpoint(br_velocity)
         self.fl_motor.setVelocitySetpoint(fl_velocity)
