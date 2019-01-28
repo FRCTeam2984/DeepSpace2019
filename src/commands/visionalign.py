@@ -19,8 +19,10 @@ class VisionAlign(Command):
         pass
 
     def execute(self):
-        logging.info("Vision Number Array: {}".format(
-            self.vision.table.getNumberArray("VISION DATA", [])))
+        self.vision.update()
+        x_movement = self.vision.movement[0]
+        y_movement = self.vision.movement[1]
+        self.drive.setDirectionOutput(x_movement, y_movement, 0)
 
     def isFinished(self):
         return self.vision.isAligned()

@@ -80,3 +80,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def initDefaultCommand(self):
         return self.setDefaultCommand(tankdrive.TankDrive())
+
+    def periodic(self):
+        self.outputToSmartDashboard()

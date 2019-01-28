@@ -79,6 +79,9 @@ class Robot(CommandBasedRobot):
         self.globalInit()
         self.test.start()
 
+    def robotPeriodic(self):
+        self.outputToSmartDashboard()
+
     def outputToSmartDashboard(self):
         pass
         # Dash.putNumber("Total Current", self.pdp.getTotalCurrent())

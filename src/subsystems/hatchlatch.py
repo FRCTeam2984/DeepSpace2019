@@ -35,3 +35,6 @@ class HatchLatch(Subsystem, metaclass=singleton.Singleton):
 
     def outputToSmartDashboard(self):
         Dash.putNumber("Servo Angle", self.servo.getAngle())
+
+    def periodic(self):
+        self.outputToSmartDashboard()
