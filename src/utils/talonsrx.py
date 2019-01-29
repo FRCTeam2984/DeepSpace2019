@@ -60,7 +60,7 @@ class TalonSRX(ctre.WPI_TalonSRX):
     def getPosition(self):
         """Get the encoder position if it exists."""
         if self.encoder:
-            return self.lm_motor.getSelectedSensorPosition(0)
+            return self.getSelectedSensorPosition(0)
         else:
             logging.warning(self.no_encoder_warning)
             return 0
@@ -68,7 +68,7 @@ class TalonSRX(ctre.WPI_TalonSRX):
     def getVelocity(self):
         """Get the encoder velocity if it exists."""
         if self.encoder:
-            return self.lm_motor.getSelectedSensorVelocity(0)
+            return self.getSelectedSensorVelocity(0)
         else:
             logging.warning(self.no_encoder_warning)
             return 0

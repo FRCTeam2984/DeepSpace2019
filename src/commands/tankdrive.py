@@ -22,7 +22,7 @@ class TankDrive(Command):
         self.odemetry = odemetry.Odemetry()
 
     def initialize(self):
-        self.drive.initPID()
+        self.drive.initPIDF()
         return
 
     def execute(self):

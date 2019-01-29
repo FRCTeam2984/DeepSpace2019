@@ -8,4 +8,4 @@ class TeleopCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Teleop Program')
-        self.addSequential(tankdrive.TankDrive(allocentric=True))
+        self.addSequential(tankdrive.TankDrive())

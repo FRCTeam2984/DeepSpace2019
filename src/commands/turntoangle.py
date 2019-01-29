@@ -35,7 +35,7 @@ class TurnToAngle(Command):
         if self.relative:
             self.setpoint += units.degreesToRadians(self.odemetry.getAngle())
         self.controller = pidf.PIDF(
-            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -180, 180)
+            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -math.pi, math.pi)
         self.timer.reset()
 
     def execute(self):
@@ -44,7 +44,7 @@ class TurnToAngle(Command):
         self.last_timestamp = self.timestamp
         output = self.controller.update(self.odemetry.getAngle(), dt)
         if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
-            output = math.copysign(output, Constants.TURN_TO_ANGLE_MIN_OUTPUT)
+            output = math.copysign(Constants.TURN_TO_ANGLE_MIN_OUTPUT, output)
         Dash.putNumber("Turn To Angle Output", output)
         Dash.putNumber("Turn To Angle Error",
                        units.radiansToDegrees(self.controller.cur_error))
