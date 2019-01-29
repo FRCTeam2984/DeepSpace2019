@@ -26,9 +26,10 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                        self.fl_motor, self.fr_motor]
 
         self.bl_motor.initialize(inverted=False, encoder=True)
-        self.br_motor.initialize(inverted=True, encoder=True)
+        self.br_motor.initialize(inverted=True, encoder=False)
         self.fl_motor.initialize(inverted=False, encoder=True)
-        self.fr_motor.initialize(inverted=True, encoder=True)
+        self.fr_motor.initialize(inverted=True, encoder=False)
+        self.bl_motor.setSensorPhase(True)
         self.initPIDF()
 
     def initPIDF(self):
@@ -47,11 +48,16 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
             motor.zero()
 
     def _outputMotorToDashboard(self, name, motor):
-        Dash.putNumber(f"{name} Voltage", self.fl_motor.getBusVoltage())
-        Dash.putNumber(f"{name} PIDF Target",
-                       self.fl_motor.getClosedLoopTarget(0))
-        Dash.putNumber(f"{name} PIDF Error",
-                       self.fl_motor.getClosedLoopError(0))
+        # Dash.putNumber(f"{name} Voltage", self.fl_motor.getBusVoltage())
+        Dash.putNumber(f"{name} Percent Output",
+                       motor.getMotorOutputPercent())
+        if motor.encoder:
+            Dash.putNumber(f"{name} Position", motor.getPosition())
+
+            Dash.putNumber(f"{name} PIDF Target",
+                        motor.getClosedLoopTarget(0))
+            Dash.putNumber(f"{name} PIDF Error",
+                        motor.getClosedLoopError(0))
 
     def outputToSmartDashboard(self):
         self._outputMotorToDashboard("Back Left", self.bl_motor)
@@ -76,6 +82,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         br_signal = x_signal + y_signal - rotation
         fl_signal = x_signal + y_signal + rotation
         fr_signal = x_signal - y_signal - rotation
+
         self.setPercentOutput(bl_signal, br_signal, fl_signal, fr_signal)
 
     def setVelocityOutput(self, bl_velocity, br_velocity, fl_velocity, fr_velocity):
