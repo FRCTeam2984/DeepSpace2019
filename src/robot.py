@@ -52,7 +52,7 @@ class Robot(CommandBasedRobot):
         self.globalInit()
 
     def _watchdogTimeout(self):
-        print("WARNING: WATCHDOG TIMEOUT")
+        logging.warning("Watchdog timeout")
 
     def globalInit(self):
         """Run on every init."""
@@ -78,6 +78,9 @@ class Robot(CommandBasedRobot):
         """Run when the robot enters test mode."""
         self.globalInit()
         self.test.start()
+
+    def robotPeriodic(self):
+        self.outputToSmartDashboard()
 
     def outputToSmartDashboard(self):
         pass

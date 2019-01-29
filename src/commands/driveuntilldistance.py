@@ -17,7 +17,7 @@ class DriveUntillDistance(Command):
         self.distance = distance
 
     def initialize(self):
-        self.drive.setPercentOutput(0.25, 0.25)
+        self.drive.setPercentOutput(0.25, 0.25, 0.25, 0.25)
 
     def execute(self):
         pass
@@ -26,4 +26,4 @@ class DriveUntillDistance(Command):
         return self.distance.distanceInches() <= self.distance
 
     def end(self):
-        self.drive.setPercentOutput(0, 0)
+        self.drive.setPercentOutput(0, 0, 0, 0)

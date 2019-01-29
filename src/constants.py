@@ -18,10 +18,10 @@ class Constants:
     GYRO_ID = 6
 
     # Drive motors
-    LS_MOTOR_ID = 1
-    LM_MOTOR_ID = 3
-    RS_MOTOR_ID = 5
-    RM_MOTOR_ID = 2
+    BL_MOTOR_ID = 1
+    BR_MOTOR_ID = 2
+    FL_MOTOR_ID = 3
+    FR_MOTOR_ID = 4
     MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
@@ -47,20 +47,35 @@ class Constants:
     DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440
     DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440
 
-    DRIVE_MOTOR_KP = 0
-    DRIVE_MOTOR_KI = 0
-    DRIVE_MOTOR_KD = 0
-    DRIVE_MOTOR_KF = 1.2
+    BL_VELOCITY_KP = 0.1
+    BL_VELOCITY_KI = 0
+    BL_VELOCITY_KD = 0
+    BL_VELOCITY_KF = 0.335
+
+    BR_VELOCITY_KP = 0
+    BR_VELOCITY_KI = 0
+    BR_VELOCITY_KD = 0
+    BR_VELOCITY_KF = 1
+
+    FL_VELOCITY_KP = 0
+    FL_VELOCITY_KI = 0
+    FL_VELOCITY_KD = 0
+    FL_VELOCITY_KF = 1
+
+    FR_VELOCITY_KP = 0
+    FR_VELOCITY_KI = 0
+    FR_VELOCITY_KD = 0
+    FR_VELOCITY_KF = 1
 
     # Turn to angle pidf values
-    TURN_TO_ANGLE_KP = 0.4
-    TURN_TO_ANGLE_KI = 0.01
+    TURN_TO_ANGLE_KP = 0.5
+    TURN_TO_ANGLE_KI = 0
     TURN_TO_ANGLE_KD = 0
     TURN_TO_ANGLE_KF = 0
 
-    TURN_TO_ANGLE_MIN_OUTPUT = 0.1
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.15
     TURN_TO_ANGLE_TIMEOUT = 1000
-    TURN_TO_ANGLE_TOLERANCE = 5
+    TURN_TO_ANGLE_TOLERANCE = 1
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -94,11 +109,15 @@ class Constants:
     DISTANCE_SENSOR_THRESHOLD = 24  # inches
     CM_TO_IN_MULTIPLYER = 2.54
 
-
     # Hatch latch
     HATCH_LATCH_OPENED = 180
     HATCH_LATCH_CLOSED = 0
 
+    # Vision
+    VISION_MOVEMENT_KP_X = 1
+    VISION_MOVEMENT_KP_Y = -1/40
+    VISION_ERROR_THRESH_X = 0.1
+    VISION_ERROR_THRESH_Y = 0.1
     # Front arm
     FRONT_ARM_KP = 0
     FRONT_ARM_KI = 0
@@ -116,6 +135,16 @@ class Constants:
     GAME_MODE_START_CLIMB = [0,  0,  0]
     GAME_MODE_END_CLIMB = [-90,  0,  90]
     GAME_MODE_END_GAME = [0,  0,  0]
+
+    # Snap to angle angles
+    FIELD_FRONT = 0
+    FIELD_BACK = 180
+    FIELD_LEFT = 90
+    FIELD_RIGHT = 270
+    L_ROCKET_FRONT = 29
+    L_ROCKET_BACK = 151
+    R_ROCKET_FRONT = 331
+    R_ROCKET_BACK = 139
 
     @staticmethod
     def updateConstants():

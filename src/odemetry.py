@@ -68,20 +68,20 @@ class Odemetry(metaclass=singleton.Singleton):
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
         return 0
-        return (self.drive.getDistanceInchesLeft() + self.drive.getDistanceInchesRight()) / 2.0
+        # return (self.drive.getDistanceInchesLeft() + self.drive.getDistanceInchesRight()) / 2.0
 
     def getDistanceDelta(self):
         """Use encoders to return the distance change in inches."""
         return 0
-        return (((self.drive.getDistanceInchesLeft()-self.last_left_encoder_distance) + (self.drive.getDistanceInchesRight()-self.last_right_encoder_distance)) / 2.0)
+        # return (((self.drive.getDistanceInchesLeft()-self.last_left_encoder_distance) + (self.drive.getDistanceInchesRight()-self.last_right_encoder_distance)) / 2.0)
 
     def getVelocity(self):
         """Use the distance delta to return the velocity in inches/sec."""
         return 0
-        if self.dt != 0:
-            return self.getDistanceDelta()/self.dt
-        else:
-            return 0
+        # if self.dt != 0:
+        #     return self.getDistanceDelta()/self.dt
+        # else:
+        #     return 0
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""

@@ -28,10 +28,11 @@ class DriveAtCurvature(Command):
 
         logging.info(
             "Drive Curvature Velocity: {} - {}".format(l_velocity, r_velocity))
-        self.drive.setPercentOutput(l_velocity, r_velocity)
+        self.drive.setPercentOutput(
+            l_velocity, r_velocity, l_velocity, r_velocity)
 
     def isFinished(self):
         return self.timer.get()*1000 >= self.timeout
 
     def end(self):
-        self.drive.setPercentOutput(0, 0)
+        self.drive.setPercentOutput(0, 0, 0, 0)
