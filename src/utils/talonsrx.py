@@ -1,16 +1,18 @@
 import ctre
 import logging
-from wpilib import SmartDashboard as Dash
+from networktables import NetworkTables
 
 
 class TalonSRX(ctre.WPI_TalonSRX):
     """A wraper for the ctre.WPI_TalonSRX to simplfy configuration and getting/setting values."""
+    MotorDash = NetworkTables.getTable(
+        "SmartDashboard").getSubTable("TalonSRX")
 
     def __init__(self, id):
         super().__init__(id)
         self.no_encoder_warning = f"WARNING: No encoder connected to TalonSRX ({id})"
 
-    def initialize(self, inverted=False, encoder=False):
+    def initialize(self, inverted=False, encoder=False, name=None):
         """Initialize the motors (enable the encoder, set invert status, set voltage limits)."""
         self.encoder = encoder
         if self.encoder:
@@ -21,6 +23,8 @@ class TalonSRX(ctre.WPI_TalonSRX):
         self.configNominalOutputReverse(0, 5)
         self.configPeakOutputForward(1, 5)
         self.configPeakOutputReverse(-1, 5)
+        if name != None:
+            self.setName(name)
 
     def setVelocityPIDF(self, kp, ki, kd, kf):
         """Initialize the PIDF controler for velocity control."""
@@ -75,15 +79,16 @@ class TalonSRX(ctre.WPI_TalonSRX):
             return 0
 
     def outputToDashboard(self):
-        Dash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
-        Dash.putNumber(f"{self.name} Percent Output",
-                       self.getMotorOutputPercent())
-        Dash.putNumber(f"{self.name} Mode", self.getControlMode())
+        self.MotorDash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
+        self.MotorDash.putNumber(f"{self.name} Percent Output",
+                                 self.getMotorOutputPercent())
+        self.MotorDash.putNumber(f"{self.name} Mode", self.getControlMode())
 
         if self.encoder:
-            Dash.putNumber(f"{self.name} Position", self.getPosition())
+            self.MotorDash.putNumber(
+                f"{self.name} Position", self.getPosition())
             if self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Velocity or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Position:
-                Dash.putNumber(f"{self.name} PIDF Target",
-                               self.getClosedLoopTarget(0))
-                Dash.putNumber(f"{self.name} PIDF Error",
-                               self.getClosedLoopError(0))
+                self.MotorDash.putNumber(f"{self.name} PIDF Target",
+                                         self.getClosedLoopTarget(0))
+                self.MotorDash.putNumber(f"{self.name} PIDF Error",
+                                         self.getClosedLoopError(0))

@@ -16,8 +16,10 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
         """Initialize the back arm motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
         self.s_motor = talonsrx.TalonSRX(Constants.BS_MOTOR_ID)
         self.m_motor = talonsrx.TalonSRX(Constants.BM_MOTOR_ID)
-        self.s_motor.initialize(inverted=False, encoder=False)
-        self.m_motor.initialize(inverted=False, encoder=False)
+        self.s_motor.initialize(
+            inverted=False, encoder=False, name="Back Arm Master")
+        self.m_motor.initialize(
+            inverted=False, encoder=False, name="Back Arm Master")
         self.s_motor.follow(self.m_motor)
         self.m_motor.setPositionPIDF(
             Constants.BACK_ARM_KP, Constants.BACK_ARM_KI, Constants.BACK_ARM_KD, Constants.BACK_ARM_KF)

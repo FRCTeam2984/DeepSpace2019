@@ -13,8 +13,10 @@ class Intake(Subsystem, metaclass=singleton.Singleton):
         """Initialize the intake motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
         self.l_motor = talonsrx.TalonSRX(Constants.IL_MOTOR_ID)
         self.r_motor = talonsrx.TalonSRX(Constants.IR_MOTOR_ID)
-        self.l_motor.initialize(inverted=False, encoder=False)
-        self.r_motor.initialize(inverted=False, encoder=False)
+        self.l_motor.initialize(
+            inverted=False, encoder=False, name="Intake Left")
+        self.r_motor.initialize(
+            inverted=False, encoder=False, name="Intake Right")
 
     def outputToDashboard(self):
         self.l_motor.outputToDashboard()

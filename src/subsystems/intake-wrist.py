@@ -12,7 +12,7 @@ class IntakeWrist(Subsystem, metaclass=singleton.Singleton):
     def init(self):
         """Initialize the intake wrist motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
         self.w_motor = talonsrx.TalonSRX(Constants.IW_MOTOR_ID)
-        self.w_motor.initialize(inverted=False, encoder=False)
+        self.w_motor.initialize(inverted=False, encoder=False, name="Wrist")
         self.w_motor.setPositionPIDF(Constants.INTAKE_WRIST_KP, Constants.INTAKE_WRIST_KI,
                                      Constants.INTAKE_WRIST_KD, Constants.INTAKE_WRIST_KF)
 

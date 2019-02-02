@@ -25,10 +25,14 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.motors = [self.bl_motor, self.br_motor,
                        self.fl_motor, self.fr_motor]
 
-        self.bl_motor.initialize(inverted=False, encoder=True)
-        self.br_motor.initialize(inverted=True, encoder=False)
-        self.fl_motor.initialize(inverted=False, encoder=True)
-        self.fr_motor.initialize(inverted=True, encoder=False)
+        self.bl_motor.initialize(
+            inverted=False, encoder=True, name="Drive Back Left")
+        self.br_motor.initialize(
+            inverted=True, encoder=False, name="Drive Back Right")
+        self.fl_motor.initialize(
+            inverted=False, encoder=True, name="Drive Front Left")
+        self.fr_motor.initialize(
+            inverted=True, encoder=False, name="Drive Front Right")
         self.initPIDF()
 
     def initPIDF(self):

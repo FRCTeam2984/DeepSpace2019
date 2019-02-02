@@ -15,8 +15,10 @@ class FrontArm(Subsystem, metaclass=singleton.Singleton):
         """Initialize the front arm motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
         self.s_motor = talonsrx.TalonSRX(Constants.FS_MOTOR_ID)
         self.m_motor = talonsrx.TalonSRX(Constants.FM_MOTOR_ID)
-        self.s_motor.initialize(inverted=False, encoder=False)
-        self.m_motor.initialize(inverted=False, encoder=False)
+        self.s_motor.initialize(
+            inverted=False, encoder=False, name="Front Arm Slave")
+        self.m_motor.initialize(
+            inverted=False, encoder=False, name="Front Arm Master")
         self.s_motor.follow(self.m_motor)
         self.m_motor.setPositionPIDF(
             Constants.FRONT_ARM_KP, Constants.FRONT_ARM_KI, Constants.FRONT_ARM_KD, Constants.FRONT_ARM_KF)
