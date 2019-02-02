@@ -1,19 +1,19 @@
 from wpilib.command import Command
-from subsystems import frontarm
+from subsystems import intakewrist
 
 
-class SetFrontArm(Command):
+class SetBackArm(Command):
     def __init__(self, setpoint):
         super().__init__()
-        self.arm = frontarm.FrontArm()
-        self.requires(self.arm)
+        self.wrist = intakewrist.IntakeWrist()
+        self.requires(self.wrist)
         self.setpoint = setpoint
 
     def initialize(self):
         pass
 
     def execute(self):
-        self.arm.setAngle(self.setpoint)
+        self.wrist.setAngle(self.setpoint)
 
     def isFinished(self):
         return False
