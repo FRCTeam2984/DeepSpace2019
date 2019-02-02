@@ -44,9 +44,15 @@ class Constants:
     TRACK_WIDTH = 27.75
 
     # Encoder measurements
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT = 1440
-    DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT = 1440
+    CPR_DRIVE_BL = 1440
+    CPR_DRIVE_BR = 1440
+    CPR_DRIVE_FL = 1440
+    CPR_DRIVE_FR = 1440
+    CPR_DRIVE_FA = 1440
+    CPR_DRIVE_BA = 1440
+    CPR_DRIVE_IW = 1440
 
+    # Drive motor pidf values
     BL_VELOCITY_KP = 0.1
     BL_VELOCITY_KI = 0
     BL_VELOCITY_KD = 0
@@ -76,6 +82,7 @@ class Constants:
     TURN_TO_ANGLE_MIN_OUTPUT = 0.12
     TURN_TO_ANGLE_TIMEOUT = 200
     TURN_TO_ANGLE_TOLERANCE = 2
+
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
     MAX_ACCELERATION = 10  # inches/sec/sec
@@ -105,8 +112,6 @@ class Constants:
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
-    DISTANCE_SENSOR_THRESHOLD = 24  # inches
-    CM_TO_IN_MULTIPLYER = 2.54
 
     # Hatch latch
     HATCH_LATCH_OPENED = 180
@@ -117,12 +122,14 @@ class Constants:
     VISION_MOVEMENT_KP_Y = -1/40
     VISION_ERROR_THRESH_X = 0.1
     VISION_ERROR_THRESH_Y = 0.1
+
     # Front arm
     FRONT_ARM_KP = 0
     FRONT_ARM_KI = 0
     FRONT_ARM_KD = 0
     FRONT_ARM_KF = 0
 
+    # Back arm
     BACK_ARM_KP = 0
     BACK_ARM_KI = 0
     BACK_ARM_KD = 0

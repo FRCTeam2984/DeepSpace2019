@@ -44,22 +44,22 @@ def inchesPerSecToMetersPer100ms(inches_per_sec):
 
 def inchesToTicksLeft(inches):
     """Convert inches to ticks for the left encoder."""
-    return (inches*Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)/Constants.WHEEL_CIRCUMFERENCE
+    return (inches*Constants.CPR_DRIVE_BL)/Constants.WHEEL_CIRCUMFERENCE
 
 
 def inchesToTicksRight(inches):
     """Convert inches to ticks for the right encoder."""
-    return (inches*Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)/Constants.WHEEL_CIRCUMFERENCE
+    return (inches*Constants.CPR_DRIVE_BR)/Constants.WHEEL_CIRCUMFERENCE
 
 
 def ticksToInchesLeft(ticks):
     """Convert ticks to inches for the left encoder."""
-    return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_LEFT)*Constants.WHEEL_CIRCUMFERENCE
+    return (ticks/Constants.CPR_DRIVE_BL)*Constants.WHEEL_CIRCUMFERENCE
 
 
 def ticksToInchesRight(ticks):
     """Convert ticks to inches for the right encoder."""
-    return (ticks/Constants.DRIVE_ENCODER_TICKS_PER_REVOLUTION_RIGHT)*Constants.WHEEL_CIRCUMFERENCE
+    return (ticks/Constants.CPR_DRIVE_BR)*Constants.WHEEL_CIRCUMFERENCE
 
 
 def inchesPerSecToTicksPer100msLeft(inches_per_sec):
