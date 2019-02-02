@@ -34,6 +34,10 @@ class Constants:
     FS_MOTOR_ID = 9
     FM_MOTOR_ID = 10
 
+    #Intake motor "suck" and "spit" speeds
+    SUCK_SPEED = 1
+    SPIT_SPEED = 1
+
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
