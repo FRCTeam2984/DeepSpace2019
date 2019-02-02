@@ -42,7 +42,8 @@ class TurnToAngle(Command):
         self.timestamp = self.timeSinceInitialized()
         dt = self.timestamp - self.last_timestamp
         self.last_timestamp = self.timestamp
-        output = self.controller.update(self.odemetry.getAngle(), dt)
+        angle = math.fmod(self.odemetry.getAngle(), 2 * math.pi)
+        output = self.controller.update(angle, dt)
         if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
             output = math.copysign(Constants.TURN_TO_ANGLE_MIN_OUTPUT, output)
         Dash.putNumber("Turn To Angle Output", output)

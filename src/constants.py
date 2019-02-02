@@ -68,15 +68,14 @@ class Constants:
     FR_VELOCITY_KF = 1
 
     # Turn to angle pidf values
-    TURN_TO_ANGLE_KP = 0.5
-    TURN_TO_ANGLE_KI = 0
+    TURN_TO_ANGLE_KP = 0.16
+    TURN_TO_ANGLE_KI = 0.025
     TURN_TO_ANGLE_KD = 0
     TURN_TO_ANGLE_KF = 0
 
-    TURN_TO_ANGLE_MIN_OUTPUT = 0.15
-    TURN_TO_ANGLE_TIMEOUT = 1000
-    TURN_TO_ANGLE_TOLERANCE = 1
-
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.12
+    TURN_TO_ANGLE_TIMEOUT = 200
+    TURN_TO_ANGLE_TOLERANCE = 2
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
     MAX_ACCELERATION = 10  # inches/sec/sec
