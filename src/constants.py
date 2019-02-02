@@ -12,28 +12,30 @@ class Constants:
     THEORETICAL_MAX_VELOCITY = 60
 
     # PDP
-    PDP_ID = 60
+    PDP_ID = 1
 
     # Gyro
     GYRO_ID = 6
 
     # Drive motors
-    BL_MOTOR_ID = 1
-    BR_MOTOR_ID = 2
-    FL_MOTOR_ID = 3
-    FR_MOTOR_ID = 4
+    BL_MOTOR_ID = 2
+    BR_MOTOR_ID = 3
+    FL_MOTOR_ID = 4
+    FR_MOTOR_ID = 5
     MAX_DRIVE_OUTPUT = 1
 
     # Intake motors
-    IL_MOTOR_ID = 5
-    IR_MOTOR_ID = 6
-    IW_MOTOR_ID = 7
+    IL_MOTOR_ID = 6
+    IR_MOTOR_ID = 7
+    IW_MOTOR_ID = 8
 
     # Arm motors
-    BS_MOTOR_ID = 8
-    BM_MOTOR_ID = 9
-    FS_MOTOR_ID = 10
-    FM_MOTOR_ID = 11
+    BS_MOTOR_ID = 9
+    BM_MOTOR_ID = 10
+    FS_MOTOR_ID = 11
+    FM_MOTOR_ID = 12
+    CRL_MOTOR_ID = 13
+    CRR_MOTOR_ID = 14
 
     # Intake motor "suck" and "spit" speeds
     SUCK_SPEED = 1
