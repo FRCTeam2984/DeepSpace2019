@@ -29,7 +29,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         self.br_motor.initialize(inverted=True, encoder=False)
         self.fl_motor.initialize(inverted=False, encoder=True)
         self.fr_motor.initialize(inverted=True, encoder=False)
-        self.bl_motor.setSensorPhase(True)
         self.initPIDF()
 
     def initPIDF(self):
@@ -53,11 +52,12 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                        motor.getMotorOutputPercent())
         if motor.encoder:
             Dash.putNumber(f"{name} Position", motor.getPosition())
-
-            Dash.putNumber(f"{name} PIDF Target",
-                        motor.getClosedLoopTarget(0))
-            Dash.putNumber(f"{name} PIDF Error",
-                        motor.getClosedLoopError(0))
+            # TODO check if in control loop mode
+            if False:
+                Dash.putNumber(f"{name} PIDF Target",
+                               motor.getClosedLoopTarget(0))
+                Dash.putNumber(f"{name} PIDF Error",
+                               motor.getClosedLoopError(0))
 
     def outputToSmartDashboard(self):
         self._outputMotorToDashboard("Back Left", self.bl_motor)

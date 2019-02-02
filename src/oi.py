@@ -15,3 +15,5 @@ class OI(metaclass=singleton.Singleton):
             Constants.OPERATOR_PORT, Constants.OPERATOR_X_MOD, Constants.OPERATOR_Y_MOD, Constants.OPERATOR_Z_MOD)
         self.hatchbutton = JoystickButton(self.driver, 1)
         self.hatchbutton.whenPressed(togglehatchlatch.ToggleHatchLatch())
+        self.snapbutton = JoystickButton(self.driver, 6)
+
