@@ -46,24 +46,11 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         for motor in self.motors:
             motor.zero()
 
-    def _outputMotorToDashboard(self, name, motor):
-        # Dash.putNumber(f"{name} Voltage", self.fl_motor.getBusVoltage())
-        Dash.putNumber(f"{name} Percent Output",
-                       motor.getMotorOutputPercent())
-        if motor.encoder:
-            Dash.putNumber(f"{name} Position", motor.getPosition())
-            # TODO check if in control loop mode
-            if False:
-                Dash.putNumber(f"{name} PIDF Target",
-                               motor.getClosedLoopTarget(0))
-                Dash.putNumber(f"{name} PIDF Error",
-                               motor.getClosedLoopError(0))
-
     def outputToSmartDashboard(self):
-        self._outputMotorToDashboard("Back Left", self.bl_motor)
-        self._outputMotorToDashboard("Back Right", self.br_motor)
-        self._outputMotorToDashboard("Front Left", self.fl_motor)
-        self._outputMotorToDashboard("Front Right", self.fr_motor)
+        self.bl_motor.outputToDashboard()
+        self.br_motor.outputToDashboard()
+        self.fl_motor.outputToDashboard()
+        self.fr_motor.outputToDashboard()
 
     def setPercentOutput(self, bl_signal, br_signal, fl_signal, fr_signal):
         """Set the percent output of the 4 motors."""

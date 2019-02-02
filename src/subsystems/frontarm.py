@@ -1,9 +1,8 @@
-import ctre
 from wpilib import SmartDashboard as Dash
 from wpilib.command import Subsystem
 
 from constants import Constants
-from utils import singleton, units, talonsrx, pidf
+from utils import singleton, units, talonsrx
 
 
 class FrontArm(Subsystem, metaclass=singleton.Singleton):
@@ -27,7 +26,8 @@ class FrontArm(Subsystem, metaclass=singleton.Singleton):
         self.m_motor.zero()
 
     def outputToSmartDashboard(self):
-        pass
+        self.s_motor.outputToDashboard()
+        self.m_motor.outputToDashboard()
 
     def getAngle(self):
         """Get the angle of the arm in degrees."""

@@ -27,7 +27,8 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
         self.m_motor.zero()
 
     def outputToSmartDashboard(self):
-        pass
+        self.s_motor.outputToDashboard()
+        self.m_motor.outputToDashboard()
 
     def getAngle(self):
         """Get the angle of the arm in degrees."""

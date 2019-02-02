@@ -1,5 +1,6 @@
 import ctre
 import logging
+from wpilib import SmartDashboard as Dash
 
 
 class TalonSRX(ctre.WPI_TalonSRX):
@@ -72,3 +73,17 @@ class TalonSRX(ctre.WPI_TalonSRX):
         else:
             logging.warning(self.no_encoder_warning)
             return 0
+
+    def outputToDashboard(self):
+        Dash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
+        Dash.putNumber(f"{self.name} Percent Output",
+                       self.getMotorOutputPercent())
+        Dash.putNumber(f"{self.name} Mode", self.getControlMode())
+
+        if self.encoder:
+            Dash.putNumber(f"{self.name} Position", self.getPosition())
+            if self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Velocity or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Position:
+                Dash.putNumber(f"{self.name} PIDF Target",
+                               self.getClosedLoopTarget(0))
+                Dash.putNumber(f"{self.name} PIDF Error",
+                               self.getClosedLoopError(0))
