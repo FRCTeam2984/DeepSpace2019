@@ -1,35 +1,36 @@
-import commands.tankdrive as tankdrive
-from commands import tankdrive as tankdrive
-
+import wpilib
 import ctre
-from wpilib import SmartDashboard as Dash
-from wpilib import adxrs450_gyro
 from wpilib.command import Subsystem
-
 from constants import Constants
-from utils import singleton, units
-
+from utils import singleton, units, talonsrx
 
 class Intake(Subsystem, metaclass=singleton.Singleton):
-    """Intake subsystem motors."""
-
+    """the intake subsystem controlls the
+    intake motors as well as the intake angle"""
     def __init__(self):
         super().__init__()
-
+    
     def init(self):
-        """Initialize left and right intake motors ."""
-        self.il_motor = ctre.WPI_TalonSRX(Constants.IL_MOTOR_ID)
-        self.ir_motor = ctre.WPI_TalonSRX(Constants.IR_MOTOR_ID)
+        self.li_motor = talonsrx.TalonSRX(Constants.IL_MOTOR_ID)
+        self.ri_motor = talonsrx.TalonSRX(Constants.IR_MOTOR_ID)
+        self.ai_motor = talonsrx.TalonSRX(Constants.IA_MOTOR_ID)
+        self.ai_motor.initialize(inverted=False, encoder=True)
+        self.kp = Constants.TURN_ARM_TO_ANGLE_KP
+        self.ki = Constants.TURN_ARM_TO_ANGLE_KI
+        self.kd = Constants.TURN_ARM_TO_ANGLE_KD
+        self.kf = Constants.TURN_ARM_TO_ANGLE_KF
+        self.ai_motor.setPositionPIDF(self.kp, self.ki, self.kd, self.kf)
 
-    def setPercentOutput(self, left_signal, right_signal):
-        """Set the percent output of the left and right intake motors."""
-        self.il_motor.set(ctre.WPI_TalonSRX.ControlMode.PercentOutput, left_signal)
-        self.ir_motor.set(ctre.WPI_TalonSRX.ControlMode.PercentOutput, right_signal)
 
-    def intakeMotorSpit(self):
-        """Makes intake motors spit."""
-        self.setPercentOutput(1, -1)
+    def setPowerSpin(self, power=0):
+        neg_power = power * -1
+        self.li_motor.setPercentOutput(
+            power, max_signal=Constants.MAX_DRIVE_OUTPUT)
+        self.ri_motor.setPercentOutput(
+            neg_power, max_signal=Constants.MAX_DRIVE_OUTPUT)
+    
+    def resetSpin(self):
+        self.setPowerSpin(0)
 
-    def intakeMotorSuck(self):
-        """Makes intake motors suck."""
-        self.setPercentOutput(-1, 1)
+    def setAngle(self, angle):
+        self.ai_motor.setPositionSetpoint(units.degreesToTicks(angle))
