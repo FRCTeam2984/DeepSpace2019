@@ -80,3 +80,11 @@ def ticksPer100msToInchesPerSecLeft(ticks_per_100ms):
 def ticksPer100msToInchesPerSecRight(ticks_per_100ms):
     """Convert inches per sec to ticks per 100ms for the right encoder (ctre uses ticks/100ms)."""
     return ticksToInchesRight(ticks_per_100ms)*10
+
+
+def ticksToDegrees(ticks):
+    """Convert ticks to degrees"""
+    return ticks / (Constants.TICKS_PER_REVOLUTION / 360)
+def degreesToTicks(degrees)
+    """Convert degrees to ticks"""
+    return (Constants.TICKS_PER_REVOLUTION / 360) * degrees
