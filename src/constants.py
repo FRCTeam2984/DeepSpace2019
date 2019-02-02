@@ -27,14 +27,15 @@ class Constants:
     # Intake motors
     IL_MOTOR_ID = 5
     IR_MOTOR_ID = 6
+    IW_MOTOR_ID = 7
 
     # Arm motors
-    BS_MOTOR_ID = 7
-    BM_MOTOR_ID = 8
-    FS_MOTOR_ID = 9
-    FM_MOTOR_ID = 10
+    BS_MOTOR_ID = 8
+    BM_MOTOR_ID = 9
+    FS_MOTOR_ID = 10
+    FM_MOTOR_ID = 11
 
-    #Intake motor "suck" and "spit" speeds
+    # Intake motor "suck" and "spit" speeds
     SUCK_SPEED = 1
     SPIT_SPEED = 1
 
@@ -52,9 +53,9 @@ class Constants:
     CPR_DRIVE_BR = 1440
     CPR_DRIVE_FL = 1440
     CPR_DRIVE_FR = 1440
-    CPR_DRIVE_FA = 1440
-    CPR_DRIVE_BA = 1440
-    CPR_DRIVE_IW = 1440
+    CPR_ARM_F = 1440
+    CPR_ARM_B = 1440
+    CPR_INTAKE_W = 1440
 
     # Drive motor pidf values
     BL_VELOCITY_KP = 0.1
@@ -138,6 +139,12 @@ class Constants:
     BACK_ARM_KI = 0
     BACK_ARM_KD = 0
     BACK_ARM_KF = 0
+
+    # Intake wrist
+    INTAKE_WRIST_KP = 0
+    INTAKE_WRIST_KI = 0
+    INTAKE_WRIST_KD = 0
+    INTAKE_WRIST_KF = 0
 
     # Game modes (front arm, intake, back arm)
     GAME_MODE_STOW = [25,  0,  -90]

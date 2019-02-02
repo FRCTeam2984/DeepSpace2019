@@ -1,36 +1,38 @@
-import wpilib
-import ctre
 from wpilib.command import Subsystem
 from constants import Constants
-from utils import singleton, units, talonsrx
+from utils import singleton, talonsrx
+
 
 class Intake(Subsystem, metaclass=singleton.Singleton):
-    """the intake subsystem controlls the
-    intake motors as well as the intake angle"""
+    """The intake subsystem controlls the cargo intake motors."""
+
     def __init__(self):
         super().__init__()
-    
+
     def init(self):
-        self.li_motor = talonsrx.TalonSRX(Constants.IL_MOTOR_ID)
-        self.ri_motor = talonsrx.TalonSRX(Constants.IR_MOTOR_ID)
-        self.ai_motor = talonsrx.TalonSRX(Constants.IA_MOTOR_ID)
-        self.ai_motor.initialize(inverted=False, encoder=True)
-        self.kp = Constants.TURN_ARM_TO_ANGLE_KP
-        self.ki = Constants.TURN_ARM_TO_ANGLE_KI
-        self.kd = Constants.TURN_ARM_TO_ANGLE_KD
-        self.kf = Constants.TURN_ARM_TO_ANGLE_KF
-        self.ai_motor.setPositionPIDF(self.kp, self.ki, self.kd, self.kf)
+        """Initialize the intake motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
+        self.l_motor = talonsrx.TalonSRX(Constants.IL_MOTOR_ID)
+        self.r_motor = talonsrx.TalonSRX(Constants.IR_MOTOR_ID)
+        self.l_motor.initialize(inverted=False, encoder=False)
+        self.r_motor.initialize(inverted=False, encoder=False)
 
+    def outputToDashboard(self):
+        self.l_motor.outputToDashboard()
+        self.r_motor.outputToDashboard()
 
-    def setPowerSpin(self, power=0):
-        neg_power = power * -1
-        self.li_motor.setPercentOutput(
-            power, max_signal=Constants.MAX_DRIVE_OUTPUT)
-        self.ri_motor.setPercentOutput(
-            neg_power, max_signal=Constants.MAX_DRIVE_OUTPUT)
-    
-    def resetSpin(self):
-        self.setPowerSpin(0)
+    def setPercentOutput(self, l_signal, r_signal):
+        """Set the percent output of the 2 motors."""
+        self.l_motor.setPercentOutput(l_signal, max_signal=1)
+        self.r_motor.setPercentOutput(r_signal, max_signal=1)
 
-    def setAngle(self, angle):
-        self.ai_motor.setPositionSetpoint(units.degreesToTicks(angle))
+    def stop(self):
+        """Stop the intake motors."""
+        self.setPercentOutput(0, 0)
+
+    def suck(self, speed=Constants.SUCK_SPEED):
+        """Set the intake motors to \"suck\"."""
+        self.setPercentOutput(speed, -speed)
+
+    def spit(self, speed=Constants.SPIT_SPEED):
+        """Set the intake motors to \"spit\"."""
+        self.setPercentOutput(speed, -speed)
