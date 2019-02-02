@@ -16,7 +16,7 @@ class IntakeWrist(Subsystem, metaclass=singleton.Singleton):
         self.w_motor.setPositionPIDF(Constants.INTAKE_WRIST_KP, Constants.INTAKE_WRIST_KI,
                                      Constants.INTAKE_WRIST_KD, Constants.INTAKE_WRIST_KF)
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         self.w_motor.outputToDashboard()
 
     def setAngle(self, angle):

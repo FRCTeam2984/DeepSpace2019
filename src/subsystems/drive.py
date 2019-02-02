@@ -50,7 +50,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         for motor in self.motors:
             motor.zero()
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         self.bl_motor.outputToDashboard()
         self.br_motor.outputToDashboard()
         self.fl_motor.outputToDashboard()
@@ -86,4 +86,4 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         return self.setDefaultCommand(tankdrive.TankDrive())
 
     def periodic(self):
-        self.outputToSmartDashboard()
+        self.outputToDashboard()

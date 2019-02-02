@@ -13,7 +13,7 @@ class UpdateOdemetry(Command):
 
     def execute(self):
         self.odemetry.updateState(self.timeSinceInitialized())
-        self.odemetry.outputToSmartDashboard()
+        self.odemetry.outputToDashboard()
 
     def isFinished(self):
         return False

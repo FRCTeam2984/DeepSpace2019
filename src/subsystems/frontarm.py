@@ -27,7 +27,7 @@ class FrontArm(Subsystem, metaclass=singleton.Singleton):
         """Set the encoder positions to 0."""
         self.m_motor.zero()
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         self.s_motor.outputToDashboard()
         self.m_motor.outputToDashboard()
 

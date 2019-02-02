@@ -33,8 +33,8 @@ class HatchLatch(Subsystem, metaclass=singleton.Singleton):
         else:
             self.setClosed()
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         Dash.putNumber("Servo Angle", self.servo.getAngle())
 
     def periodic(self):
-        self.outputToSmartDashboard()
+        self.outputToDashboard()

@@ -34,7 +34,7 @@ class Diagnostic:
         self.roborio_logfile.writerow(
             [timestamp] + list(self.data["roboRIO"].values()))
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         self.outputPDP()
         self.outputroboRIO()
 

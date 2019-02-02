@@ -130,8 +130,8 @@ class PurePursuit():
         self.updateClosestPointIndex(state.pos)
         self.updateTargetVelocities(state.pos)
 
-    def outputToSmartDashboard(self):
-        """Output values to the smart dashboard."""
+    def outputToDashboard(self):
+        """Output values to the dashboard."""
         lookahead = self.pursuit_points[self.last_lookahead_index].point
         closest = self.pursuit_points[self.closest_point_index].point
         Dash.putNumberArray("Lookahead Point", [lookahead.x, lookahead.y])

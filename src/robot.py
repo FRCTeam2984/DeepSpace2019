@@ -80,9 +80,9 @@ class Robot(CommandBasedRobot):
         self.test.start()
 
     def robotPeriodic(self):
-        self.outputToSmartDashboard()
+        self.outputToDashboard()
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         pass
         # Dash.putNumber("Total Current", self.pdp.getTotalCurrent())
         # for i in range(16):

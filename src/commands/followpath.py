@@ -26,7 +26,7 @@ class FollowPath(Command):
     def execute(self):
         state = self.odemetry.getState()
         self.follower.update(state)
-        self.follower.outputToSmartDashboard()
+        self.follower.outputToDashboard()
         velocities = self.follower.target_velocities
         # self.drive.setPercentOutput()
 

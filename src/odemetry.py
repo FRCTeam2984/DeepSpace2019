@@ -51,7 +51,7 @@ class Odemetry(metaclass=singleton.Singleton):
             # TODO how to calibrate pigeon
             pass
 
-    def outputToSmartDashboard(self):
+    def outputToDashboard(self):
         # Dash.putNumber(
         #     "Left Encoder Ticks", self.drive.getDistanceTicksLeft())
         # Dash.putNumber(
