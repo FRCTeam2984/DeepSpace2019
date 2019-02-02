@@ -16,4 +16,3 @@ class OI(metaclass=singleton.Singleton):
         self.hatchbutton = JoystickButton(self.driver, 1)
         self.hatchbutton.whenPressed(togglehatchlatch.ToggleHatchLatch())
         self.snapbutton = JoystickButton(self.driver, 6)
-
