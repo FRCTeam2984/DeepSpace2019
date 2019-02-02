@@ -2,7 +2,7 @@ from wpilib.command import Command
 from subsystems import intakewrist
 
 
-class SetBackArm(Command):
+class SetIntakeWrist(Command):
     def __init__(self, setpoint):
         super().__init__()
         self.wrist = intakewrist.IntakeWrist()
