@@ -2,7 +2,7 @@ from wpilib import SmartDashboard as Dash
 from wpilib.command import Subsystem
 
 from constants import Constants
-from utils import singleton, units, talonsrx
+from utils import singleton, units, lazytalonsrx
 
 
 class FrontArm(Subsystem, metaclass=singleton.Singleton):
@@ -13,8 +13,8 @@ class FrontArm(Subsystem, metaclass=singleton.Singleton):
 
     def init(self):
         """Initialize the front arm motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
-        self.s_motor = talonsrx.TalonSRX(Constants.FS_MOTOR_ID)
-        self.m_motor = talonsrx.TalonSRX(Constants.FM_MOTOR_ID)
+        self.s_motor = lazytalonsrx.LazyTalonSRX(Constants.FS_MOTOR_ID)
+        self.m_motor = lazytalonsrx.LazyTalonSRX(Constants.FM_MOTOR_ID)
         self.s_motor.initialize(
             inverted=False, encoder=False, name="Front Arm Slave")
         self.m_motor.initialize(

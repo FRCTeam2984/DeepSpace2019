@@ -3,7 +3,7 @@ import logging
 from networktables import NetworkTables
 
 
-class TalonSRX(ctre.WPI_TalonSRX):
+class LazyTalonSRX(ctre.WPI_TalonSRX):
     """A wraper for the ctre.WPI_TalonSRX to simplfy configuration and getting/setting values."""
     MotorDash = NetworkTables.getTable(
         "SmartDashboard").getSubTable("TalonSRX")

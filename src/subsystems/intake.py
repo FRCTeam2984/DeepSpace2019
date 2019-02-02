@@ -1,6 +1,6 @@
 from wpilib.command import Subsystem
 from constants import Constants
-from utils import singleton, talonsrx
+from utils import singleton, lazytalonsrx
 
 
 class Intake(Subsystem, metaclass=singleton.Singleton):
@@ -11,8 +11,8 @@ class Intake(Subsystem, metaclass=singleton.Singleton):
 
     def init(self):
         """Initialize the intake motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
-        self.l_motor = talonsrx.TalonSRX(Constants.IL_MOTOR_ID)
-        self.r_motor = talonsrx.TalonSRX(Constants.IR_MOTOR_ID)
+        self.l_motor = lazytalonsrx.LazyTalonSRX(Constants.IL_MOTOR_ID)
+        self.r_motor = lazytalonsrx.LazyTalonSRX(Constants.IR_MOTOR_ID)
         self.l_motor.initialize(
             inverted=False, encoder=False, name="Intake Left")
         self.r_motor.initialize(

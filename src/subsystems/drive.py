@@ -5,7 +5,7 @@ from wpilib import SmartDashboard as Dash
 from wpilib.command import Subsystem
 
 from constants import Constants
-from utils import singleton, units, talonsrx
+from utils import singleton, units, lazytalonsrx
 
 
 class Drive(Subsystem, metaclass=singleton.Singleton):
@@ -17,10 +17,10 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def init(self):
         """Initialize the drive motors. This is not in the constructor to make the calling explicit in the robotInit to the robot simulator."""
-        self.bl_motor = talonsrx.TalonSRX(Constants.BL_MOTOR_ID)
-        self.br_motor = talonsrx.TalonSRX(Constants.BR_MOTOR_ID)
-        self.fl_motor = talonsrx.TalonSRX(Constants.FL_MOTOR_ID)
-        self.fr_motor = talonsrx.TalonSRX(Constants.FR_MOTOR_ID)
+        self.bl_motor = lazytalonsrx.LazyTalonSRX(Constants.BL_MOTOR_ID)
+        self.br_motor = lazytalonsrx.LazyTalonSRX(Constants.BR_MOTOR_ID)
+        self.fl_motor = lazytalonsrx.LazyTalonSRX(Constants.FL_MOTOR_ID)
+        self.fr_motor = lazytalonsrx.LazyTalonSRX(Constants.FR_MOTOR_ID)
 
         self.motors = [self.bl_motor, self.br_motor,
                        self.fl_motor, self.fr_motor]
