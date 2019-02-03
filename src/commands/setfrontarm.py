@@ -1,8 +1,8 @@
-from wpilib.command import Command
+from wpilib.command import InstantCommand
 from subsystems import frontarm
 
 
-class SetFrontArm(Command):
+class SetFrontArm(InstantCommand):
     def __init__(self, setpoint):
         super().__init__()
         self.arm = frontarm.FrontArm()
@@ -10,13 +10,7 @@ class SetFrontArm(Command):
         self.setpoint = setpoint
 
     def initialize(self):
-        pass
-
-    def execute(self):
         self.arm.setAngle(self.setpoint)
-
-    def isFinished(self):
-        return False
 
     def end(self):
         pass

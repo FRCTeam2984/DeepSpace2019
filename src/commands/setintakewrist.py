@@ -1,8 +1,8 @@
-from wpilib.command import Command
+from wpilib.command import InstantCommand
 from subsystems import intakewrist
 
 
-class SetIntakeWrist(Command):
+class SetIntakeWrist(InstantCommand):
     def __init__(self, setpoint):
         super().__init__()
         self.wrist = intakewrist.IntakeWrist()
@@ -10,13 +10,7 @@ class SetIntakeWrist(Command):
         self.setpoint = setpoint
 
     def initialize(self):
-        pass
-
-    def execute(self):
         self.wrist.setAngle(self.setpoint)
-
-    def isFinished(self):
-        return False
 
     def end(self):
         pass

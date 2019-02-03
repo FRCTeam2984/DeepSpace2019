@@ -10,7 +10,6 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
 
     def __init__(self, id):
         super().__init__(id)
-        self.no_encoder_warning = f"WARNING: No encoder connected to TalonSRX ({id})"
 
     def initialize(self, inverted=False, encoder=False, name=None):
         """Initialize the motors (enable the encoder, set invert status, set voltage limits)."""
@@ -25,6 +24,8 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
         self.configPeakOutputReverse(-1, 5)
         if name != None:
             self.setName(name)
+        self.no_encoder_warning = f"No encoder connected to {self.name}"
+        self.no_closed_loop_warning = f"{self.name} not in closed loop mode"
 
     def setVelocityPIDF(self, kp, ki, kd, kf):
         """Initialize the PIDF controler for velocity control."""
@@ -78,17 +79,34 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
             logging.warning(self.no_encoder_warning)
             return 0
 
+    def getError(self):
+        """Get the closed loop error if in closed loop mode."""
+        if self._isClosedLoop():
+            return self.getClosedLoopError(0)
+        else:
+            logging.warning(self.no_closed_loop_warning)
+            return 0
+
+    def getTarget(self):
+        """Get the closed loop target if in closed loop mode."""
+        if self._isClosedLoop():
+            return self.getClosedLoopTarget(0)
+        else:
+            logging.warning(self.no_closed_loop_warning)
+            return 0
+
     def outputToDashboard(self):
         self.MotorDash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
         self.MotorDash.putNumber(f"{self.name} Percent Output",
                                  self.getMotorOutputPercent())
-        self.MotorDash.putNumber(f"{self.name} Mode", self.getControlMode())
-
         if self.encoder:
             self.MotorDash.putNumber(
                 f"{self.name} Position", self.getPosition())
-            if self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Velocity or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Position:
+            if self._isClosedLoop():
                 self.MotorDash.putNumber(f"{self.name} PIDF Target",
                                          self.getClosedLoopTarget(0))
                 self.MotorDash.putNumber(f"{self.name} PIDF Error",
                                          self.getClosedLoopError(0))
+
+    def _isClosedLoop(self):
+        return self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Velocity or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Position
