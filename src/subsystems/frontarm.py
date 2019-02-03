@@ -16,9 +16,9 @@ class FrontArm(Subsystem, metaclass=singleton.Singleton):
         self.s_motor = lazytalonsrx.LazyTalonSRX(Constants.FS_MOTOR_ID)
         self.m_motor = lazytalonsrx.LazyTalonSRX(Constants.FM_MOTOR_ID)
         self.s_motor.initialize(
-            inverted=False, encoder=False, name="Front Arm Slave")
+            inverted=False, encoder=True, name="Front Arm Slave")
         self.m_motor.initialize(
-            inverted=False, encoder=False, name="Front Arm Master")
+            inverted=False, encoder=True, name="Front Arm Master")
         self.s_motor.follow(self.m_motor)
         self.m_motor.setPositionPIDF(
             Constants.FRONT_ARM_KP, Constants.FRONT_ARM_KI, Constants.FRONT_ARM_KD, Constants.FRONT_ARM_KF)
@@ -38,3 +38,6 @@ class FrontArm(Subsystem, metaclass=singleton.Singleton):
     def setAngle(self, angle):
         """Set the angle of the arm in degrees."""
         self.m_motor.setPositionSetpoint(angle)
+
+    def periodic(self):
+        self.outputToDashboard()

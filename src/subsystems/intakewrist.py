@@ -23,3 +23,6 @@ class IntakeWrist(Subsystem, metaclass=singleton.Singleton):
         """Set the angle of the wrist."""
         self.w_motor.setPositionSetpoint(
             units.intakeWristDegreesToTicks(angle))
+
+    def periodic(self):
+        self.outputToDashboard()

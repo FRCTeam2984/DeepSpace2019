@@ -38,3 +38,6 @@ class Intake(Subsystem, metaclass=singleton.Singleton):
     def spit(self, speed=Constants.SPIT_SPEED):
         """Set the intake motors to \"spit\"."""
         self.setPercentOutput(speed, -speed)
+
+    def periodic(self):
+        self.outputToDashboard()

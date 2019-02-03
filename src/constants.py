@@ -30,10 +30,10 @@ class Constants:
     IW_MOTOR_ID = 8
 
     # Arm motors
-    BS_MOTOR_ID = 9
-    BM_MOTOR_ID = 10
-    FS_MOTOR_ID = 11
-    FM_MOTOR_ID = 12
+    FS_MOTOR_ID = 9
+    FM_MOTOR_ID = 10
+    BS_MOTOR_ID = 11
+    BM_MOTOR_ID = 12
     CRL_MOTOR_ID = 13
     CRR_MOTOR_ID = 14
 
