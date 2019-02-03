@@ -188,7 +188,7 @@ class Constants:
     @staticmethod
     def initSmartDashboard():
         constants_table = NetworkTables.getTable(
-            "SmartDashboard").getSubTable("CONSTANTS")
+            "SmartDashboard").getSubTable("Constants")
         constants_table.addEntryListener(Constants._valueChanged)
         for key, value in Constants.__dict__.items():
             if not key.startswith("__"):

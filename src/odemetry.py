@@ -8,7 +8,7 @@ from wpilib import analoggyro
 from wpilib.robotbase import hal
 
 from constants import Constants
-from subsystems import drive,intake
+from subsystems import drive, intake
 from utils import pose, singleton, units, vector2d
 
 
@@ -22,7 +22,7 @@ class Odemetry(metaclass=singleton.Singleton):
         self.timestamp = 0
         self.last_timestamp = 0
         self.dt = 0
-        
+
         # Gyroscope
         if hal.isSimulation():
             self.gyro = analoggyro.AnalogGyro(0)
