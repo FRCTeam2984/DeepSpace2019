@@ -11,5 +11,5 @@ robotpy-installer download-pip coloredlogs
 read -n1 -p "Press any key once connected to the robot..."
 echo
 robotpy-installer install-robotpy
-robotpy-installer install-opkg python37-robotpy-cscore python37-robotpy-ctre coloredlogs
+robotpy-installer install-opkg python37-robotpy-cscore python37-robotpy-ctre
 robotpy-installer install-pip coloredlogs
