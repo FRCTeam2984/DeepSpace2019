@@ -8,7 +8,7 @@ from wpilib import analoggyro
 from wpilib.robotbase import hal
 
 from constants import Constants
-from subsystems import drive
+from subsystems import drive,intake
 from utils import pose, singleton, units, vector2d
 
 
@@ -22,14 +22,12 @@ class Odemetry(metaclass=singleton.Singleton):
         self.timestamp = 0
         self.last_timestamp = 0
         self.dt = 0
-
-        self.ir_motor = ctre.WPI_TalonSRX(Constants.IR_MOTOR_ID)
-
+        
         # Gyroscope
         if hal.isSimulation():
             self.gyro = analoggyro.AnalogGyro(0)
         else:
-            self.gyro = PigeonIMU(self.ir_motor)
+            self.gyro = PigeonIMU(intake.Intake().l_motor)
 
         self.calibrate()
 
