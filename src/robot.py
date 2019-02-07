@@ -51,7 +51,8 @@ class Robot(CommandBasedRobot):
         self.global_.setRunWhenDisabled(True)
         # Start the camera sever
         CameraServer.launch()
-        self.watchdog = watchdog.Watchdog(Constants.WATCHDOG_TIMEOUT, self._watchdogTimeout)
+        self.watchdog = watchdog.Watchdog(
+            Constants.WATCHDOG_TIMEOUT, self._watchdogTimeout)
         self.globalInit()
         LiveWindow.disableAllTelemetry()
 

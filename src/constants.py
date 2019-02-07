@@ -10,7 +10,7 @@ class Constants:
 
     # Watchdog timeout (seconds)
     WATCHDOG_TIMEOUT = 0.1
-    
+
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
 
