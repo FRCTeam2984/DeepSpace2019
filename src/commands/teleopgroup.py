@@ -1,4 +1,4 @@
-import commands.tankdrive as tankdrive
+from commands import tankdrive
 
 from wpilib.command import CommandGroup
 
