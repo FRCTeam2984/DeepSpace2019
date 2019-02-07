@@ -12,4 +12,5 @@ class ZeroSensors(InstantCommand):
         self.requires(self.backarm)
 
     def initialize(self):
-        self.drive.zeroSensors()
+        self.drive.reset()
+        self.backarm.reset()

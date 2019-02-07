@@ -87,3 +87,7 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
 
     def periodic(self):
         self.outputToDashboard()
+
+    def reset(self):
+        self.zeroSensors()
+        self.initPIDF()

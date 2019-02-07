@@ -52,3 +52,6 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
 
     def periodic(self):
         self.outputToDashboard()
+
+    def reset(self):
+        self.initPIDF()
