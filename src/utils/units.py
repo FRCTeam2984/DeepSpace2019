@@ -80,13 +80,3 @@ def ticksPer100msToInchesPerSecLeft(ticks_per_100ms):
 def ticksPer100msToInchesPerSecRight(ticks_per_100ms):
     """Convert inches per sec to ticks per 100ms for the right encoder (ctre uses ticks/100ms)."""
     return ticksToInchesRight(ticks_per_100ms)*10
-
-
-def intakeWristTicksToDegrees(ticks):
-    """Convert intake wrist ticks to degrees."""
-    return ticks / (Constants.CPR_INTAKE_W / 360)
-
-
-def intakeWristDegreesToTicks(degrees):
-    """Convert intake wrist degrees to ticks."""
-    return (Constants.CPR_INTAKE_W / 360) * degrees
