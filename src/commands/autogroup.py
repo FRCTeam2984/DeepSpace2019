@@ -1,5 +1,5 @@
 from wpilib.command import CommandGroup
-from commands import turntoangle
+from commands import turntoangle, setbackarm
 import math
 
 
@@ -8,4 +8,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(turntoangle.TurnToAngle(90))
+        self.addSequential(setbackarm.SetBackArm(45))

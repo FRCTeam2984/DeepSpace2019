@@ -51,6 +51,22 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
         """Set the position setpoint for the PIDF controler."""
         self.set(ctre.WPI_TalonSRX.ControlMode.Position, position)
 
+    def setMotionMagicConfig(self, vel, accel):
+        self.configMotionAcceleration(int(accel), 0)
+        self.configMotionCruiseVelocity(int(vel), 0)
+
+    def setMotionMagicPIDF(self, kp, ki, kd, kf):
+        """Initialize the PIDF controler for position control."""
+        self.selectProfileSlot(2, 0)
+        self.config_kP(2, kp, 0)
+        self.config_kI(2, ki, 0)
+        self.config_kD(2, kd, 0)
+        self.config_kF(2, kf, 0)
+
+    def setMotionMagicSetpoint(self, position):
+        """Set the position setpoint for the PIDF controler."""
+        self.set(ctre.WPI_TalonSRX.ControlMode.MotionMagic, position)
+
     def setPercentOutput(self, signal, max_signal=1):
         """Set the percent output of the motor."""
         signal = min(max(signal, -max_signal), max_signal)
@@ -109,4 +125,4 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
                                          self.getClosedLoopError(0))
 
     def _isClosedLoop(self):
-        return self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Velocity or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Position
+        return self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Velocity or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.Position or self.getControlMode() == ctre.WPI_TalonSRX.ControlMode.MotionMagic

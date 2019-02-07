@@ -1,5 +1,6 @@
-from wpilib.command import InstantCommand
+from wpilib.command import Command, InstantCommand
 from subsystems import backarm
+from constants import Constants
 
 
 class SetBackArm(InstantCommand):
@@ -10,7 +11,7 @@ class SetBackArm(InstantCommand):
         self.setpoint = setpoint
 
     def initialize(self):
-        self.arm.setAngle(self.setpoint)
+        self.arm.setMotion(self.setpoint)
 
     def end(self):
         pass

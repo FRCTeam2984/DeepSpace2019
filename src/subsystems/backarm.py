@@ -21,7 +21,12 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
         self.m_motor.initialize(
             inverted=False, encoder=True, name="Back Arm Master")
         self.s_motor.follow(self.m_motor)
-        self.m_motor.setPositionPIDF(
+        self.initPIDF()
+
+    def initPIDF(self):
+        self.m_motor.setMotionMagicConfig(
+            Constants.BACK_ARM_CRUISE_VELOCITY, Constants.BACK_ARM_ACCELERATION)
+        self.m_motor.setMotionMagicPIDF(
             Constants.BACK_ARM_KP, Constants.BACK_ARM_KI, Constants.BACK_ARM_KD, Constants.BACK_ARM_KF)
 
     def zeroSensors(self):
@@ -38,7 +43,12 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
 
     def setAngle(self, angle):
         """Set the angle of the arm in degrees."""
-        self.m_motor.setPositionSetpoint(angle)
+
+        self.m_motor.setMotionMagicSetpoint(angle)
+
+    def setMotion(self, motion):
+        ticks = Constants.BACK_ARM_POS*(192)*(8/360)
+        self.m_motor.setMotionMagicSetpoint(ticks)
 
     def periodic(self):
         self.outputToDashboard()
