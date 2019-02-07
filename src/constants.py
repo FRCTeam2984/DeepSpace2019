@@ -8,6 +8,9 @@ class Constants:
     """Global constants that are accesed throughout the project."""
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
+    # Watchdog timeout (seconds)
+    WATCHDOG_TIMEOUT = 0.1
+    
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
 
@@ -27,15 +30,15 @@ class Constants:
     # Intake motors
     IL_MOTOR_ID = 6
     IR_MOTOR_ID = 7
-    IW_MOTOR_ID = 8
+    IW_MOTOR_ID = 10  # UNUSED
 
     # Arm motors
-    FS_MOTOR_ID = 9
-    FM_MOTOR_ID = 10
+    FS_MOTOR_ID = 8
+    FM_MOTOR_ID = 9
     BS_MOTOR_ID = 11
     BM_MOTOR_ID = 12
-    CRL_MOTOR_ID = 13
-    CRR_MOTOR_ID = 14
+    CRL_MOTOR_ID = 13  # UNUSED
+    CRR_MOTOR_ID = 14  # UNUSED
 
     # Intake motor "suck" and "spit" speeds
     SUCK_SPEED = 1
@@ -137,10 +140,13 @@ class Constants:
     FRONT_ARM_KF = 0
 
     # Back arm
+    BACK_ARM_ACCELERATION = 100
+    BACK_ARM_CRUISE_VELOCITY = 100
     BACK_ARM_KP = 0
     BACK_ARM_KI = 0
     BACK_ARM_KD = 0
     BACK_ARM_KF = 0
+    BACK_ARM_POS = 100
 
     # Intake wrist
     INTAKE_WRIST_KP = 0
@@ -164,7 +170,6 @@ class Constants:
     L_ROCKET_BACK = 151
     R_ROCKET_FRONT = 331
     R_ROCKET_BACK = 139
-
     @staticmethod
     def updateConstants():
         try:

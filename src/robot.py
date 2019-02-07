@@ -13,11 +13,12 @@ from wpilib.command import Command
 
 import oi
 from constants import Constants
-from subsystems import drive, backarm, frontarm, intake, intakewrist
+from subsystems import drive, backarm, intake
 from wpilib import watchdog
 
 import logging
 import coloredlogs
+from wpilib import LiveWindow
 
 
 class Robot(CommandBasedRobot):
@@ -37,9 +38,7 @@ class Robot(CommandBasedRobot):
         # Initialize motor objects
         drive.Drive().init()
         backarm.BackArm().init()
-        frontarm.FrontArm().init()
         intake.Intake().init()
-        intakewrist.IntakeWrist().init()
         # The PDP
         # self.pdp = PDP(7)
         # Set command group member variables
@@ -52,8 +51,9 @@ class Robot(CommandBasedRobot):
         self.global_.setRunWhenDisabled(True)
         # Start the camera sever
         CameraServer.launch()
-        self.watchdog = watchdog.Watchdog(0.05, self._watchdogTimeout)
+        self.watchdog = watchdog.Watchdog(Constants.WATCHDOG_TIMEOUT, self._watchdogTimeout)
         self.globalInit()
+        LiveWindow.disableAllTelemetry()
 
     def _watchdogTimeout(self):
         logging.warning("Watchdog timeout")
