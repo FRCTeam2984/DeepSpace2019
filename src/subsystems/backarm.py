@@ -47,7 +47,7 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
         self.m_motor.setMotionMagicSetpoint(angle)
 
     def setMotion(self, motion):
-        ticks = Constants.BACK_ARM_POS*(192)*(8/360)
+        ticks = motion*(192)*(8/360)
         self.m_motor.setMotionMagicSetpoint(ticks)
 
     def periodic(self):
