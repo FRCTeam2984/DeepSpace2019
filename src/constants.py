@@ -63,25 +63,25 @@ class Constants:
     CPR_INTAKE_W = 1440
 
     # Drive motor pidf values
-    BL_VELOCITY_KP = 0.1
+    BL_VELOCITY_KP = 0
     BL_VELOCITY_KI = 0
     BL_VELOCITY_KD = 0
-    BL_VELOCITY_KF = 0.335
+    BL_VELOCITY_KF = 0.3654
 
     BR_VELOCITY_KP = 0
     BR_VELOCITY_KI = 0
     BR_VELOCITY_KD = 0
-    BR_VELOCITY_KF = 1
+    BR_VELOCITY_KF = 0.3654
 
     FL_VELOCITY_KP = 0
     FL_VELOCITY_KI = 0
     FL_VELOCITY_KD = 0
-    FL_VELOCITY_KF = 1
+    FL_VELOCITY_KF = 0.3654
 
     FR_VELOCITY_KP = 0
     FR_VELOCITY_KI = 0
     FR_VELOCITY_KD = 0
-    FR_VELOCITY_KF = 1
+    FR_VELOCITY_KF = 0.3654
 
     # Turn to angle pidf values
     TURN_TO_ANGLE_KP = 0.16
@@ -111,11 +111,13 @@ class Constants:
 
     DRIVER_X_MOD = 1
     DRIVER_Y_MOD = -1
-    DRIVER_Z_MOD = 1
+    DRIVER_Z_MOD = -1
+    DRIVER_T_MOD = 1
 
     OPERATOR_X_MOD = 1
     OPERATOR_Y_MOD = 1
     OPERATOR_Z_MOD = 1
+    OPERATOR_T_MOD = 1
 
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 3
@@ -124,7 +126,7 @@ class Constants:
     DISTANCE_SENSOR_PORT = 0
 
     # Hatch latch
-    HATCH_LATCH_OPENED = 180
+    HATCH_LATCH_OPENED = 140
     HATCH_LATCH_CLOSED = 0
 
     # Vision
@@ -140,13 +142,12 @@ class Constants:
     FRONT_ARM_KF = 0
 
     # Back arm
-    BACK_ARM_ACCELERATION = 100
-    BACK_ARM_CRUISE_VELOCITY = 100
-    BACK_ARM_KP = 0
-    BACK_ARM_KI = 0
+    BACK_ARM_ACCELERATION = 30
+    BACK_ARM_CRUISE_VELOCITY = 30
+    BACK_ARM_KP = 2
+    BACK_ARM_KI = 0.0006
     BACK_ARM_KD = 0
-    BACK_ARM_KF = 0
-    BACK_ARM_POS = 100
+    BACK_ARM_KF = 2.8
 
     # Intake wrist
     INTAKE_WRIST_KP = 0
