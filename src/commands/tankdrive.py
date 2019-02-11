@@ -26,10 +26,9 @@ class TankDrive(Command):
 
     def initialize(self):
         self.drive.initPIDF()
-        return
 
     def execute(self):
-        if not oi.OI().snapbutton.get():
+        if not oi.OI().drive_buttons[1].get():
             x_speed = math.pow(oi.OI().driver.getY(),
                                Constants.TANK_DRIVE_EXPONENT)
             y_speed = math.pow(oi.OI().driver.getX(),
@@ -46,6 +45,5 @@ class TankDrive(Command):
         else:
             self.drive.setPercentOutput(0, 0, 0, 0)
             pov = oi.OI().driver.getPOV(0)
-            print(pov)
             if pov != -1:
                 turntoangle.TurnToAngle(pov).start()
