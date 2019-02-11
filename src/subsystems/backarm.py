@@ -17,17 +17,18 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
         self.s_motor = lazytalonsrx.LazyTalonSRX(Constants.BS_MOTOR_ID)
         self.m_motor = lazytalonsrx.LazyTalonSRX(Constants.BM_MOTOR_ID)
         self.s_motor.initialize(
-            inverted=True, encoder=True, name="Back Arm Slave")
+            inverted=True, encoder=True, phase=False, name="Back Arm Slave")
         self.m_motor.initialize(
-            inverted=False, encoder=True, name="Back Arm Master")
+            inverted=False, encoder=True, phase=False, name="Back Arm Master")
         self.s_motor.follow(self.m_motor)
         self.initPIDF()
 
     def initPIDF(self):
+        """Initialize the arm motor pidf gains."""
         self.m_motor.setMotionMagicConfig(
-            Constants.BACK_ARM_CRUISE_VELOCITY, Constants.BACK_ARM_ACCELERATION)
-        self.m_motor.setMotionMagicPIDF(
-            Constants.BACK_ARM_KP, Constants.BACK_ARM_KI, Constants.BACK_ARM_KD, Constants.BACK_ARM_KF)
+            Constants.BACK_ARM_CRUISE_VELOCITY * (192) * (10/360), Constants.BACK_ARM_ACCELERATION * (192) * (10/360))
+        self.m_motor.setPIDF(0, Constants.BACK_ARM_KP, Constants.BACK_ARM_KI,
+                             Constants.BACK_ARM_KD, Constants.BACK_ARM_KF)
 
     def zeroSensors(self):
         """Set the encoder positions to 0."""
@@ -36,22 +37,21 @@ class BackArm(Subsystem, metaclass=singleton.Singleton):
     def outputToDashboard(self):
         self.s_motor.outputToDashboard()
         self.m_motor.outputToDashboard()
+        Dash.putNumber("Back Arm Angle", self.getAngle())
 
     def getAngle(self):
         """Get the angle of the arm in degrees."""
-        self.m_motor.getPosition()
+        return self.m_motor.getPosition() / (192) / (10/360)
 
     def setAngle(self, angle):
         """Set the angle of the arm in degrees."""
-
-        self.m_motor.setMotionMagicSetpoint(angle)
-
-    def setMotion(self, motion):
-        ticks = motion*(192)*(8/360)
+        ticks = angle * (192) * (10/360)
         self.m_motor.setMotionMagicSetpoint(ticks)
 
     def periodic(self):
         self.outputToDashboard()
 
     def reset(self):
+        self.m_motor.setPercentOutput(0)
+        self.zeroSensors()
         self.initPIDF()

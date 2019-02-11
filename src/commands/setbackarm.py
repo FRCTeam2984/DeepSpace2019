@@ -11,7 +11,7 @@ class SetBackArm(InstantCommand):
         self.setpoint = setpoint
 
     def initialize(self):
-        self.arm.setMotion(self.setpoint)
+        self.arm.setAngle(self.setpoint)
 
     def end(self):
         pass
