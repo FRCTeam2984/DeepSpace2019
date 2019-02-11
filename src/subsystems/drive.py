@@ -26,24 +26,25 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                        self.fl_motor, self.fr_motor]
 
         self.bl_motor.initialize(
-            inverted=False, encoder=True, name="Drive Back Left")
+            inverted=False, encoder=True, phase=False, name="Drive Back Left")
         self.br_motor.initialize(
-            inverted=True, encoder=False, name="Drive Back Right")
+            inverted=True, encoder=True, phase=False, name="Drive Back Right")
         self.fl_motor.initialize(
-            inverted=False, encoder=True, name="Drive Front Left")
+            inverted=False, encoder=True, phase=False, name="Drive Front Left")
         self.fr_motor.initialize(
-            inverted=True, encoder=False, name="Drive Front Right")
+            inverted=True, encoder=True, phase=False, name="Drive Front Right")
         self.initPIDF()
 
     def initPIDF(self):
-        self.bl_motor.setVelocityPIDF(
-            Constants.BL_VELOCITY_KP, Constants.BL_VELOCITY_KI, Constants.BL_VELOCITY_KD, Constants.BL_VELOCITY_KF)
-        self.br_motor.setVelocityPIDF(
-            Constants.BR_VELOCITY_KP, Constants.BR_VELOCITY_KI, Constants.BR_VELOCITY_KD, Constants.BR_VELOCITY_KF)
-        self.fl_motor.setVelocityPIDF(
-            Constants.FL_VELOCITY_KP, Constants.FL_VELOCITY_KI, Constants.FL_VELOCITY_KD, Constants.FL_VELOCITY_KF)
-        self.fr_motor.setVelocityPIDF(
-            Constants.FR_VELOCITY_KP, Constants.FR_VELOCITY_KI, Constants.FR_VELOCITY_KD, Constants.FR_VELOCITY_KF)
+        """Initialize the drive motor pidf gains."""
+        self.bl_motor.setPIDF(0, Constants.BL_VELOCITY_KP, Constants.BL_VELOCITY_KI,
+                              Constants.BL_VELOCITY_KD, Constants.BL_VELOCITY_KF)
+        self.br_motor.setPIDF(0, Constants.BR_VELOCITY_KP, Constants.BR_VELOCITY_KI,
+                              Constants.BR_VELOCITY_KD, Constants.BR_VELOCITY_KF)
+        self.fl_motor.setPIDF(0, Constants.FL_VELOCITY_KP, Constants.FL_VELOCITY_KI,
+                              Constants.FL_VELOCITY_KD, Constants.FL_VELOCITY_KF)
+        self.fr_motor.setPIDF(0, Constants.FR_VELOCITY_KP, Constants.FR_VELOCITY_KI,
+                              Constants.FR_VELOCITY_KD, Constants.FR_VELOCITY_KF)
 
     def zeroSensors(self):
         """Set the encoder positions to 0."""
@@ -73,7 +74,6 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         br_signal = x_signal + y_signal - rotation
         fl_signal = x_signal + y_signal + rotation
         fr_signal = x_signal - y_signal - rotation
-
         self.setPercentOutput(bl_signal, br_signal, fl_signal, fr_signal)
 
     def setVelocityOutput(self, bl_velocity, br_velocity, fl_velocity, fr_velocity):

@@ -7,16 +7,18 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
     """A wraper for the ctre.WPI_TalonSRX to simplfy configuration and getting/setting values."""
     MotorDash = NetworkTables.getTable(
         "SmartDashboard").getSubTable("TalonSRX")
+    ControlMode = ctre.WPI_TalonSRX.ControlMode
 
     def __init__(self, id):
         super().__init__(id)
 
-    def initialize(self, inverted=False, encoder=False, name=None):
+    def initialize(self, inverted=False, encoder=False, phase=False, name=None):
         """Initialize the motors (enable the encoder, set invert status, set voltage limits)."""
         self.encoder = encoder
         if self.encoder:
             self.configSelectedFeedbackSensor(
                 ctre.FeedbackDevice.QuadEncoder, 0, timeoutMs=10)
+            self.setSensorPhase(phase)
         self.setInverted(inverted)
         self.configNominalOutputForward(0, 5)
         self.configNominalOutputReverse(0, 5)
@@ -27,50 +29,34 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
         self.no_encoder_warning = f"No encoder connected to {self.name}"
         self.no_closed_loop_warning = f"{self.name} not in closed loop mode"
 
-    def setVelocityPIDF(self, kp, ki, kd, kf):
-        """Initialize the PIDF controler for velocity control."""
-        self.selectProfileSlot(0, 0)
-        self.config_kP(0, kp, 0)
-        self.config_kI(0, ki, 0)
-        self.config_kD(0, kd, 0)
-        self.config_kF(0, kf, 0)
-
-    def setVelocitySetpoint(self, velocity):
-        """Set the velocity setpoint for the PIDF controler."""
-        self.set(ctre.WPI_TalonSRX.ControlMode.Velocity, velocity)
-
-    def setPositionPIDF(self, kp, ki, kd, kf):
-        """Initialize the PIDF controler for position control."""
-        self.selectProfileSlot(1, 0)
-        self.config_kP(1, kp, 0)
-        self.config_kI(1, ki, 0)
-        self.config_kD(1, kd, 0)
-        self.config_kF(1, kf, 0)
-
-    def setPositionSetpoint(self, position):
-        """Set the position setpoint for the PIDF controler."""
-        self.set(ctre.WPI_TalonSRX.ControlMode.Position, position)
+    def setPIDF(self, slot, kp, ki, kd, kf):
+        """Initialize the PIDF controller."""
+        self.selectProfileSlot(slot, 0)
+        self.config_kP(slot, kp, 0)
+        self.config_kI(slot, ki, 0)
+        self.config_kD(slot, kd, 0)
+        self.config_kF(slot, kf, 0)
 
     def setMotionMagicConfig(self, vel, accel):
         self.configMotionAcceleration(int(accel), 0)
         self.configMotionCruiseVelocity(int(vel), 0)
 
-    def setMotionMagicPIDF(self, kp, ki, kd, kf):
-        """Initialize the PIDF controler for position control."""
-        self.selectProfileSlot(2, 0)
-        self.config_kP(2, kp, 0)
-        self.config_kI(2, ki, 0)
-        self.config_kD(2, kd, 0)
-        self.config_kF(2, kf, 0)
-
-    def setMotionMagicSetpoint(self, position):
-        """Set the position setpoint for the PIDF controler."""
-        self.set(ctre.WPI_TalonSRX.ControlMode.MotionMagic, position)
-
     def setPercentOutput(self, signal, max_signal=1):
         """Set the percent output of the motor."""
         signal = min(max(signal, -max_signal), max_signal)
-        self.set(ctre.WPI_TalonSRX.ControlMode.PercentOutput, signal)
+        self.set(self.ControlMode.PercentOutput, signal)
+
+    def setPositionSetpoint(self, pos):
+        """Set the position of the motor."""
+        self.set(self.ControlMode.Position, pos)
+
+    def setVelocitySetpoint(self, vel):
+        """Set the velocity of the motor."""
+        self.set(self.ControlMode.Velocity, vel)
+
+    def setMotionMagicSetpoint(self, pos):
+        """Set the position of the motor using motion magic."""
+        self.set(self.ControlMode.MotionMagic, pos)
 
     def zero(self):
         """Zero the encoder if it exists."""
