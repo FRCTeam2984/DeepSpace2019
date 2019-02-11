@@ -1,4 +1,4 @@
-pyfrc==2019.0.3
-pynetworktables==2019.0.0
-robotpy-ctre==2019.1.0
+pyfrc~=2019.0.3
+robotpy-ctre==2019.1.2
+
 coloredlogs
