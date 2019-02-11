@@ -14,9 +14,9 @@ class Intake(Subsystem, metaclass=singleton.Singleton):
         self.l_motor = lazytalonsrx.LazyTalonSRX(Constants.IL_MOTOR_ID)
         self.r_motor = lazytalonsrx.LazyTalonSRX(Constants.IR_MOTOR_ID)
         self.l_motor.initialize(
-            inverted=False, encoder=False,phase=False, name="Intake Left")
+            inverted=False, encoder=False, phase=False, name="Intake Left")
         self.r_motor.initialize(
-            inverted=True, encoder=False, phase=False,name="Intake Right")
+            inverted=True, encoder=False, phase=False, name="Intake Right")
 
     def outputToDashboard(self):
         self.l_motor.outputToDashboard()
