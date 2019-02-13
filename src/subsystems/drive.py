@@ -26,13 +26,13 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
                        self.fl_motor, self.fr_motor]
 
         self.bl_motor.initialize(
-            inverted=False, encoder=True, phase=False, name="Drive Back Left")
+            inverted=False, encoder=True, phase=True, name="Drive Back Left")
         self.br_motor.initialize(
-            inverted=True, encoder=True, phase=False, name="Drive Back Right")
+            inverted=True, encoder=True, phase=True, name="Drive Back Right")
         self.fl_motor.initialize(
-            inverted=False, encoder=True, phase=False, name="Drive Front Left")
+            inverted=False, encoder=True, phase=True, name="Drive Front Left")
         self.fr_motor.initialize(
-            inverted=True, encoder=True, phase=False, name="Drive Front Right")
+            inverted=True, encoder=True, phase=True, name="Drive Front Right")
         self.initPIDF()
 
     def initPIDF(self):
@@ -75,6 +75,14 @@ class Drive(Subsystem, metaclass=singleton.Singleton):
         fl_signal = x_signal + y_signal + rotation
         fr_signal = x_signal - y_signal - rotation
         self.setPercentOutput(bl_signal, br_signal, fl_signal, fr_signal)
+
+    def setDirectionVelocity(self, x_signal, y_signal, rotation):
+        """Set percent output of the 4 motors given an x, y, and rotation inputs."""
+        bl_signal = x_signal - y_signal + rotation
+        br_signal = x_signal + y_signal - rotation
+        fl_signal = x_signal + y_signal + rotation
+        fr_signal = x_signal - y_signal - rotation
+        self.setVelocityOutput(bl_signal, br_signal, fl_signal, fr_signal)
 
     def setVelocityOutput(self, bl_velocity, br_velocity, fl_velocity, fr_velocity):
         self.bl_motor.setVelocitySetpoint(bl_velocity)

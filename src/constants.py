@@ -63,24 +63,26 @@ class Constants:
     CPR_INTAKE_W = 1440
 
     # Drive motor pidf values
-    BL_VELOCITY_KP = 0
-    BL_VELOCITY_KI = 0
-    BL_VELOCITY_KD = 0
+    DRIVE_SPEED = 500
+
+    BL_VELOCITY_KP = 0.23
+    BL_VELOCITY_KI = 0.001
+    BL_VELOCITY_KD = 0.01
     BL_VELOCITY_KF = 0.3654
 
-    BR_VELOCITY_KP = 0
-    BR_VELOCITY_KI = 0
-    BR_VELOCITY_KD = 0
+    BR_VELOCITY_KP = 0.26
+    BR_VELOCITY_KI = 0.001
+    BR_VELOCITY_KD = 0.04
     BR_VELOCITY_KF = 0.3654
 
-    FL_VELOCITY_KP = 0
-    FL_VELOCITY_KI = 0
+    FL_VELOCITY_KP = 0.25
+    FL_VELOCITY_KI = 0.002
     FL_VELOCITY_KD = 0
     FL_VELOCITY_KF = 0.3654
 
-    FR_VELOCITY_KP = 0
-    FR_VELOCITY_KI = 0
-    FR_VELOCITY_KD = 0
+    FR_VELOCITY_KP = 0.25
+    FR_VELOCITY_KI = 0.001
+    FR_VELOCITY_KD = 0.01
     FR_VELOCITY_KF = 0.3654
 
     # Turn to angle pidf values
@@ -90,8 +92,8 @@ class Constants:
     TURN_TO_ANGLE_KF = 0
 
     TURN_TO_ANGLE_MIN_OUTPUT = 0.12
-    TURN_TO_ANGLE_TIMEOUT = 200
-    TURN_TO_ANGLE_TOLERANCE = 2
+    TURN_TO_ANGLE_TIMEOUT = 0
+    TURN_TO_ANGLE_TOLERANCE = 5
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -120,7 +122,8 @@ class Constants:
     OPERATOR_T_MOD = 1
 
     JOYSTICK_DEADZONE = 0.05
-    TANK_DRIVE_EXPONENT = 3
+    TANK_DRIVE_EXPONENT = 1
+    TANK_PERCENT_OUTPUT = False
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
