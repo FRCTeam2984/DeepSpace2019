@@ -24,6 +24,7 @@ class TankDrive(Command):
         self.odemetry = odemetry.Odemetry()
         self.multiplier = 1000
         self.last_snap = 0
+        self.setInterruptible(True)
 
     def initialize(self):
         self.drive.initPIDF()
@@ -35,7 +36,7 @@ class TankDrive(Command):
                 reset = False
                 break
         if reset:
-            print("RESET")
+            logging.warn("RESET")
             self.odemetry.reset()
         if not oi.OI().drive_buttons[0].get():
             x_speed = math.pow(oi.OI().driver.getY(),

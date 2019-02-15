@@ -93,7 +93,7 @@ class Constants:
 
     TURN_TO_ANGLE_MIN_OUTPUT = 0.2
     TURN_TO_ANGLE_TIMEOUT = 0
-    TURN_TO_ANGLE_TOLERANCE = 1
+    TURN_TO_ANGLE_TOLERANCE = 5
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
