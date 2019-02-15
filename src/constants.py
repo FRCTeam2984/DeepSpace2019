@@ -86,14 +86,14 @@ class Constants:
     FR_VELOCITY_KF = 0.3654
 
     # Turn to angle pidf values
-    TURN_TO_ANGLE_KP = 0.16
-    TURN_TO_ANGLE_KI = 0.025
-    TURN_TO_ANGLE_KD = 0
+    TURN_TO_ANGLE_KP = 0.0005
+    TURN_TO_ANGLE_KI = 5e-6
+    TURN_TO_ANGLE_KD = 4e-5
     TURN_TO_ANGLE_KF = 0
 
-    TURN_TO_ANGLE_MIN_OUTPUT = 0.12
+    TURN_TO_ANGLE_MIN_OUTPUT = 0.2
     TURN_TO_ANGLE_TIMEOUT = 0
-    TURN_TO_ANGLE_TOLERANCE = 5
+    TURN_TO_ANGLE_TOLERANCE = 1
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -123,7 +123,7 @@ class Constants:
 
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 1
-    TANK_PERCENT_OUTPUT = False
+    TANK_PERCENT_OUTPUT = True
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0

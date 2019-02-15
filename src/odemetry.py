@@ -9,7 +9,7 @@ from wpilib.robotbase import hal
 
 from constants import Constants
 from subsystems import drive, intake
-from utils import pose, singleton, units, vector2d
+from utils import pose, singleton, units, vector2d, pidpigeon, pidanaloggyro
 
 
 class Odemetry(metaclass=singleton.Singleton):
@@ -26,10 +26,10 @@ class Odemetry(metaclass=singleton.Singleton):
         # Gyroscope
         if hal.isSimulation():
             self.gyro = analoggyro.AnalogGyro(0)
+            self.pidgyro = pidanaloggyro.PIDAnalogGyro(self.gyro)
         else:
             self.gyro = PigeonIMU(intake.Intake().l_motor)
-
-        self.calibrate()
+            self.pidgyro = pidpigeon.PIDPigeon(self.gyro)
 
         self.pose = pose.Pose()
 

@@ -11,59 +11,47 @@ import odemetry
 import wpilib
 from wpilib import PIDController
 
+
 class TurnToAngle(Command):
-    def __init__(self, setpoint, relative=False):
+    def _setMotors(self, signal):
+        signal = signal if abs(
+            signal) > Constants.TURN_TO_ANGLE_MIN_OUTPUT else math.copysign(Constants.TURN_TO_ANGLE_MIN_OUTPUT, signal)
+        logging.info(f"Turn To Angle Output {signal}")
+        self.drive.setPercentOutput(signal, -signal, signal, -signal)
+
+    def __init__(self, setpoint):
         """Turn to setpoint (degrees)."""
         super().__init__()
         self.drive = drive.Drive()
         self.odemetry = odemetry.Odemetry()
         self.requires(self.drive)
-        self.setpoint = units.degreesToRadians(setpoint)
-        self.relative = relative
-        self.timer = wpilib.Timer()
-        self.timestamp = 0
-        self.last_timestamp = 0
-        self.cur_error = 0
+        self.setpoint = setpoint
+        src = self.odemetry.pidgyro
+        self.PID = PIDController(Constants.TURN_TO_ANGLE_KP, Constants.TURN_TO_ANGLE_KI,
+                                 Constants.TURN_TO_ANGLE_KD, src, self._setMotors)
+        self.PID.setInputRange(-180.0, 180.0)
+        self.PID.setOutputRange(-0.7, 0.7)
+        self.PID.setContinuous(True)
+        self.PID.setAbsoluteTolerance(Constants.TURN_TO_ANGLE_TOLERANCE)
+        self.PID.setPIDSourceType(PIDController.PIDSourceType.kDisplacement)
 
     def initialize(self):
-        # self.kp = Constants.TURN_TO_ANGLE_KP
-        # self.ki = Constants.TURN_TO_ANGLE_KI
-        # self.kd = Constants.TURN_TO_ANGLE_KD
-        # self.kf = Constants.TURN_TO_ANGLE_KF
-        self.pid_controller = PIDController(Constants.TURN_TO_ANGLE_KP, Constants.TURN_TO_ANGLE_KI, Constants.TURN_TO_ANGLE_KD, source=lambda: units.degreesToRadians(self.odemetry.getAngle()), )
-        self.error_tolerance = units.degreesToRadians(
-            Constants.TURN_TO_ANGLE_TOLERANCE)
-        self.timeout = Constants.TURN_TO_ANGLE_TIMEOUT
-        if self.relative:
-            self.setpoint += units.degreesToRadians(self.odemetry.getAngle())
-        self.controller = pidf.PIDF(
-            self.setpoint, self.kp, self.ki, self.kd, self.kf, True, -math.pi, math.pi)
-        self.timer.reset()
+        self.PID.setP(Constants.TURN_TO_ANGLE_KP)
+        self.PID.setI(Constants.TURN_TO_ANGLE_KI)
+        self.PID.setD(Constants.TURN_TO_ANGLE_KD)
+        self.PID.setAbsoluteTolerance(Constants.TURN_TO_ANGLE_TOLERANCE)
+        self.PID.setSetpoint(self.setpoint)
+        self.PID.enable()
 
     def execute(self):
-        self.timestamp = self.timeSinceInitialized()
-        dt = self.timestamp - self.last_timestamp
-        self.last_timestamp = self.timestamp
-        angle = math.fmod(self.odemetry.getAngle(), 2 * math.pi)
-        output = self.controller.update(angle, dt)
-        if abs(output) < Constants.TURN_TO_ANGLE_MIN_OUTPUT:
-            output = math.copysign(Constants.TURN_TO_ANGLE_MIN_OUTPUT, output)
-        Dash.putNumber("Turn To Angle Output", output)
-        Dash.putNumber("Turn To Angle Error",
-                       units.radiansToDegrees(self.controller.cur_error))
-        self.drive.setVelocityOutput(-output, output, -output, output)
+        Dash.putNumber("Turn To Angle Error", self.PID.getError())
+        # logging.info(f"Turn To Angle Error {self.PID.getError()}")
 
     def isFinished(self):
-        # if abs(self.controller.cur_error) <= self.error_tolerance and not self.timer.running:
-        #     logging.debug("start")
-        #     self.timer.start()
-        # if abs(self.controller.cur_error) > self.error_tolerance and self.timer.running:
-        #     logging.debug("stop")
-
-        #     self.timer.stop()
-        #     self.timer.reset()
-        # return self.timer.get()*1000 >= self.timeout
-        return False
+        return self.PID.onTarget()
 
     def end(self):
-        self.drive.setPercentOutput(0, 0, 0, 0)
+        self.PID.disable()
+
+    def interrupted(self):
+        self.end()
