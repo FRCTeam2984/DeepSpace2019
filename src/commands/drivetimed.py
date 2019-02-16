@@ -6,7 +6,7 @@ import wpilib
 
 
 class DriveTimed(Command):
-    def __init__(self, x, y, timeout=1):
+    def __init__(self, x_speed, y_speed, rotation, timeout=1):
         super().__init__()
         self.drive = drive.Drive()
         self.requires(self.drive)
@@ -14,13 +14,14 @@ class DriveTimed(Command):
         self.timer = wpilib.Timer()
         self.timeout = timeout
 
-        self.x = x
-        self.y = y
+        self.x_speed = x_speed
+        self.y_speed = y_speed
+        self.rotation = rotation
 
     def initialize(self):
         self.timer.start()
-        self.drive.setDirectionOutput(self.x, self.y, 0)
-        
+        self.drive.setDirectionOutput(
+            self.x_speed, self.y_speed, self.rotation)
 
     def isFinished(self):
         return self.timer.get() >= self.timeout
