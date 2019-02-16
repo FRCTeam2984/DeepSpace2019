@@ -9,7 +9,7 @@ class Constants:
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
     # Watchdog timeout (seconds)
-    WATCHDOG_TIMEOUT = 0.1
+    WATCHDOG_TIMEOUT = 0.2
 
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
@@ -46,7 +46,7 @@ class Constants:
 
     # Scoot control
     SCOOT_SPEED = 0.5
-    SCOOT_DURATION = 0.5
+    SCOOT_DURATION = 0.35
 
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
