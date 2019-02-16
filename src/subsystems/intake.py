@@ -33,7 +33,7 @@ class Intake(Subsystem, metaclass=singleton.Singleton):
 
     def suck(self, speed=Constants.SUCK_SPEED):
         """Set the intake motors to \"suck\"."""
-        self.setPercentOutput(-speed, speed)
+        self.setPercentOutput(speed, -speed)
 
     def spit(self, speed=Constants.SPIT_SPEED):
         """Set the intake motors to \"spit\"."""
