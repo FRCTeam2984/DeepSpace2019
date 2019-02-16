@@ -44,6 +44,10 @@ class Constants:
     SUCK_SPEED = 1
     SPIT_SPEED = 1
 
+    # Scoot control
+    SCOOT_SPEED = 0.5
+    SCOOT_DURATION = 0.5
+
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
     WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * math.pi  # inches
@@ -127,6 +131,8 @@ class Constants:
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
+    DISTANCE_SENSOR_THRESHOLD = 24  # inches
+    CM_TO_IN_MULTIPLYER = 2.54
 
     # Hatch latch
     HATCH_LATCH_OPENED = 140
@@ -174,6 +180,7 @@ class Constants:
     L_ROCKET_BACK = 151
     R_ROCKET_FRONT = 331
     R_ROCKET_BACK = 139
+
     @staticmethod
     def updateConstants():
         try:

@@ -1,7 +1,7 @@
 from utils import joystick, singleton, intakestate
 from constants import Constants
-from commands import togglehatchlatch, setintakestate, setbackarm
-
+from wpilib.buttons.joystickbutton import JoystickButton
+from commands import togglehatchlatch, drivetimed, setintakestate, setbackarm
 
 class OI(metaclass=singleton.Singleton):
     """Deals with anything controller related,
@@ -37,3 +37,10 @@ class OI(metaclass=singleton.Singleton):
         self.operator_buttons[5].whenReleased(self.intake_stop)
 
         self.operator_buttons[6].whenPressed(self.hatch_toggle)
+	
+	self.hatchbutton = JoystickButton(self.driver, 1)
+        self.hatchbutton.whenPressed(togglehatchlatch.ToggleHatchLatch())
+        self.scootleft = JoystickButton(self.driver, 5)
+        self.scootleft.whenPressed(drivetimed.DriveTimed(Constants.SCOOT_SPEED * -1, 0, Constants.SCOOT_DURRATION))
+        self.scootright = JoystickButton(self.driver, 6)
+        self.scootright.whenPressed(drivetimed.DriveTimed(Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURRATION))
