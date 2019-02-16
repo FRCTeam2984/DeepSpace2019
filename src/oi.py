@@ -27,6 +27,11 @@ class OI(metaclass=singleton.Singleton):
             intakestate.IntakeState.STOP)
         self.hatch_toggle = togglehatchlatch.ToggleHatchLatch()
 
+        self.scoot_left = drivetimed.DriveTimed(
+            0, -Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
+        self.scoot_right = drivetimed.DriveTimed(
+            0, Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
+
         # self.operator_buttons[0].whenPressed(setbackarm.SetBackArm(0))
         # self.operator_buttons[1].whenPressed(setbackarm.SetBackArm(10))
         # self.operator_buttons[2].whenPressed(setbackarm.SetBackArm(30))
@@ -39,11 +44,5 @@ class OI(metaclass=singleton.Singleton):
 
         self.operator_buttons[6].whenPressed(self.hatch_toggle)
 
-        self.hatchbutton = JoystickButton(self.driver, 1)
-        self.hatchbutton.whenPressed(togglehatchlatch.ToggleHatchLatch())
-        self.scootleft = JoystickButton(self.driver, 5)
-        self.scootleft.whenPressed(drivetimed.DriveTimed(
-            Constants.SCOOT_SPEED * -1, 0, Constants.SCOOT_DURATION, 0))
-        self.scootright = JoystickButton(self.driver, 6)
-        self.scootright.whenPressed(drivetimed.DriveTimed(
-            Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION, 0))
+        self.drive_buttons[4].whenPressed(self.scoot_left)
+        self.drive_buttons[5].whenPressed(self.scoot_right)
