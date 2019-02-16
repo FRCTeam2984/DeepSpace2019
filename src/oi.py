@@ -27,6 +27,7 @@ class OI(metaclass=singleton.Singleton):
         self.intake_stop = setintakestate.SetIntakeState(
             intakestate.IntakeState.STOP)
         self.hatch_toggle = togglehatchlatch.ToggleHatchLatch()
+        """ hatch_control equals the controlHatch function in the subsystem hatchlatch."""
         self.hatch_control = hatchlatch.controlHatch()
 
         self.scoot_left = drivetimed.DriveTimed(
@@ -44,6 +45,7 @@ class OI(metaclass=singleton.Singleton):
         self.operator_buttons[5].whenPressed(self.intake_suck)
         self.operator_buttons[5].whenReleased(self.intake_stop)
 
+        """ Left and right triggers."""
         self.operator_buttons[6].whenPressed(self.hatch_control)
         self.operator_buttons[7].whenPressed(self.hatch_control)
 
