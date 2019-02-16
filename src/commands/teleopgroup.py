@@ -1,4 +1,4 @@
-from commands import tankdrive
+from commands import snaplistener
 
 from wpilib.command import CommandGroup
 
@@ -8,4 +8,4 @@ class TeleopCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Teleop Program')
-        self.addSequential(tankdrive.TankDrive())
+        self.addParallel(snaplistener.SnapListener(0))

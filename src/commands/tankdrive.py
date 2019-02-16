@@ -24,6 +24,7 @@ class TankDrive(Command):
         self.odemetry = odemetry.Odemetry()
         self.multiplier = 1000
         self.last_snap = 0
+        self.setInterruptible(True)
 
     def initialize(self):
         self.drive.initPIDF()
