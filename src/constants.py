@@ -42,7 +42,7 @@ class Constants:
 
     # Intake motor "suck" and "spit" speeds
     SUCK_SPEED = 1
-    SPIT_SPEED = 1
+    SPIT_SPEED = -1
 
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
@@ -124,6 +124,7 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 1
     TANK_PERCENT_OUTPUT = True
+    SNAP_TO = False
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0

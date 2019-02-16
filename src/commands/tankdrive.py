@@ -35,9 +35,8 @@ class TankDrive(Command):
                 reset = False
                 break
         if reset:
-            print("RESET")
             self.odemetry.reset()
-        if not oi.OI().drive_buttons[0].get():
+        if not oi.OI().drive_buttons[0].get() or not Constants.SNAP_TO:
             x_speed = math.pow(oi.OI().driver.getY(),
                                Constants.TANK_DRIVE_EXPONENT)
             y_speed = math.pow(oi.OI().driver.getX(),
