@@ -1,7 +1,7 @@
 from utils import joystick, singleton, intakestate
 from constants import Constants
 from commands import togglehatchlatch, setintakestate, setbackarm
-
+from commands.sethatchlatch import SetHatchLatch, HatchState
 
 class OI(metaclass=singleton.Singleton):
     """Deals with anything controller related,
@@ -24,7 +24,9 @@ class OI(metaclass=singleton.Singleton):
             intakestate.IntakeState.SPIT)
         self.intake_stop = setintakestate.SetIntakeState(
             intakestate.IntakeState.STOP)
-        self.hatch_toggle = togglehatchlatch.ToggleHatchLatch()
+
+        self.hatch_open = SetHatchLatch(HatchState.OPEN)
+        self.hatch_close = SetHatchLatch(HatchState.CLOSED)
 
         # self.operator_buttons[0].whenPressed(setbackarm.SetBackArm(0))
         # self.operator_buttons[1].whenPressed(setbackarm.SetBackArm(10))
@@ -36,4 +38,5 @@ class OI(metaclass=singleton.Singleton):
         self.operator_buttons[5].whenPressed(self.intake_suck)
         self.operator_buttons[5].whenReleased(self.intake_stop)
 
-        self.operator_buttons[6].whenPressed(self.hatch_toggle)
+        self.operator_buttons[6].whenPressed(self.hatch_close)
+        self.operator_buttons[7].whenPressed(self.hatch_open)
