@@ -3,11 +3,10 @@ from wpilib.command import Command
 from constants import Constants
 from subsystems import drive
 import wpilib
-from utils import units
 
 
 class DriveTimed(Command):
-    def __init__(self,  fl_signal, fr_signal, bl_signal, br_signal, timeout=1000):
+    def __init__(self, x, y, timeout=1):
         super().__init__()
         self.drive = drive.Drive()
         self.requires(self.drive)
@@ -15,18 +14,16 @@ class DriveTimed(Command):
         self.timer = wpilib.Timer()
         self.timeout = timeout
 
-        self.fl_signal = fl_signal
-        self.fr_signal = fr_signal
-        self.bl_signal = bl_signal
-        self.br_signal = br_signal
+        self.x = x
+        self.y = y
 
     def initialize(self):
         self.timer.start()
-        self.drive.setPercentOutput(
-            self.fl_signal, self.fr_signal, self.bl_signal, self.br_signal)
+        self.drive.setDirectionOutput(self.x, self.y, 0)
+        
 
     def isFinished(self):
-        return self.timer.get()*1000 >= self.timeout
+        return self.timer.get() >= self.timeout
 
     def end(self):
-        self.drive.setPercentOutput2(0, 0, 0, 0)
+        self.drive.setDirectionOutput(0, 0, 0)
