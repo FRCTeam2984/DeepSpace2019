@@ -5,6 +5,7 @@ from wpilib.command import Subsystem
 from utils import singleton, units
 from wpilib import Servo
 from constants import Constants
+from utils import oi
 
 
 class HatchLatch(Subsystem, metaclass=singleton.Singleton):
@@ -38,3 +39,10 @@ class HatchLatch(Subsystem, metaclass=singleton.Singleton):
 
     def periodic(self):
         self.outputToDashboard()
+
+    def controlHatch(self):
+        """ Checks each trigger and opens and closes depending on the trigger pressed."""
+        if oi.OI.operator_buttons[6].whenPressed():
+            self.setOpen()
+        elif oi.OI.operator_buttons[5].whenPressed():
+            self.setClosed()

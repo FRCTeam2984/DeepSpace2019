@@ -2,6 +2,7 @@ from utils import joystick, singleton, intakestate
 from constants import Constants
 from wpilib.buttons.joystickbutton import JoystickButton
 from commands import togglehatchlatch, drivetimed, setintakestate, setbackarm
+from subsystems import hatchlatch
 
 
 class OI(metaclass=singleton.Singleton):
@@ -26,6 +27,8 @@ class OI(metaclass=singleton.Singleton):
         self.intake_stop = setintakestate.SetIntakeState(
             intakestate.IntakeState.STOP)
         self.hatch_toggle = togglehatchlatch.ToggleHatchLatch()
+        """ hatch_control equals the controlHatch function in the subsystem hatchlatch."""
+        self.hatch_control = hatchlatch.controlHatch()
 
         self.scoot_left = drivetimed.DriveTimed(
             0, -Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
@@ -42,7 +45,9 @@ class OI(metaclass=singleton.Singleton):
         self.operator_buttons[5].whenPressed(self.intake_suck)
         self.operator_buttons[5].whenReleased(self.intake_stop)
 
-        self.operator_buttons[6].whenPressed(self.hatch_toggle)
+        """ Left and right triggers."""
+        self.operator_buttons[6].whenPressed(self.hatch_control)
+        self.operator_buttons[7].whenPressed(self.hatch_control)
 
         self.drive_buttons[4].whenPressed(self.scoot_left)
         self.drive_buttons[5].whenPressed(self.scoot_right)
