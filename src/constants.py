@@ -128,12 +128,9 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 1
     TANK_PERCENT_OUTPUT = True
-    SNAP_TO = False
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
-    DISTANCE_SENSOR_THRESHOLD = 24  # inches
-    CM_TO_IN_MULTIPLYER = 2.54
 
     # Hatch latch
     HATCH_LATCH_OPENED = 140
