@@ -16,7 +16,7 @@ class TurnToAngle(Command):
     def _setMotors(self, signal):
         signal = signal if abs(
             signal) > Constants.TURN_TO_ANGLE_MIN_OUTPUT else math.copysign(Constants.TURN_TO_ANGLE_MIN_OUTPUT, signal)
-        logging.info(f"Turn To Angle Output {signal}")
+        Dash.putNumber("Turn To Angle Output", signal)
         self.drive.setPercentOutput(signal, -signal, signal, -signal)
 
     def __init__(self, setpoint):
@@ -29,6 +29,7 @@ class TurnToAngle(Command):
         src = self.odemetry.pidgyro
         self.PID = PIDController(Constants.TURN_TO_ANGLE_KP, Constants.TURN_TO_ANGLE_KI,
                                  Constants.TURN_TO_ANGLE_KD, src, self._setMotors)
+        logging.debug("Turn to angle constructed with angle {}".format(setpoint))
         self.PID.setInputRange(-180.0, 180.0)
         self.PID.setOutputRange(-0.7, 0.7)
         self.PID.setContinuous(True)
@@ -51,6 +52,7 @@ class TurnToAngle(Command):
         return self.PID.onTarget()
 
     def end(self):
+        logging.debug("Finished turning to angle {}".format(self.setpoint))
         self.PID.disable()
 
     def interrupted(self):
