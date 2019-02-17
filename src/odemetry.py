@@ -9,7 +9,7 @@ from wpilib.robotbase import hal
 
 from constants import Constants
 from subsystems import drive, intake
-from utils import pose, singleton, units, vector2d, pidpigeon, pidanaloggyro
+from utils import pose, singleton, units, vector2d, pidpigeon, pidanaloggyro, angles
 
 
 class Odemetry(metaclass=singleton.Singleton):
@@ -61,7 +61,7 @@ class Odemetry(metaclass=singleton.Singleton):
 
         Dash.putNumber("Pos X", self.pose.pos.x)
         Dash.putNumber("Pos Y", self.pose.pos.y)
-        Dash.putNumber("Angle", self.getAngle())
+        Dash.putNumber("Angle", units.radiansToDegrees(self.getAngle()))
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
@@ -83,10 +83,13 @@ class Odemetry(metaclass=singleton.Singleton):
 
     def getAngle(self):
         """Use the gyroscope to return the angle in radians."""
+        #angles.positiveAngleToMixedAngle(abs(math.fmod(units.radiansToDegrees(  ), 360)))
         if hal.isSimulation():
-            return -units.degreesToRadians(self.gyro.getAngle())
+            return units.degreesToRadians(angles.positiveAngleToMixedAngle(angles.wrapPositiveAngle(-self.gyro.getAngle())))
+            #return -units.degreesToRadians(self.gyro.getAngle())
         else:
-            return -units.degreesToRadians(self.gyro.getYawPitchRoll()[0])
+            return units.degreesToRadians(angles.positiveAngleToMixedAngle(angles.wrapPositiveAngle(-self.gyro.getYawPitchRoll()[0])))
+            #return -units.degreesToRadians(self.gyro.getYawPitchRoll()[0])
 
     def getAngleDelta(self):
         """Use the gyroscope to return the angle change in radians."""
