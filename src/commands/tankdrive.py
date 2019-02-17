@@ -42,7 +42,7 @@ class TankDrive(Command):
         y_speed = math.pow(oi.OI().driver.getX(),
                            Constants.TANK_DRIVE_EXPONENT)
         rotation = math.pow(oi.OI().driver.getZ(),
-                            Constants.TANK_DRIVE_EXPONENT)
+                            Constants.TANK_DRIVE_ROTATION_EXPONENT)
         if self.allocentric:
             speed = vector2d.Vector2D(
                 x_speed, y_speed).getRotated(-self.odemetry.getAngle())

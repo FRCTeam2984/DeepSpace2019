@@ -127,6 +127,8 @@ class Constants:
 
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 1
+    TANK_DRIVE_ROTATION_EXPONENT = 3
+    TANK_DRIVE_FRONT_SPEEDUP = 0.05
     TANK_PERCENT_OUTPUT = True
 
     # Distance sensor
