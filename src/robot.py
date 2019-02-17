@@ -13,7 +13,7 @@ from wpilib.command import Command
 
 import oi
 from constants import Constants
-from subsystems import drive, backarm, intake
+from subsystems import drive, longarm, intake, shortarm
 from wpilib import watchdog
 
 import logging
@@ -37,7 +37,9 @@ class Robot(CommandBasedRobot):
         Constants.initSmartDashboard()
         # Initialize motor objects
         drive.Drive().init()
-        backarm.BackArm().init()
+        longarm.LongArm().init()
+        shortarm.ShortArm().init()
+
         intake.Intake().init()
         # The PDP
         # self.pdp = PDP(7)
