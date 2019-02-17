@@ -1,4 +1,4 @@
-from commands import snaplistener
+from commands import snaplistener, tankarm
 
 from wpilib.command import CommandGroup
 
@@ -9,3 +9,4 @@ class TeleopCommandGroup(CommandGroup):
     def __init__(self):
         super().__init__('Teleop Program')
         self.addParallel(snaplistener.SnapListener(0))
+        self.addSequential(tankarm.TankArm())
