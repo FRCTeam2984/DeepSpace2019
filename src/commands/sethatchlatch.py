@@ -16,10 +16,14 @@ class SetHatchLatch(InstantCommand):
         self.requires(self.hatchlatch)
         self.hatch_state = hatch_state
     
-    def setHatchState(self):
+    def initialize(self):
+        logging.debug("Setting hatch latch state")
         if self.hatch_state == HatchState.OPEN:
             self.hatchlatch.setOpen()
         elif self.hatch_state == HatchState.CLOSED:
             self.hatchlatch.setClosed()
         else:
             logging.error("Unexpected state: {}".format(self.hatch_state))
+
+    def end(self):
+        pass
