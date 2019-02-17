@@ -27,7 +27,7 @@ class Robot(CommandBasedRobot):
         """Run when the robot turns on."""
         field_styles = coloredlogs.DEFAULT_FIELD_STYLES
         field_styles['filename'] = {'color': 'cyan'}
-        coloredlogs.install(
+        coloredlogs.install(level='DEBUG', 
             fmt="%(asctime)s[%(msecs)d] %(filename)s:%(lineno)d %(name)s %(levelname)s %(message)s", datefmt="%m-%d %H:%M:%S", field_styles=field_styles)  # install to created handler
         Command.getRobot = lambda x=0: self
         # Update constants from json file on robot
@@ -76,6 +76,7 @@ class Robot(CommandBasedRobot):
 
     def teleopInit(self):
         """Run when the robot enters teleop mode."""
+        logging.debug("Initiating teleop mode")
         self.globalInit()
         self.teleop.start()
 
