@@ -61,7 +61,7 @@ class Odemetry(metaclass=singleton.Singleton):
 
         Dash.putNumber("Pos X", self.pose.pos.x)
         Dash.putNumber("Pos Y", self.pose.pos.y)
-        Dash.putNumber("Angle", units.radiansToDegrees(self.getAngle()))
+        Dash.putNumber("Angle", int(units.radiansToDegrees(self.getAngle())))
 
     def getDistance(self):
         """Use encoders to return the distance driven in inches."""
