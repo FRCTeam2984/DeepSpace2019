@@ -13,7 +13,7 @@ from wpilib.command import Command
 
 import oi
 from constants import Constants
-from subsystems import drive, longarm, intake, shortarm
+from subsystems import drive, longarm, intake, shortarm, climbroller
 from wpilib import watchdog
 
 import logging
@@ -39,8 +39,8 @@ class Robot(CommandBasedRobot):
         drive.Drive().init()
         longarm.LongArm().init()
         shortarm.ShortArm().init()
-
         intake.Intake().init()
+        climbroller.ClimbRoller().init()
         # The PDP
         # self.pdp = PDP(7)
         # Set command group member variables

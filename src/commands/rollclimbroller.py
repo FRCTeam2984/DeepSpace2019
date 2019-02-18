@@ -3,21 +3,26 @@ from wpilib.command import Command
 from constants import Constants
 from subsystems import climbroller
 import wpilib
-import oi
 
 
 class RollClimbRoller(Command):
-    def __init__(self):
+    def __init__(self, speed):
         super().__init__()
         self.climbroller = climbroller.ClimbRoller()
-        self.requires(self.climbroller)
+        self.speed = speed
+        self.setInterruptible(True)
+
+    def initialize(self):
+        pass
 
     def execute(self):
-        speed = oi.OI().operator.getY()
-        self.climbroller.roll(speed)
+        self.climbroller.roll(self.speed)
 
     def isFinished(self):
-        False
+        return False
+
+    def interrupted(self):
+        self.end()
 
     def end(self):
         self.climbroller.stop()
