@@ -1,7 +1,7 @@
-from utils import joystick, singleton, intakestate
+from utils import joystick, singleton, intakestate, hatchlatchstate, gamestate
 from constants import Constants
 from wpilib.buttons.joystickbutton import JoystickButton
-from commands import togglehatchlatch, drivetimed, setintakestate, setlongarm
+from commands import sethatchlatchstate, drivetimed, setintakestate, setlongarm, setgamestate
 
 
 class OI(metaclass=singleton.Singleton):
@@ -25,24 +25,37 @@ class OI(metaclass=singleton.Singleton):
             intakestate.IntakeState.SPIT)
         self.intake_stop = setintakestate.SetIntakeState(
             intakestate.IntakeState.STOP)
-        self.hatch_toggle = togglehatchlatch.ToggleHatchLatch()
+        self.hatch_close = sethatchlatchstate.SetHatchLatchState(
+            hatchlatchstate.HatchLatchState.CLOSE)
+        self.hatch_open = sethatchlatchstate.SetHatchLatchState(
+            hatchlatchstate.HatchLatchState.OPEN)
+        self.hatch_toggle = sethatchlatchstate.SetHatchLatchState(
+            hatchlatchstate.HatchLatchState.TOGGLE)
+        self.game_stow = setgamestate.SetGameState(gamestate.GameState.STOW)
+        self.game_play = setgamestate.SetGameState(gamestate.GameState.PLAY)
+        self.game_start_climb = setgamestate.SetGameState(
+            gamestate.GameState.START_CLIMB)
+        self.game_end_climb = setgamestate.SetGameState(
+            gamestate.GameState.END_CLIMB)
+        self.game_end_game = setgamestate.SetGameState(
+            gamestate.GameState.END_GAME)
 
         self.scoot_left = drivetimed.DriveTimed(
             0, -Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
         self.scoot_right = drivetimed.DriveTimed(
             0, Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
 
-        # self.operator_buttons[0].whenPressed(setlongarm.SetLongArm(0))
-        # self.operator_buttons[1].whenPressed(setlongarm.SetLongArm(10))
-        # self.operator_buttons[2].whenPressed(setlongarm.SetLongArm(30))
-        # self.operator_buttons[3].whenPressed(setlongarm.SetLongArm(60))
+        self.operator_buttons[0].whenPressed(self.game_stow)
+        self.operator_buttons[1].whenPressed(self.game_play)
+        self.operator_buttons[2].whenPressed(self.game_start_climb)
+        self.operator_buttons[3].whenPressed(self.game_end_climb)
+        # self.operator_buttons[4].whenPressed(self.intake_spit)
+        # self.operator_buttons[4].whenReleased(self.intake_stop)
+        # self.operator_buttons[5].whenPressed(self.intake_suck)
+        # self.operator_buttons[5].whenReleased(self.intake_stop)
 
-        self.operator_buttons[4].whenPressed(self.intake_spit)
-        self.operator_buttons[4].whenReleased(self.intake_stop)
-        self.operator_buttons[5].whenPressed(self.intake_suck)
-        self.operator_buttons[5].whenReleased(self.intake_stop)
-
-        self.operator_buttons[6].whenPressed(self.hatch_toggle)
+        self.operator_buttons[6].whenPressed(self.hatch_close)
+        self.operator_buttons[7].whenPressed(self.hatch_toggle)
 
         self.drive_buttons[4].whenPressed(self.scoot_left)
         self.drive_buttons[5].whenPressed(self.scoot_right)

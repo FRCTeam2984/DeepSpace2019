@@ -168,11 +168,11 @@ class Constants:
     INTAKE_WRIST_KF = 0
 
     # Game states (short arm, intake, long arm)
-    GAME_STATES = [[25, 0, -90],
-                   [25, -90, 0],
-                   [0, 0, 0],
-                   [-90, 0, 90],
-                   [0, 0, 0]]
+    GAME_STATES = [[25, 0, -90],  # stow
+                   [25, -90, 0],  # play
+                   [0, 0, 0],  # start climb
+                   [-90, 0, 90],  # end climb
+                   [0, 0, 0]]  # end game
 
     # Snap to angle angles
     FIELD_FRONT = 0
