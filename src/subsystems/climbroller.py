@@ -1,6 +1,8 @@
 from wpilib.command import Subsystem
 from constants import Constants
 from utils import singleton, lazytalonsrx
+import logging
+from commands import rollclimbroller
 
 
 class ClimbRoller(Subsystem, metaclass=singleton.Singleton):
@@ -29,6 +31,9 @@ class ClimbRoller(Subsystem, metaclass=singleton.Singleton):
 
     def roll(self, signal):
         """Move the rollers at the same speed."""
+        if(signal < 0):
+            logging.warn("Will not roll climb rollers backwards")
+            return
         self.setPercentOutput(signal, signal)
 
     def stop(self):
@@ -37,3 +42,6 @@ class ClimbRoller(Subsystem, metaclass=singleton.Singleton):
 
     def periodic(self):
         self.outputToDashboard()
+
+    def initDefaultCommand(self):
+        return self.setDefaultCommand(rollclimbroller.RollClimbRoller())
