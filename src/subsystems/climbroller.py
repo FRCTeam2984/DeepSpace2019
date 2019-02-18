@@ -44,4 +44,4 @@ class ClimbRoller(Subsystem, metaclass=singleton.Singleton):
         self.outputToDashboard()
 
     def initDefaultCommand(self):
-        return self.setDefaultCommand(rollclimbroller.RollClimbRoller())
+        return self.setDefaultCommand(rollclimbroller.RollClimbRoller(Constants.CLIMB_ROLLER_SPEED))

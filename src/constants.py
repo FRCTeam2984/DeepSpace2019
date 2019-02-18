@@ -163,6 +163,9 @@ class Constants:
     LONG_ARM_KF = 0
     LONG_ARM_ANGLE = 10
 
+    # Climb roller
+    CLIMB_ROLLER_SPEED = 0.5
+    
     # Intake wrist
     INTAKE_WRIST_KP = 0
     INTAKE_WRIST_KI = 0

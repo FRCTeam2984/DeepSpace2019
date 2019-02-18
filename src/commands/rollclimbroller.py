@@ -9,6 +9,7 @@ class RollClimbRoller(Command):
     def __init__(self, speed):
         super().__init__()
         self.climbroller = climbroller.ClimbRoller()
+        self.requires(self.climbroller)
         self.speed = speed
         self.setInterruptible(True)
 
