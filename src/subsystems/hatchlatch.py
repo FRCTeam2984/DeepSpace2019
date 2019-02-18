@@ -1,6 +1,7 @@
 import ctre
 from wpilib import SmartDashboard as Dash
 from wpilib.command import Subsystem
+import logging
 
 from utils import singleton, units
 from wpilib import Servo
@@ -17,10 +18,12 @@ class HatchLatch(Subsystem, metaclass=singleton.Singleton):
 
     def open(self):
         """Open the hatch latch."""
+        logging.debug("Opening hatch latch")
         self.servo.setAngle(Constants.HATCH_LATCH_OPENED)
 
     def close(self):
         """Close the hatch latch."""
+        logging.debug("Closing hatch latch")
         self.servo.setAngle(Constants.HATCH_LATCH_CLOSED)
 
     def toggle(self):

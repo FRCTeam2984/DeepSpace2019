@@ -40,6 +40,8 @@ class OI(metaclass=singleton.Singleton):
         self.game_end_game = setgamestate.SetGameState(
             gamestate.GameState.END_GAME)
 
+        self.hatch_open = SetHatchLatch(HatchState.OPEN)
+        self.hatch_close = SetHatchLatch(HatchState.CLOSED)
         self.scoot_left = drivetimed.DriveTimed(
             0, -Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
         self.scoot_right = drivetimed.DriveTimed(
@@ -59,3 +61,6 @@ class OI(metaclass=singleton.Singleton):
 
         self.drive_buttons[4].whenPressed(self.scoot_left)
         self.drive_buttons[5].whenPressed(self.scoot_right)
+
+        self.operator_buttons[6].whenPressed(self.hatch_close)
+        self.operator_buttons[7].whenPressed(self.hatch_open)

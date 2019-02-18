@@ -9,7 +9,7 @@ class Constants:
     CONSTANTS_JSON_PATH = "/home/lvuser/py_constants.json"
 
     # Watchdog timeout (seconds)
-    WATCHDOG_TIMEOUT = 0.1
+    WATCHDOG_TIMEOUT = 0.2
 
     # Motion
     THEORETICAL_MAX_VELOCITY = 60
@@ -46,7 +46,7 @@ class Constants:
 
     # Scoot control
     SCOOT_SPEED = 0.5
-    SCOOT_DURATION = 0.5
+    SCOOT_DURATION = 0.35
 
     # Wheel measurements
     WHEEL_DIAMETER = 6  # inches TODO update
@@ -90,14 +90,14 @@ class Constants:
     FR_VELOCITY_KF = 0.3654
 
     # Turn to angle pidf values
-    TURN_TO_ANGLE_KP = 0.0005
+    TURN_TO_ANGLE_KP = 0.0025
     TURN_TO_ANGLE_KI = 5e-6
     TURN_TO_ANGLE_KD = 4e-5
     TURN_TO_ANGLE_KF = 0
 
     TURN_TO_ANGLE_MIN_OUTPUT = 0.2
     TURN_TO_ANGLE_TIMEOUT = 0
-    TURN_TO_ANGLE_TOLERANCE = 5
+    TURN_TO_ANGLE_TOLERANCE = 2
 
     # Pure pursuit values
     MAX_VELOCITY = 60  # inches/sec
@@ -127,6 +127,8 @@ class Constants:
 
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 1
+    TANK_DRIVE_ROTATION_EXPONENT = 3
+    TANK_DRIVE_FRONT_SPEEDUP = 0.05
     TANK_PERCENT_OUTPUT = True
     TANK_VELOCITY_MAX = 1000
 
