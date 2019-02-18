@@ -18,9 +18,8 @@ class TankArm(Command):
         pass
 
     def execute(self):
-        long_speed = oi.OI().driver.getY() * 0.5
-        short_speed = -oi.OI().driver.getThrottle() * 0.5
-
+        long_speed = oi.OI().operator.getY() * 0.5
+        short_speed = oi.OI().operator.getThrottle() * 0.5
         self.longarm.m_motor.setPercentOutput(long_speed)
         self.shortarm.m_motor.setPercentOutput(short_speed)
 

@@ -128,6 +128,7 @@ class Constants:
     JOYSTICK_DEADZONE = 0.05
     TANK_DRIVE_EXPONENT = 1
     TANK_PERCENT_OUTPUT = True
+    TANK_VELOCITY_MAX = 1000
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
@@ -166,12 +167,12 @@ class Constants:
     INTAKE_WRIST_KD = 0
     INTAKE_WRIST_KF = 0
 
-    # Game modes (short arm, intake, long arm)
-    GAME_MODE_STOW = [25,  0,  -90]
-    GAME_MODE_PLAY = [25,  -90,  0]
-    GAME_MODE_START_CLIMB = [0,  0,  0]
-    GAME_MODE_END_CLIMB = [-90,  0,  90]
-    GAME_MODE_END_GAME = [0,  0,  0]
+    # Game states (short arm, intake, long arm)
+    GAME_STATES = [[25, 0, -90],
+                   [25, -90, 0],
+                   [0, 0, 0],
+                   [-90, 0, 90],
+                   [0, 0, 0]]
 
     # Snap to angle angles
     FIELD_FRONT = 0
