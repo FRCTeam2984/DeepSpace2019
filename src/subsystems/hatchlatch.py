@@ -15,23 +15,23 @@ class HatchLatch(Subsystem, metaclass=singleton.Singleton):
         super().__init__()
         self.servo = Servo(0)
 
-    def setOpen(self):
+    def open(self):
         """Open the hatch latch."""
         self.servo.setAngle(Constants.HATCH_LATCH_OPENED)
 
-    def setClosed(self):
+    def close(self):
         """Close the hatch latch."""
         self.servo.setAngle(Constants.HATCH_LATCH_CLOSED)
 
-    def setToggle(self):
+    def toggle(self):
         """Toggle the hatch latch between open and closed
            (if it is not in either state, it will be closed)."""
         if self.servo.getAngle() == Constants.HATCH_LATCH_CLOSED:
-            self.setOpen()
+            self.open()
         elif self.servo.getAngle() == Constants.HATCH_LATCH_OPENED:
-            self.setClosed()
+            self.close()
         else:
-            self.setClosed()
+            self.close()
 
     def outputToDashboard(self):
         Dash.putNumber("Servo Angle", self.servo.getAngle())
