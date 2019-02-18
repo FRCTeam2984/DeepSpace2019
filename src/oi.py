@@ -40,8 +40,6 @@ class OI(metaclass=singleton.Singleton):
         self.game_end_game = setgamestate.SetGameState(
             gamestate.GameState.END_GAME)
 
-        self.hatch_open = SetHatchLatch(HatchState.OPEN)
-        self.hatch_close = SetHatchLatch(HatchState.CLOSED)
         self.scoot_left = drivetimed.DriveTimed(
             0, -Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
         self.scoot_right = drivetimed.DriveTimed(
