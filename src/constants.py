@@ -173,7 +173,7 @@ class Constants:
     INTAKE_WRIST_KF = 0
 
     # Game states (short arm, intake, long arm)
-    GAME_STATES = [[-25, 0, -60],  # stow
+    GAME_STATES = [[-25, 0, -90],  # stow
                    [-25, -90, 0],  # play
                    [0, 0, 0],  # start climb
                    [90, 0, 90],  # end climb
