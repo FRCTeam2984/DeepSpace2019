@@ -58,10 +58,10 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
         """Set the position of the motor using motion magic."""
         self.set(self.ControlMode.MotionMagic, pos)
 
-    def zero(self):
+    def zero(self, pos=0):
         """Zero the encoder if it exists."""
         if self.encoder:
-            self.setSelectedSensorPosition(0, 0, 0)
+            self.setSelectedSensorPosition(pos, 0, 0)
         else:
             logging.warning(self.no_encoder_warning)
 
@@ -98,7 +98,6 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
             return 0
 
     def outputToDashboard(self):
-        self.MotorDash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
         self.MotorDash.putNumber(f"{self.name} Percent Output",
                                  self.getMotorOutputPercent())
         if self.encoder:

@@ -30,9 +30,9 @@ class LongArm(Subsystem, metaclass=singleton.Singleton):
         self.m_motor.setPIDF(0, Constants.LONG_ARM_KP, Constants.LONG_ARM_KI,
                              Constants.LONG_ARM_KD, Constants.LONG_ARM_KF)
 
-    def zeroSensors(self):
+    def zeroSensors(self, pos=0):
         """Set the encoder positions to 0."""
-        self.m_motor.zero()
+        self.m_motor.zero(pos=pos)
 
     def outputToDashboard(self):
         self.s_motor.outputToDashboard()
@@ -50,8 +50,9 @@ class LongArm(Subsystem, metaclass=singleton.Singleton):
 
     def periodic(self):
         self.outputToDashboard()
+        if self.m_motor.isRevLimitSwitchClosed():
+            self.zeroSensors(pos=-900)
 
     def reset(self):
         self.m_motor.setPercentOutput(0)
-        self.zeroSensors()
         self.initPIDF()
