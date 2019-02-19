@@ -1,6 +1,6 @@
 from wpilib.command import CommandGroup
 import math
-from commands import setshortarm, setlongarm, setbotharms
+from commands import teleopgroup
 
 
 class AutonomousCommandGroup(CommandGroup):
@@ -8,4 +8,4 @@ class AutonomousCommandGroup(CommandGroup):
 
     def __init__(self):
         super().__init__('Autonomous Program')
-        self.addSequential(setbotharms.SetBothArms())
+        self.addSequential(teleopgroup.TeleopCommandGroup())
