@@ -1,7 +1,7 @@
 from utils import joystick, singleton, intakestate, hatchlatchstate, gamestate
 from constants import Constants
 from wpilib.buttons.joystickbutton import JoystickButton
-from commands import sethatchlatchstate, drivetimed, setintakestate, setlongarm, setgamestate, rollclimbroller, autoclimb
+from commands import sethatchlatchstate, drivetimed, setintakestate, setlongarm, setgamestate, rollclimbroller
 
 
 class OI(metaclass=singleton.Singleton):
