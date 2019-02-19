@@ -1,16 +1,20 @@
 from wpilib.command import InstantCommand
 
-from subsystems import drive, backarm
+from subsystems import drive, longarm, shortarm
 
 
 class ZeroSensors(InstantCommand):
     def __init__(self):
         super().__init__()
         self.drive = drive.Drive()
-        self.backarm = backarm.BackArm()
+        self.longarm = longarm.LongArm()
+        self.shortarm = shortarm.ShortArm()
+
         self.requires(self.drive)
-        self.requires(self.backarm)
+        self.requires(self.longarm)
+        self.requires(self.shortarm)
 
     def initialize(self):
         self.drive.reset()
-        self.backarm.reset()
+        self.longarm.reset()
+        self.shortarm.reset()

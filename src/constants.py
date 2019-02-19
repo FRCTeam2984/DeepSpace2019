@@ -33,12 +33,12 @@ class Constants:
     IW_MOTOR_ID = 10  # UNUSED
 
     # Arm motors
-    FS_MOTOR_ID = 8
-    FM_MOTOR_ID = 9
-    BS_MOTOR_ID = 11
-    BM_MOTOR_ID = 12
-    CRL_MOTOR_ID = 13  # UNUSED
-    CRR_MOTOR_ID = 14  # UNUSED
+    SAS_MOTOR_ID = 11
+    SAM_MOTOR_ID = 12
+    LAS_MOTOR_ID = 9
+    LAM_MOTOR_ID = 8
+    CRL_MOTOR_ID = 13
+    CRR_MOTOR_ID = 14
 
     # Intake motor "suck" and "spit" speeds
     SUCK_SPEED = 1
@@ -130,6 +130,7 @@ class Constants:
     TANK_DRIVE_ROTATION_EXPONENT = 3
     TANK_DRIVE_FRONT_SPEEDUP = 0.05
     TANK_PERCENT_OUTPUT = True
+    TANK_VELOCITY_MAX = 1000
 
     # Distance sensor
     DISTANCE_SENSOR_PORT = 0
@@ -144,19 +145,26 @@ class Constants:
     VISION_ERROR_THRESH_X = 0.1
     VISION_ERROR_THRESH_Y = 0.1
 
-    # Front arm
-    FRONT_ARM_KP = 0
-    FRONT_ARM_KI = 0
-    FRONT_ARM_KD = 0
-    FRONT_ARM_KF = 0
+    # Short arm
+    SHORT_ARM_ACCELERATION = 10
+    SHORT_ARM_CRUISE_VELOCITY = 10
+    SHORT_ARM_KP = 2
+    SHORT_ARM_KI = 0
+    SHORT_ARM_KD = 100
+    SHORT_ARM_KF = 0
+    SHORT_ARM_ANGLE = 0
 
-    # Back arm
-    BACK_ARM_ACCELERATION = 30
-    BACK_ARM_CRUISE_VELOCITY = 30
-    BACK_ARM_KP = 2
-    BACK_ARM_KI = 0.0006
-    BACK_ARM_KD = 0
-    BACK_ARM_KF = 2.8
+    # Long arm
+    LONG_ARM_ACCELERATION = 10
+    LONG_ARM_CRUISE_VELOCITY = 10
+    LONG_ARM_KP = 2
+    LONG_ARM_KI = 0
+    LONG_ARM_KD = 100
+    LONG_ARM_KF = 0
+    LONG_ARM_ANGLE = 0
+
+    # Climb roller
+    CLIMB_ROLLER_SPEED = -0.5
 
     # Intake wrist
     INTAKE_WRIST_KP = 0
@@ -164,12 +172,12 @@ class Constants:
     INTAKE_WRIST_KD = 0
     INTAKE_WRIST_KF = 0
 
-    # Game modes (front arm, intake, back arm)
-    GAME_MODE_STOW = [25,  0,  -90]
-    GAME_MODE_PLAY = [25,  -90,  0]
-    GAME_MODE_START_CLIMB = [0,  0,  0]
-    GAME_MODE_END_CLIMB = [-90,  0,  90]
-    GAME_MODE_END_GAME = [0,  0,  0]
+    # Game states (short arm, intake, long arm)
+    GAME_STATES = [[-25, 0, -90],  # stow
+                   [-25, -90, 0],  # play
+                   [0, 0, 0],  # start climb
+                   [90, 0, 90],  # end climb
+                   [0, 0, 0]]  # end game
 
     # Snap to angle angles
     FIELD_FRONT = 0

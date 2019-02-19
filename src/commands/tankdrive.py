@@ -22,21 +22,12 @@ class TankDrive(Command):
         self.requires(self.drive)
         self.drive.zeroSensors()
         self.odemetry = odemetry.Odemetry()
-        self.multiplier = 1000
-        self.last_snap = 0
         self.setInterruptible(True)
 
     def initialize(self):
         self.drive.initPIDF()
 
     def execute(self):
-        reset = True
-        for i in range(4, 8):
-            if not oi.OI().drive_buttons[i].get():
-                reset = False
-                break
-        if reset:
-            self.odemetry.reset()
         x_speed = math.pow(oi.OI().driver.getY(),
                            Constants.TANK_DRIVE_EXPONENT)
         y_speed = math.pow(oi.OI().driver.getX(),
@@ -47,13 +38,8 @@ class TankDrive(Command):
             speed = vector2d.Vector2D(
                 x_speed, y_speed).getRotated(-self.odemetry.getAngle())
             x_speed, y_speed = speed.getValues()
-        # self.drive.setDirectionOutput(x_speed, y_speed, rotation)
-        epsilon = 1e-3
         if Constants.TANK_PERCENT_OUTPUT:
             self.drive.setDirectionOutput(x_speed, y_speed, rotation)
         else:
-            if abs(x_speed) <= epsilon and abs(y_speed) <= epsilon and abs(rotation) <= epsilon:
-                self.drive.setPercentOutput(0, 0, 0, 0)
-            else:
-                self.drive.setDirectionVelocity(
-                    x_speed*self.multiplier, y_speed*self.multiplier, rotation*self.multiplier)
+            self.drive.setDirectionVelocity(
+                x_speed*Constants.TANK_VELOCITY_MAX, y_speed*Constants.TANK_VELOCITY_MAX, rotation*Constants.TANK_VELOCITY_MAX)

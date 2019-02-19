@@ -1,12 +1,13 @@
 from wpilib.command import Command, InstantCommand
-from subsystems import backarm
+from subsystems import shortarm
 from constants import Constants
+import math
 
 
-class SetBackArm(InstantCommand):
+class SetShortArm(InstantCommand):
     def __init__(self, setpoint):
         super().__init__()
-        self.arm = backarm.BackArm()
+        self.arm = shortarm.ShortArm()
         self.requires(self.arm)
         self.setpoint = setpoint
 
