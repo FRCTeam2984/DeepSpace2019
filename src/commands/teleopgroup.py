@@ -10,3 +10,4 @@ class TeleopCommandGroup(CommandGroup):
         super().__init__('Teleop Program')
         self.addParallel(snaplistener.SnapListener(0))
         self.addParallel(tankdrive.TankDrive())
+        self.addParallel(tankarm.TankArm())
