@@ -3,6 +3,7 @@ from subsystems import shortarm
 from constants import Constants
 import math
 
+
 class SetShortArm(InstantCommand):
     def __init__(self, setpoint):
         super().__init__()
@@ -11,7 +12,7 @@ class SetShortArm(InstantCommand):
         self.setpoint = setpoint
 
     def initialize(self):
-        self.arm.setAngle(math.degrees(
-            math.asin(Constants.SHORT_ARM_ANGLE/15)))
+        self.arm.setAngle(self.setpoint)
+
     def end(self):
         pass

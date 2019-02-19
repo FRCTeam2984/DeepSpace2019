@@ -12,8 +12,7 @@ class SetLongArm(InstantCommand):
         self.setpoint = setpoint
 
     def initialize(self):
-        self.arm.setAngle(math.degrees(
-            math.asin(Constants.LONG_ARM_ANGLE/27.5)))
+        self.arm.setAngle(self.setpoint)
 
     def end(self):
         pass

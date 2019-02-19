@@ -31,7 +31,7 @@ class ClimbRoller(Subsystem, metaclass=singleton.Singleton):
 
     def roll(self, signal):
         """Move the rollers at the same speed."""
-        if(signal < 0):
+        if(signal > 0):
             logging.warn("Will not roll climb rollers backwards")
             return
         self.setPercentOutput(signal, signal)
@@ -42,6 +42,3 @@ class ClimbRoller(Subsystem, metaclass=singleton.Singleton):
 
     def periodic(self):
         self.outputToDashboard()
-
-    def initDefaultCommand(self):
-        return self.setDefaultCommand(rollclimbroller.RollClimbRoller(Constants.CLIMB_ROLLER_SPEED))
