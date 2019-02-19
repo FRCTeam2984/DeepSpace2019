@@ -98,7 +98,7 @@ class LazyTalonSRX(ctre.WPI_TalonSRX):
             return 0
 
     def outputToDashboard(self):
-        self.MotorDash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
+        #self.MotorDash.putNumber(f"{self.name} Voltage", self.getBusVoltage())
         self.MotorDash.putNumber(f"{self.name} Percent Output",
                                  self.getMotorOutputPercent())
         if self.encoder:
