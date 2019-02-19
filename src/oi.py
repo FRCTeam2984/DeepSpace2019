@@ -1,7 +1,7 @@
 from utils import joystick, singleton, intakestate, hatchlatchstate, gamestate
 from constants import Constants
 from wpilib.buttons.joystickbutton import JoystickButton
-from commands import sethatchlatchstate, drivetimed, setintakestate, setlongarm, setgamestate
+from commands import sethatchlatchstate, drivetimed, setintakestate, setlongarm, setgamestate, rollclimbroller, autoclimb
 
 
 class OI(metaclass=singleton.Singleton):
@@ -39,6 +39,9 @@ class OI(metaclass=singleton.Singleton):
             gamestate.GameState.END_CLIMB)
         self.game_end_game = setgamestate.SetGameState(
             gamestate.GameState.END_GAME)
+        self.climb_roll = rollclimbroller.RollClimbRoller(
+            Constants.CLIMB_ROLLER_SPEED)
+        self.climb_stop = rollclimbroller.RollClimbRoller(0)
 
         self.scoot_left = drivetimed.DriveTimed(
             0, -Constants.SCOOT_SPEED, 0, Constants.SCOOT_DURATION)
@@ -54,11 +57,11 @@ class OI(metaclass=singleton.Singleton):
         # self.operator_buttons[5].whenPressed(self.intake_suck)
         # self.operator_buttons[5].whenReleased(self.intake_stop)
 
-        self.operator_buttons[6].whenPressed(self.hatch_close)
-        self.operator_buttons[7].whenPressed(self.hatch_toggle)
-
         self.drive_buttons[4].whenPressed(self.scoot_left)
         self.drive_buttons[5].whenPressed(self.scoot_right)
+
+        self.operator_buttons[4].whenPressed(self.climb_roll)
+        self.operator_buttons[4].whenReleased(self.climb_stop)
 
         self.operator_buttons[6].whenPressed(self.hatch_close)
         self.operator_buttons[7].whenPressed(self.hatch_open)
