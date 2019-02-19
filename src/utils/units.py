@@ -80,3 +80,9 @@ def ticksPer100msToInchesPerSecLeft(ticks_per_100ms):
 def ticksPer100msToInchesPerSecRight(ticks_per_100ms):
     """Convert inches per sec to ticks per 100ms for the right encoder (ctre uses ticks/100ms)."""
     return ticksToInchesRight(ticks_per_100ms)*10
+
+def ticksPer100msToFeetPerSec(ticks_per_100ms, wheel_ticks_per_rev):
+    return ticks_per_100ms*(10/1)*(Constants.WHEEL_CIRCUMFERENCE/wheel_ticks_per_rev)*(1/12)
+
+def feetPerSecToTicksPer100ms(feet_per_sec, wheel_ticks_per_rev):
+    return feet_per_sec*(12/1)*(wheel_ticks_per_rev/Constants.WHEEL_CIRCUMFERENCE)*(1/10)
