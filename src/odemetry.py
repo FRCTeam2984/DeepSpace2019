@@ -85,10 +85,10 @@ class Odemetry(metaclass=singleton.Singleton):
         """Use the gyroscope to return the angle in radians."""
         #angles.positiveAngleToMixedAngle(abs(math.fmod(units.radiansToDegrees(  ), 360)))
         if hal.isSimulation():
-            return units.degreesToRadians(angles.positiveAngleToMixedAngle(angles.wrapPositiveAngle(-self.gyro.getAngle())))
+            return units.degreesToRadians(angles.positiveAngleToMixedAngle(angles.wrapPositiveAngle(-self.gyro.getAngle()))) + Constants.GYRO_OFFSET
             #return -units.degreesToRadians(self.gyro.getAngle())
         else:
-            return units.degreesToRadians(angles.positiveAngleToMixedAngle(angles.wrapPositiveAngle(-self.gyro.getYawPitchRoll()[0])))
+            return units.degreesToRadians(angles.positiveAngleToMixedAngle(angles.wrapPositiveAngle(-self.gyro.getYawPitchRoll()[0]))) + Constants.GYRO_OFFSET
             #return -units.degreesToRadians(self.gyro.getYawPitchRoll()[0])
 
     def getAngleDelta(self):

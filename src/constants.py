@@ -19,6 +19,7 @@ class Constants:
 
     # Gyro
     GYRO_ID = 6
+    GYRO_OFFSET = math.radians(0.0)
 
     # Drive motors
     BL_MOTOR_ID = 2
